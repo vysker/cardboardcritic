@@ -1,0 +1,19 @@
+plugins {
+    id 'groovy'
+}
+
+group = 'com.cardboardcritic'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:3.0.4'
+    compile 'org.jsoup:jsoup:1.13.1'
+//    compile 'com.miglayout.miglayout-core'
+//    compile 'com.miglayout.miglayout-swing'
+//    compile 'org.seleniumhq.selenium:selenium-java:3.141.59'
+//    compile 'org.seleniumhq.selenium:selenium-chrome-driver:3.141.59'
+}
