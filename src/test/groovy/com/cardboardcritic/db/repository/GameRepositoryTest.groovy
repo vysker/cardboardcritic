@@ -34,17 +34,18 @@ class GameRepositoryTest extends Specification {
                 description: 'Bit longer',
                 designer: 'David Turczi',
                 releaseDate: LocalDate.now())
-        repo.delete(1)
 
         when:
-        def gameInDb = repo.create(game)
+        def createdGameInDb = repo.create(game)
         def allGames = repo.index()
-        def isDeleted = repo.delete(1)
+        def gameInDb = repo.find 1
+        def isDeleted = repo.delete 1
         def allGamesAfterDelete = repo.index()
 
         then:
-        gameInDb == game
+        createdGameInDb == game
         allGames == [game]
+        gameInDb == game
         isDeleted
         allGamesAfterDelete == allGames - game
     }
