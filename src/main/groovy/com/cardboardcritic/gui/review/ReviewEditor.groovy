@@ -1,3 +1,6 @@
+package com.cardboardcritic.gui.review
+
+import com.cardboardcritic.domain.Review
 import groovy.json.JsonGenerator
 import groovy.json.JsonSlurper
 import groovy.swing.SwingBuilder
@@ -130,15 +133,6 @@ new SwingBuilder().edt {
             }
         }
     }
-}
-
-class EditedReview {
-    String url, title, game, author, outlet, summary
-    LocalDateTime date
-}
-
-class ReviewModel extends Review {
-    int chosenSummary
 }
 
 def copyProperties(Object source, Object target) {

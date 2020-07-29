@@ -1,3 +1,6 @@
+package com.cardboardcritic.feed.ars
+
+import com.cardboardcritic.domain.Review
 import groovy.json.JsonGenerator
 import groovy.xml.XmlSlurper
 

@@ -1,3 +1,7 @@
+package com.cardboardcritic.feed.ars
+
+import com.cardboardcritic.domain.Review
+import com.cardboardcritic.feed.ArticleScraper
 import groovy.json.JsonSlurper
 import org.jsoup.nodes.Document
 

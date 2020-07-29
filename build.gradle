@@ -7,14 +7,23 @@ version = '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     implementation 'org.codehaus.groovy:groovy-all:3.0.4'
     compile 'org.jsoup:jsoup:1.13.1'
     compile 'org.postgresql:postgresql:42.2.14'
+
 //    compile 'com.miglayout.miglayout-core'
 //    compile 'com.miglayout.miglayout-swing'
 //    compile 'org.seleniumhq.selenium:selenium-java:3.141.59'
 //    compile 'org.seleniumhq.selenium:selenium-chrome-driver:3.141.59'
+
+    testCompile 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
+    testRuntime 'com.h2database:h2:1.4.197'
+}
+
+test {
+    useJUnitPlatform()
 }

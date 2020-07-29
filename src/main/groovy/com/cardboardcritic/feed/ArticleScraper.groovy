@@ -1,3 +1,6 @@
+package com.cardboardcritic.feed
+
+import com.cardboardcritic.domain.Review
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 

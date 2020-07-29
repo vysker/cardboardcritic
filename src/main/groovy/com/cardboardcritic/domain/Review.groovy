@@ -1,3 +1,5 @@
+package com.cardboardcritic.domain
+
 import groovy.transform.ToString
 
 import java.time.LocalDateTime
