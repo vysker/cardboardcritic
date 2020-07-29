@@ -35,7 +35,6 @@ def alignLeft = [alignmentX: 0]
 def defaultBorder = BorderFactory.createLineBorder(Color.gray)
 def inputFieldPaddingBorder = BorderFactory.createEmptyBorder(2, 5, 2, 5)
 def inputFieldBorder = BorderFactory.createCompoundBorder(defaultBorder, inputFieldPaddingBorder)
-def fillerSize = new Dimension(MIN_SIZE, PADDING)
 def formRowSize = new Dimension(FRAME_WIDTH, 40)
 def formRowSizes = [minimumSize: formRowSize, maximumSize: formRowSize, preferredSize: formRowSize]
 def formRowDefaults = [*:formRowSizes, alignmentX: SC.LEFT] // container
@@ -64,44 +63,44 @@ new SwingBuilder().edt {
             pack: true,
             show: true
     ) {
-        def filler = { rigidArea size: fillerSize } // serves as margin between components
+        def vfiller = { rigidArea size: new Dimension(MIN_SIZE, PADDING) } // serves as vertical margin between components
+        def hfiller = { rigidArea size: new Dimension(PADDING, MIN_SIZE) } // serves as horizontal margin between components
 
         vbox(border: BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING)) {
-            vbox(*:formRowDefaults) {
-                label text: 'URL'
-                textField text: model.url, *:inputFieldDefaults
-            }
-
-            filler()
-
-            vbox(*:formRowDefaults) {
-                label text: 'Game'
-                textField text: model.game, *:inputFieldDefaults
-            }
-
-            filler()
-
-            vbox(*:formRowDefaults) {
-                label text: 'Author'
-                textField text: model.author, *:inputFieldDefaults
-            }
-
-            filler()
-
             vbox(*: formRowDefaults) {
-                label text: 'Date'
-                textField text: model.date, *:inputFieldDefaults
+                label text: 'URL'
+                textField text: model.url, *: inputFieldDefaults
             }
-
-            filler()
-
-            vbox(*:formRowDefaults) {
-                label text: 'Title'
-                textField text: model.title, *:inputFieldDefaults
+            vfiller()
+            vbox(*: formRowDefaults) {
+                label text: 'Game'
+                textField text: model.game, *: inputFieldDefaults
             }
-
-            filler()
-
+            vfiller()
+            hbox(*:formRowDefaults) {
+                vbox() {
+                    label text: 'Outlet'
+                    textField text: model.outlet, *: inputFieldDefaults
+                }
+                hfiller()
+                vbox() {
+                    label text: 'Author'
+                    textField text: model.author, *: inputFieldDefaults
+                }
+            }
+            vfiller()
+            hbox(*:formRowDefaults) {
+                vbox() {
+                    label text: 'Review title'
+                    textField text: model.title, *: inputFieldDefaults
+                }
+                hfiller()
+                vbox() {
+                    label text: 'Review publish date'
+                    textField text: model.date, *: inputFieldDefaults
+                }
+            }
+            vfiller()
             vbox(alignmentX: SC.LEFT, border: defaultBorder, preferredSize: new Dimension(FRAME_WIDTH, 400)) {
                 label text: 'Suggested Summaries'
                 vbox() {
@@ -113,23 +112,19 @@ new SwingBuilder().edt {
                                 }
                                 radioButton buttonGroup: group, actionCommand: index, actionListener: chooseSummary
                             }
-                            rigidArea size: fillerSize
+                            vfiller()
                         }
                     }
                 }
             }
-
-            filler()
-
+            vfiller()
             vbox(*:formRowDefaults, preferredSize: new Dimension(FRAME_WIDTH, 80)) {
                 label text: 'All Paragraphs'
                 scrollPane(*:alignLeft) {
                     editorPane text: model.paragraphs.join('\n\n'), border: inputFieldPaddingBorder
                 }
             }
-
-            filler()
-
+            vfiller()
             vbox(*:formRowDefaults) {
                 button text: 'Save', *:formRowSizes, actionPerformed: { saveAction(model) }
             }
@@ -138,13 +133,12 @@ new SwingBuilder().edt {
 }
 
 class EditedReview {
-    String url, title, game, author, summary
+    String url, title, game, author, outlet, summary
     LocalDateTime date
 }
 
 class ReviewModel extends Review {
     int chosenSummary
-    String game
 }
 
 def copyProperties(Object source, Object target) {
@@ -152,46 +146,3 @@ def copyProperties(Object source, Object target) {
         target.properties = source.properties
     }
 }
-
-/*
-copying properties from object to object:
-
-method 1:
-def review = new Review()
-def props = review.properties.findAll { k, v -> !['metaClass', 'class'].contains(k) }
-def model = new EditedReview(*:props)
-
-method 2:
-def review = new Review()
-def model = new EditedReview()
-copyProperties(review, model)
-
-def copyProperties(def source, def target) {
-    target.metaClass.properties.each {
-        if (source.metaClass.hasProperty(source, it.name)
-        && !['metaClass', 'class'].contains(it.name))
-            it.setProperty(target, source.metaClass.getProperty(source, it.name))
-    }
-}
-*/
-
-/*
-class ScrollablePanel extends JPanel implements Scrollable {
-    @Override
-    Dimension getPreferredScrollableViewportSize() { preferredSize }
-
-    @Override
-    int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) { 10 }
-
-    @Override
-    int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-        ((orientation == SC.VERTICAL) ? visibleRect.height : visibleRect.width) - 10
-    }
-
-    @Override
-    boolean getScrollableTracksViewportWidth() { true }
-
-    @Override
-    boolean getScrollableTracksViewportHeight() { return true }
-}
-*/

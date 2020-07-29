@@ -12,6 +12,7 @@ repositories {
 dependencies {
     implementation 'org.codehaus.groovy:groovy-all:3.0.4'
     compile 'org.jsoup:jsoup:1.13.1'
+    compile 'org.postgresql:postgresql:42.2.14'
 //    compile 'com.miglayout.miglayout-core'
 //    compile 'com.miglayout.miglayout-swing'
 //    compile 'org.seleniumhq.selenium:selenium-java:3.141.59'
