@@ -1,6 +1,6 @@
 package com.cardboardcritic.db.repository
 
-import com.cardboardcritic.db.DbConfig
+
 import com.cardboardcritic.db.DbUtil
 import com.cardboardcritic.db.FieldMapper
 import com.cardboardcritic.db.entity.Entity
@@ -14,11 +14,8 @@ abstract class Repository<T extends Entity> {
     Class<T> type
     String table
 
-    Repository(DbConfig config) {
-        config.with {
-            if (!url) url = "jdbc:$protocol://$host:$port/$db"
-            sql = Sql.newInstance(url, user, pass, driver)
-        }
+    Repository(Sql sql) {
+        this.sql = sql
     }
 
     List<T> index() {

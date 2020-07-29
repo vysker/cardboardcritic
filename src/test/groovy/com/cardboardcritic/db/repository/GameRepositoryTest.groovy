@@ -2,6 +2,7 @@ package com.cardboardcritic.db.repository
 
 import com.cardboardcritic.db.DbConfig
 import com.cardboardcritic.db.entity.Game
+import groovy.sql.Sql
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -9,23 +10,23 @@ import java.time.LocalDate
 
 class GameRepositoryTest extends Specification {
     @Shared DbConfig dbConfig = new DbConfig(url: 'jdbc:h2:mem:', driver: 'org.h2.Driver')
+    @Shared Sql sql = dbConfig.connect()
     @Shared String schema = this.class.getResource('/schema.sql').text
 
     GameRepository repo
 
     def setup() {
-        repo = new GameRepository(dbConfig)
-        repo.sql.execute schema
+        repo = new GameRepository(sql)
+        sql.execute schema
     }
 
     def cleanup() {
-        repo.sql.execute 'drop all objects'
-        repo.sql.close()
+        sql.execute 'drop all objects'
+        sql.close()
     }
 
     def 'Some simple ORM specs'() {
         given:
-
         def game = new Game(
                 id: 1, score: 80, recommended: 70,
                 name: 'Anachrony',

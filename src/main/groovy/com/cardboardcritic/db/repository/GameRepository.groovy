@@ -1,8 +1,7 @@
 package com.cardboardcritic.db.repository
 
-
-import com.cardboardcritic.db.DbConfig
 import com.cardboardcritic.db.entity.Game
+import groovy.sql.Sql
 
 class GameRepository extends Repository<Game> {
     {
@@ -10,8 +9,8 @@ class GameRepository extends Repository<Game> {
         type = Game
     }
 
-    GameRepository(DbConfig config) {
-        super(config)
+    GameRepository(Sql sql) {
+        super(sql)
     }
 
     @Override
