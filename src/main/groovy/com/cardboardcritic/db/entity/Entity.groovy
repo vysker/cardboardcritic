@@ -3,6 +3,8 @@ package com.cardboardcritic.db.entity
 import com.cardboardcritic.db.DbUtil
 
 abstract class Entity {
+    int id
+
     List<String> fieldNames() {
         this.class.declaredFields
                 .findAll { !it.synthetic }
