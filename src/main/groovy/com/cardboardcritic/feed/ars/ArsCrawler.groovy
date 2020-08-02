@@ -1,6 +1,7 @@
 package com.cardboardcritic.feed.ars
 
-import com.cardboardcritic.domain.Review
+import com.cardboardcritic.db.entity.Outlet
+import com.cardboardcritic.domain.RawReview
 import groovy.json.JsonGenerator
 import groovy.xml.XmlSlurper
 
@@ -26,10 +27,11 @@ println links.join(', ')
 
 def today = LocalDate.now().format('yyyy-MM-dd')
 def ars = new ArsArticleScraper()
+def outlet = new Outlet(id: 1, name: 'Ars')
 
 links.eachWithIndex { link, index ->
-    Review review = ars.getReview(link)
-    review.outlet = 'Ars'
+    RawReview review = ars.getReview(link)
+    review.outlet = outlet
 
     def json = jsonGenerator.toJson(review)
     new File("reviews/ars_${today}_${index}.json") << json

@@ -51,8 +51,8 @@ abstract class Repository<T extends Entity> {
     T create(T object) {
         def fieldNames = object.fieldNames().collect { DbUtil.snake_case it }.join ','
         def placeholders = object.fieldNames().collect { DbUtil.snake_case ":$it" }.join ','
-        def query = 'insert into games (' + fieldNames + ') values (' + placeholders + ')'
-        sql.executeInsert query, object.declaredProperties()
+        def query = 'insert into ' + table + ' (' + fieldNames + ') values (' + placeholders + ')'
+        sql.executeInsert query, object.fieldsAsColumns()
         find object
     }
 
@@ -94,7 +94,7 @@ abstract class Repository<T extends Entity> {
     protected T mapRow(ResultSet rs, Map<Class, FieldMapper> fieldMappers, Map<String, Class> fieldsWithType) {
         def entity = entityInstance()
         fieldsWithType.each { fieldName, clazz ->
-            def s = DbUtil.snake_case fieldName
+            def s = DbUtil.snake_case(DbUtil.cleanFieldName(fieldName))
             entity."$fieldName" = fieldMappers[clazz](rs, s)
         }
         entity

@@ -1,13 +1,12 @@
 package com.cardboardcritic.feed.ars
 
-import com.cardboardcritic.domain.Review
+import com.cardboardcritic.domain.RawReview
 import com.cardboardcritic.feed.ArticleScraper
 import groovy.json.JsonSlurper
 import org.jsoup.nodes.Document
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
 //articleUrl = 'https://arstechnica.com/gaming/2017/04/gloomhaven-review-2017s-biggest-board-game-is-astoundingly-good'
 //articleUrl = 'https://arstechnica.com/gaming/2020/06/black-angel-review-run-your-own-tabletop-generation-ship/'
 //def htmlRaw = new URL(articleUrl).text
@@ -19,7 +18,7 @@ import java.time.format.DateTimeFormatter
 class ArsArticleScraper extends ArticleScraper {
 
     @Override
-    Review getReview(String articleUrl, Document document) {
+    RawReview getReview(String articleUrl, Document document) {
         def finalPageUrl = getFinalPageUrl(document)
         if (finalPageUrl != null && finalPageUrl != articleUrl)
             document = fetch(finalPageUrl)
@@ -33,15 +32,14 @@ class ArsArticleScraper extends ArticleScraper {
         def metaContent = pageMeta?.attr('content')
         def meta = new JsonSlurper().parseText(metaContent ?: '{}')
 
-        return new Review().with {
-            title = meta.title
-            date = meta.pub_date ? LocalDateTime.parse(meta.pub_date, DateTimeFormatter.ISO_DATE_TIME) : null
-            author = meta.author
-            paragraphs = articleContent
-            suggestedSummaries = articleContent?.takeRight(3) as List<String>
-            url = articleUrl
-            it
-        }
+        new RawReview(
+            title: meta.title,
+            date: meta.pub_date ? LocalDateTime.parse(meta.pub_date, DateTimeFormatter.ISO_DATE_TIME) : null,
+            critic: meta.author,
+            paragraphs: articleContent,
+            suggestedSummaries: articleContent?.takeRight(3) as List<String>,
+            url: articleUrl
+        )
     }
 
     String getFinalPageUrl(Document document) {

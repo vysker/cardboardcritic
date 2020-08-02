@@ -4,6 +4,11 @@ import com.cardboardcritic.db.entity.Review
 import groovy.sql.Sql
 
 class ReviewRepository extends Repository<Review> {
+    {
+        table = 'reviews'
+        type = Review
+    }
+
     ReviewRepository(Sql sql) {
         super(sql)
     }

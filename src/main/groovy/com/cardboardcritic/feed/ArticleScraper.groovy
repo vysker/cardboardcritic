@@ -1,20 +1,20 @@
 package com.cardboardcritic.feed
 
-import com.cardboardcritic.domain.Review
+import com.cardboardcritic.domain.RawReview
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 abstract class ArticleScraper {
     protected String articleUrl
 
-    abstract Review getReview(String articleUrl, Document document)
+    abstract RawReview getReview(String articleUrl, Document document)
 
-    Review getReview(String articleUrl) {
-        return getReview(articleUrl, fetch(articleUrl))
+    RawReview getReview(String articleUrl) {
+        getReview articleUrl, fetch(articleUrl)
     }
 
-    Review getReview(Document document) {
-        return getReview(null, document)
+    RawReview getReview(Document document) {
+        getReview null, document
     }
 
     Document fetch(String url) {
