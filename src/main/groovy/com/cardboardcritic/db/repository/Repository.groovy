@@ -1,15 +1,18 @@
 package com.cardboardcritic.db.repository
 
-
 import com.cardboardcritic.db.DbUtil
 import com.cardboardcritic.db.FieldMapper
-import com.cardboardcritic.db.entity.Entity
+import com.cardboardcritic.db.entity.meta.Column
+import com.cardboardcritic.db.entity.meta.Entity
+import groovy.sql.GroovyRowResult
 import groovy.sql.Sql
 
 import java.sql.ResultSet
 import java.time.LocalDate
 
 abstract class Repository<T extends Entity> {
+    private static final String ID_COLUMN = 'ID'
+
     Sql sql
     Class<T> type
     String table
@@ -49,11 +52,15 @@ abstract class Repository<T extends Entity> {
     }
 
     T create(T object) {
-        def fieldNames = object.fieldNames().collect { DbUtil.snake_case it }.join ','
-        def placeholders = object.fieldNames().collect { DbUtil.snake_case ":$it" }.join ','
-        def query = 'insert into ' + table + ' (' + fieldNames + ') values (' + placeholders + ')'
-        sql.executeInsert query, object.fieldsAsColumns()
-        find object
+        def fieldNames = object.persistentFieldNames().collect { DbUtil.snake_case it }.join ','
+        def placeholders = object.persistentFieldNames().collect { DbUtil.snake_case ":$it" }.join ','
+        def query = "insert into $table ($fieldNames) values ($placeholders)"
+        List<GroovyRowResult> generatedKeys = sql.executeInsert(object.valuesByColumn(), query, [ID_COLUMN])
+
+        if (!generatedKeys[0]) return object
+
+        def id = generatedKeys[0][ID_COLUMN] as Integer
+        find id
     }
 
     boolean delete(int id) {
@@ -64,9 +71,10 @@ abstract class Repository<T extends Entity> {
     protected abstract T entityInstance()
 
     protected Map<String, Class> fieldsWithType() {
-        type.declaredFields
-                .findAll { !it.synthetic }
-                .collectEntries [:], { field -> [(field.name), field.type] }
+        entityInstance().persistentFields()
+                .findAll { it.isAnnotationPresent Column }
+                .unique { it.name }
+                .collectEntries [:], { field -> [(DbUtil.cleanFieldName(field.name)), field.type] }
     }
 
     protected Map<Class, FieldMapper> fieldMappers() {
@@ -74,7 +82,11 @@ abstract class Repository<T extends Entity> {
             FieldMapper mapper
 
             switch (clazz) {
+                case boolean:
+                    mapper = { rs, column -> rs.getBoolean column } as FieldMapper
+                    break
                 case int:
+                case Integer:
                     mapper = { rs, column -> rs.getInt column } as FieldMapper
                     break
                 case String:
@@ -91,12 +103,12 @@ abstract class Repository<T extends Entity> {
         }
     }
 
-    protected T mapRow(ResultSet rs, Map<Class, FieldMapper> fieldMappers, Map<String, Class> fieldsWithType) {
-        def entity = entityInstance()
+    protected T mapRow(ResultSet resultSet, Map<Class, FieldMapper> fieldMappers, Map<String, Class> fieldsWithType) {
+        def map = [:]
         fieldsWithType.each { fieldName, clazz ->
-            def s = DbUtil.snake_case(DbUtil.cleanFieldName(fieldName))
-            entity."$fieldName" = fieldMappers[clazz](rs, s)
+            def column = DbUtil.snake_case(DbUtil.cleanFieldName(fieldName))
+            map[fieldName] = fieldMappers[clazz](resultSet, column)
         }
-        entity
+        map.asType type
     }
 }

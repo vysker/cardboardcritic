@@ -5,9 +5,8 @@ import com.cardboardcritic.db.entity.Game
 import com.cardboardcritic.db.repository.CriticRepository
 import com.cardboardcritic.db.repository.GameRepository
 import com.cardboardcritic.domain.EditedReview
-import com.cardboardcritic.domain.HasName
+import com.cardboardcritic.db.entity.meta.HasName
 import com.cardboardcritic.domain.RawReview
-import groovy.json.JsonGenerator
 import groovy.sql.Sql
 import groovy.swing.SwingBuilder
 import org.codehaus.groovy.runtime.InvokerHelper
@@ -21,7 +20,6 @@ import javax.swing.text.Document
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.List
 import java.util.function.Consumer
 import java.util.function.Supplier
@@ -53,26 +51,24 @@ class ReviewEditor {
     // GUI item refs
     private JComboBox gameSelect
     private JComboBox criticSelect
+    private JTextField gameSearchField
     private JTextField criticSearchField
 
+    private final Consumer<EditedReview> onSave
     private final ReviewModel model
-    private final JsonGenerator jsonGenerator
     private final GameRepository gameRepo
     private final CriticRepository criticRepo
     private List<Game> games
     private List<Critic> critics
 
-    ReviewEditor(RawReview review, Sql sql) {
+    ReviewEditor(RawReview review, Sql sql, Consumer<EditedReview> onSave) {
+        this.onSave = onSave
         this.gameRepo = new GameRepository(sql)
         this.criticRepo = new CriticRepository(sql)
         this.games = gameRepo.index()
         this.critics = criticRepo.index()
         this.model = new ReviewModel()
         copyProperties(review, model)
-
-        jsonGenerator = new JsonGenerator.Options()
-                .addConverter(LocalDateTime) { it.format(DateTimeFormatter.ISO_DATE_TIME) }
-                .build()
     }
 
     def start() {
@@ -95,13 +91,18 @@ class ReviewEditor {
                     }
                     vfiller()
                     hbox(*: formRowDefaults) {
-                        vbox(*: pct50) {
+                        vbox(*: pct33) {
                             label text: 'Game'
-                            def searchField = textField text: model.game, *: inputFieldDefaults
-                            searchField.document.addDocumentListener new DefaultDocumentListener(this::searchGame)
+                            gameSearchField = textField text: model.game, *: inputFieldDefaults
+                            gameSearchField.document.addDocumentListener new DefaultDocumentListener(this::searchGame)
                         }
                         hfiller()
-                        vbox(*: pct50) {
+                        vbox(*: pct33) {
+                            label text: 'Action'
+                            button text: 'Create game', actionPerformed: { createGame gameSearchField.text }, *: alignLeft
+                        }
+                        hfiller()
+                        vbox(*: pct33) {
                             label text: 'Game search result'
                             gameSelect = comboBox items: games.indices, *: alignLeft
                             gameSelect.renderer = new IndexedSelectRenderer({ games })
@@ -168,9 +169,12 @@ class ReviewEditor {
                                 model.suggestedSummaries.eachWithIndex { summary, index ->
                                     hbox(*: alignLeft) {
                                         scrollPane() {
-                                            editorPane text: model.suggestedSummaries[index], border: inputFieldPaddingBorder
+                                            def input = editorPane text: model.suggestedSummaries[index], border: inputFieldPaddingBorder
+                                            def setSummaryText = { model.suggestedSummaries[index] = input.text }
+                                            input.document.addDocumentListener new DefaultDocumentListener(setSummaryText)
                                         }
-                                        radioButton buttonGroup: group, actionCommand: index, selected: true, actionListener: { chooseSummary() }
+                                        def radio = radioButton buttonGroup: group, actionCommand: index, selected: true
+                                        radio.addActionListener this::chooseSummary
                                     }
                                     vfiller()
                                 }
@@ -195,10 +199,10 @@ class ReviewEditor {
 
     def save() {
         def summary = model.suggestedSummaries[model.chosenSummary]
-        def game = games[gameSelect.selectedIndex]
-        def critic = critics[criticSelect.selectedIndex]
+        def game = games[gameSelect.selectedItem as int]
+        def critic = critics[criticSelect.selectedItem as int]
 
-        def er = new EditedReview(
+        def editedReview = new EditedReview(
                 link: model.url,
                 date: LocalDateTime.parse(model.date),
                 outlet: model.outlet,
@@ -209,13 +213,33 @@ class ReviewEditor {
                 critic: critic
         )
 
-        def json = jsonGenerator.toJson(er)
-        println json
-//        new File("${er.game}_${er.critic}") << json
+        onSave.accept editedReview
     }
 
     def chooseSummary(ActionEvent e) {
         model.chosenSummary = e.getActionCommand().toInteger()
+    }
+
+    def createCritic(String name) {
+        name = name.strip()
+        if (!name) return
+
+        def critic = criticRepo.create new Critic(name: name)
+        critics = criticRepo.index()
+        searchCritic name
+        criticSelect.selectedItem = critics.findIndexOf { it.id == critic.id }
+        criticSelect.updateUI()
+    }
+
+    def createGame(String name) {
+        name = name.strip()
+        if (!name) return
+
+        def game = gameRepo.create new Game(name: name)
+        games = gameRepo.index()
+        searchGame name
+        gameSelect.selectedItem = critics.findIndexOf { it.id == game.id }
+        gameSelect.updateUI()
     }
 
     def searchGame(String query) {
@@ -226,25 +250,18 @@ class ReviewEditor {
         searchByName query, critics, criticSelect
     }
 
-    def createCritic(String name) {
-        name = name.strip()
-        if (!name) return
-
-        criticRepo.create new Critic(name: name)
-        critics = criticRepo.index()
-        searchCritic name
-    }
-
     static def searchByName(String query, List<HasName> items, JComboBox selectBox) {
         query = query.strip()
         selectBox.removeAllItems()
 
-        def matches
+        List<Integer> matches
 
         if (query) matches = items.findIndexValues { it.name.containsIgnoreCase query }
         else matches = items.indices
 
         matches.each { selectBox.addItem it }
+        selectBox.selectedItem = matches ? matches.first() : 0
+        selectBox.updateUI()
     }
 
     static def copyProperties(Object source, Object target) {
