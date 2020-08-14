@@ -1,20 +1,10 @@
 package com.cardboardcritic.db.repository
 
 import com.cardboardcritic.db.entity.Review
-import groovy.sql.Sql
+import io.quarkus.hibernate.orm.panache.PanacheRepository
 
-class ReviewRepository extends Repository<Review> {
-    {
-        table = 'reviews'
-        type = Review
-    }
+import javax.enterprise.context.ApplicationScoped
 
-    ReviewRepository(Sql sql) {
-        super(sql)
-    }
-
-    @Override
-    protected Review entityInstance() {
-        new Review()
-    }
+@ApplicationScoped
+class ReviewRepository implements PanacheRepository<Review> {
 }

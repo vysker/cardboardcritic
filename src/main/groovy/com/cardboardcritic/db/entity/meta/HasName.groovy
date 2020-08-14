@@ -1,5 +1,6 @@
 package com.cardboardcritic.db.entity.meta
 
-trait HasName {
-    @Column String name
+interface HasName {
+    String getName()
+    void setName(String name)
 }

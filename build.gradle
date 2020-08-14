@@ -1,6 +1,7 @@
 plugins {
     id 'groovy'
     id 'io.quarkus'
+    id 'org.kordamp.gradle.jandex' version '0.6.0'
 }
 
 group = 'com.cardboardcritic'
@@ -17,13 +18,16 @@ dependencies {
     implementation 'io.quarkus:quarkus-qute'
     implementation 'io.quarkus:quarkus-resteasy'
     implementation 'io.quarkus:quarkus-resteasy-qute'
+    implementation 'io.quarkus:quarkus-hibernate-orm-panache'
+    implementation 'io.quarkus:quarkus-flyway'
+//    runtimeOnly 'io.quarkus:quarkus-jdbc-postgresql'
+    runtimeOnly 'io.quarkus:quarkus-jdbc-h2'
 
     implementation 'org.codehaus.groovy:groovy-all:3.0.4'
-    runtime 'com.h2database:h2:1.4.197' // Debug
+    runtimeOnly 'org.codehaus.groovy:groovy-all:3.0.4'
+    runtimeOnly 'com.h2database:h2:1.4.197' // Debug
     compile 'org.jsoup:jsoup:1.13.1'
     compile 'org.postgresql:postgresql:42.2.14'
-    compile 'javax.servlet:javax.servlet-api:3.1.0'
-//    compile 'org.apache.tomcat.embed:tomcat-embed-core:8.5.15' // v9.x.x is broken
 
     testCompile 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
     testRuntime 'com.h2database:h2:1.4.197'

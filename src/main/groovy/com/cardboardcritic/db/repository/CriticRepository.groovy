@@ -1,20 +1,10 @@
 package com.cardboardcritic.db.repository
 
 import com.cardboardcritic.db.entity.Critic
-import groovy.sql.Sql
+import io.quarkus.hibernate.orm.panache.PanacheRepository
 
-class CriticRepository extends Repository<Critic> {
-    {
-        table = 'critics'
-        type = Critic
-    }
+import javax.enterprise.context.ApplicationScoped
 
-    CriticRepository(Sql sql) {
-        super(sql)
-    }
-
-    @Override
-    protected Critic entityInstance() {
-        new Critic()
-    }
+@ApplicationScoped
+class CriticRepository implements PanacheRepository<Critic> {
 }

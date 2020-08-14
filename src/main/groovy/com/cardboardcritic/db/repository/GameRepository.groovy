@@ -1,20 +1,10 @@
 package com.cardboardcritic.db.repository
 
 import com.cardboardcritic.db.entity.Game
-import groovy.sql.Sql
+import io.quarkus.hibernate.orm.panache.PanacheRepository
 
-class GameRepository extends Repository<Game> {
-    {
-        table = 'games'
-        type = Game
-    }
+import javax.enterprise.context.ApplicationScoped
 
-    GameRepository(Sql sql) {
-        super(sql)
-    }
-
-    @Override
-    Game entityInstance() {
-        new Game()
-    }
+@ApplicationScoped
+class GameRepository implements PanacheRepository<Game> {
 }

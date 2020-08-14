@@ -1,4 +1,4 @@
-create table games (
+create table game (
   id serial primary key,
   name text,
   short_description text,
@@ -9,22 +9,22 @@ create table games (
   recommended int
 );
 
-create table critics (
+create table critic (
   id serial primary key,
   name text
 );
 
-create table outlets (
+create table outlet (
   id serial primary key,
   name text,
   website text
 );
 
-create table reviews (
+create table review (
   id serial primary key,
-  game_id int references games(id),
-  critic_id int references critics(id),
-  outlet_id int references outlets(id),
+  game_id int references game(id),
+  critic_id int references critic(id),
+  outlet_id int references outlet(id),
   summary text,
   score int,
   recommended boolean,

@@ -26,22 +26,19 @@ Sql sql = dbConfig.connect()
 String schema = this.class.getResource('/schema.sql').text
 sql.execute schema
 
-def gameRepo = new GameRepository(sql)
-def criticRepo = new CriticRepository(sql)
-def outletRepo = new OutletRepository(sql)
-def reviewRepo = new ReviewRepository(sql)
-games.each { gameRepo.create it }
-critics.each { criticRepo.create it }
-outlets.each { outletRepo.create it }
-
-println sql.query('select * from games') { it.next(); println 'a: ' + it.getInt('id') }
-println 'index: ' + gameRepo.index()
+def gameRepo = new GameRepository()
+def criticRepo = new CriticRepository()
+def outletRepo = new OutletRepository()
+def reviewRepo = new ReviewRepository()
+games.each { gameRepo.persist it }
+critics.each { criticRepo.persist it }
+outlets.each { outletRepo.persist it }
 
 def reviewRaw = this.class.getResource('/ars-review.json').text
 def reviewJson = new JsonSlurper().parseText(reviewRaw) as Map
 reviewJson.date = LocalDateTime.parse(reviewJson.date as String, DateTimeFormatter.ISO_DATE_TIME)
 def review = new RawReview(reviewJson)
-review.outlet = outletRepo.find review.outlet.id
+review.outlet = outletRepo.findById review.outlet.id
 
 def onSave = { EditedReview editedReview ->
     def r = new Review(
@@ -54,7 +51,7 @@ def onSave = { EditedReview editedReview ->
             recommended: editedReview.recommended
     )
     println "r: $r"
-    reviewRepo.create r
+    reviewRepo.persist r
 
 //    def jsonGenerator = new JsonGenerator.Options()
 //            .addConverter(LocalDateTime) { it.format(DateTimeFormatter.ISO_DATE_TIME) }

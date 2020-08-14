@@ -1,5 +1,6 @@
 package com.cardboardcritic.web
 
+import com.cardboardcritic.db.repository.GameRepository
 import io.quarkus.qute.Template
 import io.quarkus.qute.TemplateInstance
 
@@ -15,6 +16,9 @@ class HomeResource {
     @Inject
     Template test
 
+    @Inject
+    GameRepository gameRepo
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     TemplateInstance templatedHello() {
@@ -25,6 +29,6 @@ class HomeResource {
     @Path('hi')
     @Produces(MediaType.TEXT_PLAIN)
     String hello() {
-        'Hi'
+        gameRepo.findAll().list()*.name
     }
 }

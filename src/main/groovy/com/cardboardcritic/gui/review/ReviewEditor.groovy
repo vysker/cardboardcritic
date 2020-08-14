@@ -73,7 +73,7 @@ class ReviewEditor {
 
     def start() {
         new SwingBuilder().edt {
-            frame(title: 'Scrape',
+            frame(title: 'Review Editor',
                     size: new Dimension(FRAME_WIDTH, FRAME_HEIGHT),
                     defaultCloseOperation: WC.EXIT_ON_CLOSE,
                     locationRelativeTo: null, // center frame on screen

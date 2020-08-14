@@ -1,11 +1,18 @@
 package com.cardboardcritic.db.entity
 
-import com.cardboardcritic.db.entity.meta.Entity
 import com.cardboardcritic.db.entity.meta.HasName
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase
+
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 
 @ToString(includeNames = true)
 @EqualsAndHashCode
-class Critic extends Entity implements HasName {
+@Entity
+class Critic extends PanacheEntityBase implements HasName {
+    @Id @GeneratedValue Long id
+    String name
 }

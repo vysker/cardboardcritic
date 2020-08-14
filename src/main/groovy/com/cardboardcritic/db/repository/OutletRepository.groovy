@@ -1,20 +1,10 @@
 package com.cardboardcritic.db.repository
 
 import com.cardboardcritic.db.entity.Outlet
-import groovy.sql.Sql
+import io.quarkus.hibernate.orm.panache.PanacheRepository
 
-class OutletRepository extends Repository<Outlet> {
-    {
-        table = 'outlets'
-        type = Outlet
-    }
+import javax.enterprise.context.ApplicationScoped
 
-    OutletRepository(Sql sql) {
-        super(sql)
-    }
-
-    @Override
-    protected Outlet entityInstance() {
-        new Outlet()
-    }
+@ApplicationScoped
+class OutletRepository implements PanacheRepository<Outlet> {
 }
