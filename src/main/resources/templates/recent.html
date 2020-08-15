@@ -1,0 +1,32 @@
+{#include base}
+{#main}
+<main>
+  <article>
+    <header></header>
+    <div class="content">
+      <ul class="card-list card-list-compact">
+        {#for game in games}
+        <li>
+          <div class="game card">
+            <!--  <div class="card-before"></div>-->
+            <div class="card-header">
+              <h4 class="card-title">{game.name}</h4>
+              <span class="card-subtitle">{game.releaseDate}</span>
+            </div>
+            <div class="card-content game-content">
+              {game.shortDescription}
+              <a href="{globals.baseUrl}game/{game.slug}" class="game-link">Read reviews</a>
+            </div>
+            <div class="card-after">
+              <span>{game.score}</span>
+              <span>{game.recommended}%</span>
+            </div>
+          </div>
+        </li>
+        {/for}
+      </ul>
+    </div>
+  </article>
+</main>
+{/main}
+{/include}

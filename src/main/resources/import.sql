@@ -1,8 +1,8 @@
 insert into game (
-	id, name, short_description, description, designer, release_date, score, recommended)
+	id, name, short_description, description, designer, release_date, score, recommended, slug)
 	values
-	(1, 'Anachrony', 'Not long description', 'Elaborate description', 'David Turczi', '2017-01-01', 80, 70),
-	(2, 'Gloomhaven', 'Very brief', 'Quite long', 'Isaac Childres', '2017-01-01', 89, 80)
+	(1, 'Anachrony', 'Not long description', 'Elaborate description', 'David Turczi', '2017-01-01', 80, 70, 'anachrony'),
+	(2, 'Gloomhaven', 'Very brief', 'Quite long', 'Isaac Childres', '2017-01-01', 89, 80, 'gloomhaven')
 	;
 
 insert into critic (

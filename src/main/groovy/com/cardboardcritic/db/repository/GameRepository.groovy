@@ -7,4 +7,7 @@ import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
 class GameRepository implements PanacheRepository<Game> {
+    Game findBySlug(String slug) {
+        find('slug', slug).firstResult()
+    }
 }

@@ -1,42 +1,44 @@
 package com.cardboardcritic.web
 
-import com.cardboardcritic.db.repository.GameRepository
 import com.cardboardcritic.web.template.TemplateHelper
-import com.cardboardcritic.web.template.data.GameData
+import com.cardboardcritic.web.template.data.TemplateData
 import io.quarkus.qute.Template
 import io.quarkus.qute.TemplateInstance
 
+import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 import javax.ws.rs.GET
 import javax.ws.rs.Path
 import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 
-@Path('test')
-class HomeResource {
+@ApplicationScoped
+@Path('/')
+class OtherResource {
 
     @Inject
-    Template base
+    Template home
 
     @Inject
-    GameRepository gameRepo
+    Template about
 
     @Inject
     TemplateHelper templateHelper
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    TemplateInstance templatedHello() {
-        def data = new GameData()
-        data.game = gameRepo.findAll().list().first()
+    TemplateInstance home() {
+        def data = new TemplateData()
         templateHelper.withGlobals data
-        base.data data
+        home.data data
     }
 
     @GET
-    @Path('hi')
-    @Produces(MediaType.TEXT_PLAIN)
-    String hello() {
-        gameRepo.findAll().list()*.name
+    @Path('/about')
+    @Produces(MediaType.TEXT_HTML)
+    TemplateInstance about() {
+        def data = new TemplateData()
+        templateHelper.withGlobals data
+        about.data data
     }
 }

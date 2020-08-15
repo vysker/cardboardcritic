@@ -6,7 +6,8 @@ create table game (
   designer text,
   release_date date,
   score int,
-  recommended int
+  recommended int,
+  slug text
 );
 
 create table critic (

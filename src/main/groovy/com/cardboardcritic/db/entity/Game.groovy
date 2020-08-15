@@ -16,8 +16,9 @@ import java.time.LocalDate
 @Entity
 class Game extends PanacheEntityBase implements HasName {
     @Id @GeneratedValue Long id
+
     int score, recommended
-    String name, shortDescription, description, designer
+    String name, shortDescription, description, designer, slug
     LocalDate releaseDate
 
     @OneToMany(mappedBy = 'game')

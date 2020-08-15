@@ -1,7 +1,28 @@
+{#include base}
+{#main}
 <main class="game">
   <article>
     <header>
       <h1>{game.name or 'Untitled game'}</h1>
+
+      <div class="game-details">
+        <div class="detail">
+          <span class="detail-name">Release date</span>
+          <span class="detail-content date">{game.releaseDate or 'Unknown release date'}</span>
+        </div>
+        <div class="detail">
+          <span class="detail-name">Designer</span>
+          <span class="detail-content designer">{game.designer}</span>
+        </div>
+        <div class="detail">
+          <span class="detail-name">Short description</span>
+          <span class="detail-content short-description">{game.shortDescription}</span>
+        </div>
+        <!--        <div class="detail">-->
+        <!--          <span class="detail-name">Full description</span>-->
+        <!--          <div class="description">{!game.description!}</div>-->
+        <!--        </div>-->
+      </div>
 
       <div class="stats">
         <div class="stat score-average">
@@ -58,30 +79,12 @@
           </div>
         </div>
       </div>
-
-      <div class="game-details">
-        <div class="detail">
-          <span class="detail-name">Release date</span>
-          <span class="detail-content date">{game.releaseDate or 'Unknown release date'}</span>
-        </div>
-        <div class="detail">
-          <span class="detail-name">Designer</span>
-          <span class="detail-content designer">{game.designer}</span>
-        </div>
-        <div class="detail">
-          <span class="detail-name">Short description</span>
-          <span class="detail-content short-description">{game.shortDescription}</span>
-        </div>
-<!--        <div class="detail">-->
-<!--          <span class="detail-name">Full description</span>-->
-<!--          <div class="description">{!game.description!}</div>-->
-<!--        </div>-->
-      </div>
     </header>
 
     <div class="content">
       <div class="reviews">
-        <ul class="card-list">
+        <h3>Critic Reviews</h3>
+        <ul class="card-list card-list-compact">
           {#for review in game.reviews}
             <li>
             {#include review}
@@ -95,3 +98,5 @@
 
   </article>
 </main>
+{/main}
+{/include}
