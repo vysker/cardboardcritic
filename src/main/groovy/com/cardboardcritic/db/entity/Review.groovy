@@ -7,13 +7,27 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
 
-@ToString(includeNames = true)
+@ToString(includeNames = true, excludes = ['game', 'critic', 'outlet'])
 @EqualsAndHashCode
 @Entity
 class Review extends PanacheEntityBase {
     @Id @GeneratedValue Long id
-    int gameId, criticId, outletId
+
+    @ManyToOne
+    @JoinColumn(name = 'game_id', referencedColumnName = 'id')
+    Game game
+
+    @ManyToOne
+    @JoinColumn(name = 'critic_id', referencedColumnName = 'id')
+    Critic critic
+
+    @ManyToOne
+    @JoinColumn(name = 'outlet_id', referencedColumnName = 'id')
+    Outlet outlet
+
     int score
     String summary, link
     boolean recommended

@@ -1,0 +1,97 @@
+<main class="game">
+  <article>
+    <header>
+      <h1>{game.name or 'Untitled game'}</h1>
+
+      <div class="stats">
+        <div class="stat score-average">
+          <div class="hex">
+            <div class="hex-side hex-left"></div>
+            <div class="hex-center">
+              <span class="average-score-points">{game.score}</span>
+            </div>
+            <div class="hex-side hex-right"></div>
+          </div>
+          <div class="stat-info">
+            <span class="stat-description" aria-describedby="average-score-tooltip">average score
+              <button type="button" aria-label="more-info" onclick="toggleTooltip('#average-score-tooltip')">i</button>
+            </span>
+            <span class="stat-description-tooltip" role="tooltip" aria-hidden="true" id="average-score-tooltip">
+              Average of all critic scores. All scores are normalized to a 100-based point system before averaging. Only
+              reviews with scores are taken into account.</span>
+          </div>
+        </div>
+        <div class="stat score-median">
+          <div class="hex">
+            <div class="hex-side hex-left"></div>
+            <div class="hex-center">
+              <span class="median-score-points">{game.score}</span>
+            </div>
+            <div class="hex-side hex-right"></div>
+          </div>
+          <div class="stat-info">
+            <span class="stat-description" aria-describedby="median-score-tooltip">median score
+              <button type="button" aria-label="more-info" onclick="toggleTooltip('#median-score-tooltip')">i</button>
+            </span>
+            <span class="stat-description-tooltip" role="tooltip" aria-hidden="true" id="median-score-tooltip">
+              Median of all critic scores. Median is the 'middle' or 'typical' score.
+              All scores are normalized to a 100-based point system beforehand. Only reviews with scores are taken into
+              account.</span>
+          </div>
+        </div>
+        <div class="stat recommended">
+          <div class="hex">
+            <div class="hex-side hex-left"></div>
+            <div class="hex-center">
+              <span class="recommended-percent">{game.recommended}%</span>
+            </div>
+            <div class="hex-side hex-right"></div>
+          </div>
+          <div class="stat-info">
+          <span class="stat-description" aria-describedby="recommends-tooltip">recommends
+            <button type="button" aria-label="more-info" onclick="toggleTooltip('#recommends-tooltip')">i</button>
+          </span>
+            <span class="stat-description-tooltip" role="tooltip" aria-hidden="true" id="recommends-tooltip">
+              Percentage of critics that recommends the game. If a review does not specify a 'recommended' status, then
+              the outlet's median score (at that moment in time) is used to determine whether the game is recommended or
+              not.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-details">
+        <div class="detail">
+          <span class="detail-name">Release date</span>
+          <span class="detail-content date">{game.releaseDate or 'Unknown release date'}</span>
+        </div>
+        <div class="detail">
+          <span class="detail-name">Designer</span>
+          <span class="detail-content designer">{game.designer}</span>
+        </div>
+        <div class="detail">
+          <span class="detail-name">Short description</span>
+          <span class="detail-content short-description">{game.shortDescription}</span>
+        </div>
+<!--        <div class="detail">-->
+<!--          <span class="detail-name">Full description</span>-->
+<!--          <div class="description">{!game.description!}</div>-->
+<!--        </div>-->
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="reviews">
+        <ul class="card-list">
+          {#for review in game.reviews}
+            <li>
+            {#include review}
+              {#review}{review}{/review}
+            {/include}
+            </li>
+          {/for}
+        </ul>
+      </div>
+    </div>
+
+  </article>
+</main>

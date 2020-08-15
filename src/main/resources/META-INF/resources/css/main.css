@@ -1,5 +1,152 @@
-html, body {
+* {
+  box-sizing: border-box;
+  font-family: Palatino, Georgia, Times, serif;
+  --main-width: 800px;
+  --main-margin-vertical: 5rem;
+  --main-padding-horizontal: auto;
+  --background: #f3f3f3;
+  --line-height: 1.5rem;
+  --nav: #f7f7f7;
+  --card: #f7f7f7;
+  --font: #191919;
+  --divider: rgba(0, 0, 0, 0.1);
+}
+
+body {
+  background-color: var(--background);
+  margin: 0;
+}
+
+html, body, h1, h2, h3, h4, h5, h6, p {
+  color: var(--font);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.2rem; }
+
+p {
+  font-size: 1.05rem;
+  line-height: var(--line-height);
+}
+
+main {
+  width: var(--main-width);
+  margin: var(--main-margin-vertical) auto;
+  padding: 0 var(--main-padding-horizontal);
+}
+
+main li {
+  margin: .3rem 0;
+  line-height: var(--line-height);
+}
+
+.nav-container {
+  width: 100%;
+  background-color: var(--nav);
+  border-bottom: 3px solid var(--divider);
+}
+
+nav {
+  display: flex;
+  width: var(--main-width);
+  height: 4rem;
+  line-height: 4rem;
+  margin: 0 auto;
+  padding: 0 var(--main-padding-horizontal);
+}
+
+nav a.site-title {
+  font-family: Georgia, serif;
+  font-size: 2rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--font);
+}
+
+nav div {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+nav ul {
+  list-style: none;
   margin: 0;
   padding: 0;
-  background: snow;
+}
+
+nav ul li {
+  display: inline-block;
+  margin: 0 .5rem;
+}
+nav ul li:last-child {
+  margin-right: 0;
+}
+
+nav ul li a {
+  display: block;
+  text-decoration: none;
+  color: var(--font);
+}
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+ul.card-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.card-list .card {
+  min-height: 4rem;
+  background-color: var(--card);
+  border-bottom: 3px solid var(--divider);
+  padding: 1rem;
+}
+.card-list .card a {
+  color: var(--font);
+  text-decoration: none;
+}
+.card-list .card a:hover > h3 {
+  text-decoration: underline;
+}
+
+.card-list .card h3 {
+  margin: 0;
+}
+
+.card-list .card p {
+  margin-bottom: 0;
+}
+
+@media only screen and (max-width: 1100px) {
+  * {
+    --main-width: 100%;
+    --main-padding-horizontal: 2rem;
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  nav {
+    flex-direction: column;
+    height: 8rem;
+  }
+
+  nav a.site-title {
+    margin: 0 auto;
+  }
+
+  nav div {
+    justify-content: space-around;
+  }
+
+  /* nav ul li {
+    height: 2rem;
+    line-height: 2rem;
+    padding: 0 0.8rem;
+    background-color: #efefef;
+    border-radius: 0.2rem;
+  } */
 }

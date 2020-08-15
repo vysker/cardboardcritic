@@ -8,11 +8,16 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.OneToMany
 
 @ToString(includeNames = true)
 @EqualsAndHashCode
 @Entity
 class Critic extends PanacheEntityBase implements HasName {
     @Id @GeneratedValue Long id
+
     String name
+
+    @OneToMany(mappedBy = 'critic')
+    List<Review> reviews
 }

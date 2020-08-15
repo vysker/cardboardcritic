@@ -8,6 +8,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.OneToMany
 import java.time.LocalDate
 
 @ToString(includeNames = true)
@@ -18,4 +19,7 @@ class Game extends PanacheEntityBase implements HasName {
     int score, recommended
     String name, shortDescription, description, designer
     LocalDate releaseDate
+
+    @OneToMany(mappedBy = 'game')
+    List<Review> reviews
 }

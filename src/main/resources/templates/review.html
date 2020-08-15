@@ -1,0 +1,15 @@
+<div class="review card">
+<!--  <div class="card-before"></div>-->
+  <div class="card-header">
+    <h2 class="card-title">{review.outlet.name}</h2>
+    <span class="card-subtitle">{review.critic.name}</span>
+  </div>
+  <div class="card-content review-content">
+    {review.summary}
+    <a href="{review.link}" target="_blank" class="review-link">Read full review</a>
+  </div>
+  <div class="card-after">
+    <span>{review.score}</span>
+    <span>{review.recommended ? 'Play' : 'Nay'}</span>
+  </div>
+</div>

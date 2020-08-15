@@ -1,6 +1,8 @@
 package com.cardboardcritic.web
 
 import com.cardboardcritic.db.repository.GameRepository
+import com.cardboardcritic.web.template.TemplateHelper
+import com.cardboardcritic.web.template.data.GameData
 import io.quarkus.qute.Template
 import io.quarkus.qute.TemplateInstance
 
@@ -14,15 +16,21 @@ import javax.ws.rs.core.MediaType
 class HomeResource {
 
     @Inject
-    Template test
+    Template base
 
     @Inject
     GameRepository gameRepo
 
+    @Inject
+    TemplateHelper templateHelper
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     TemplateInstance templatedHello() {
-        test.data 'name', 'abc'
+        def data = new GameData()
+        data.game = gameRepo.findAll().list().first()
+        templateHelper.withGlobals data
+        base.data data
     }
 
     @GET

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="widget=device-width, initial-scale=1">
+  <title>{globals.siteTitle}</title>
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/game.css">
+</head>
+<body>
+<div class="nav-container">
+  {#include menu}{/include}
+</div>
+{! Disabled
+  {#include main}
+    {#title}{game.name or 'Regular old title'}{/title}
+    {#date}{game.releaseDate or 'Some date'}{/date}
+    {#content}{game.shortDescription or 'Whatever content'}{/content}
+  {/include}
+!}
+{#include game}
+  {#game}{game}{/game}
+{/include}
+
+<!-- footer -->
+<script type="text/javascript">
+  function toggleTooltip(targetSelector) {
+    var target = document.querySelector(targetSelector);
+    var isHidden = target.getAttribute('aria-hidden') == 'true';
+    target.setAttribute('aria-hidden', !isHidden);
+  }
+</script>
+</body>
+</html>
