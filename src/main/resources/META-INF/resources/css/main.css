@@ -34,6 +34,13 @@ p {
   line-height: var(--line-height);
 }
 
+hr {
+  margin: 2rem 0;
+  border: 1px solid lightgrey;
+}
+
+/* main content */
+
 main {
   width: var(--main-width);
   margin: var(--main-margin-vertical) auto;
@@ -99,6 +106,55 @@ nav ul li a {
 }
 nav ul li a:hover {
   text-decoration: underline;
+}
+
+/* form */
+
+label {
+  margin-bottom: .8rem;
+  text-transform: uppercase;
+  font-size: .8rem;
+  font-weight: bold;
+  font-family: 'Open Sans';
+}
+input[type="radio"] + label {
+  margin-left: .5rem;
+  font-size: 1rem;
+  text-transform: none;
+  font-weight: normal;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  padding: 1rem;
+  font-size: .9rem;
+  font-family: 'Open Sans';
+  background: lightgrey;
+  border: none;
+  border-radius: 5px;
+}
+
+*[disabled] {
+  cursor: not-allowed;
+}
+
+button[type="submit"] {
+  padding: .7rem 1.4rem;
+  text-transform: uppercase;
+  font-family: 'Open Sans';
+  /* font-weight: bold; */
+  color: white;
+  background: rebeccapurple;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
 }
 
 /* card list */

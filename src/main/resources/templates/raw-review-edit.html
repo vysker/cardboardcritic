@@ -1,0 +1,65 @@
+{#include base}
+{#main}
+<main class="game">
+  <article>
+    <header>
+      <h1>Raw Review Edit</h1>
+    </header>
+    <div class="content">
+      <form action="/review" method="post">
+        <div class="form-row">
+          <label for="game">Game</label>
+          <input type="text" name="game" id="game" placeholder="Game name" value="{game or ''}" autofocus>
+        </div>
+        <div class="form-row">
+          <label for="critic">Critic</label>
+          <input type="text" name="critic" id="critic" placeholder="Critic name" value="{critic or ''}"/>
+        </div>
+        <div class="form-row">
+          <label for="outlet">Outlet</label>
+          <input type="text" name="outlet" id="outlet" placeholder="News outlet" value="{outlet or ''}"/>
+        </div>
+        <div class="form-row">
+          <div>
+            <input type="radio" name="recommended" id="recommended1" value="true" checked/>
+            <label for="recommended1">Recommended</label>
+          </div>
+          <div>
+            <input type="radio" name="recommended" id="recommended2" value="false"/>
+            <label for="recommended2">Not recommended</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="score">Score</label>
+          <input type="number" name="score" id="score" placeholder="News score" value="{score or ''}"
+                 min="0" max="100"/>
+        </div>
+        <div class="form-row">
+          <label for="summary">Summary</label>
+          <textarea name="summary" id="summary" placeholder="Review summary">{summary or ''}</textarea>
+        </div>
+
+        <hr>
+
+        <div class="form-row">
+          <label for="title">Review title</label>
+          <input type="text" name="title" id="title" placeholder="Review title" value="{title or ''}" disabled/>
+        </div>
+        <div class="form-row">
+          <label for="date">Review publish date</label>
+          <input type="text" name="date" id="date" placeholder="Review publish date" value="{date or ''}" disabled/>
+        </div>
+        <div class="form-row">
+          <label for="raw-review-content">Content</label>
+          <textarea name="content" id="raw-review-content"
+                    placeholder="It appears there was no review content to be found" disabled>{content or ''}</textarea>
+        </div>
+        <div class="form-row">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </article>
+</main>
+{/main}
+{/include}

@@ -1,7 +1,6 @@
 package com.cardboardcritic.web
 
 import com.cardboardcritic.db.repository.GameRepository
-import com.cardboardcritic.web.template.TemplateHelper
 import com.cardboardcritic.web.template.data.RecentData
 import io.quarkus.qute.Template
 import io.quarkus.qute.TemplateInstance
@@ -21,16 +20,12 @@ class BrowseResource {
     @Inject
     GameRepository gameRepo
 
-    @Inject
-    TemplateHelper templateHelper
-
     @GET
     @Path('/recent')
     @Produces(MediaType.TEXT_HTML)
     TemplateInstance recent() {
         def data = new RecentData()
         data.games = gameRepo.findAll().list()
-        templateHelper.withGlobals data
         recent.data data
     }
 }

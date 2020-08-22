@@ -1,6 +1,5 @@
 package com.cardboardcritic.web
 
-import com.cardboardcritic.web.template.TemplateHelper
 import com.cardboardcritic.web.template.data.TemplateData
 import io.quarkus.qute.Template
 import io.quarkus.qute.TemplateInstance
@@ -22,14 +21,10 @@ class OtherResource {
     @Inject
     Template about
 
-    @Inject
-    TemplateHelper templateHelper
-
     @GET
     @Produces(MediaType.TEXT_HTML)
     TemplateInstance home() {
         def data = new TemplateData()
-        templateHelper.withGlobals data
         home.data data
     }
 
@@ -38,7 +33,6 @@ class OtherResource {
     @Produces(MediaType.TEXT_HTML)
     TemplateInstance about() {
         def data = new TemplateData()
-        templateHelper.withGlobals data
         about.data data
     }
 }

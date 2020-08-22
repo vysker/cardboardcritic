@@ -1,7 +1,6 @@
 package com.cardboardcritic.web
 
 import com.cardboardcritic.db.repository.GameRepository
-import com.cardboardcritic.web.template.TemplateHelper
 import com.cardboardcritic.web.template.data.GameData
 import io.quarkus.qute.Template
 import io.quarkus.qute.TemplateInstance
@@ -22,9 +21,6 @@ class GameResource {
     @Inject
     GameRepository gameRepo
 
-    @Inject
-    TemplateHelper templateHelper
-
     @GET
     @Path('/{slug}')
     @Produces(MediaType.TEXT_HTML)
@@ -32,7 +28,6 @@ class GameResource {
         def data = new GameData()
         data.game = gameRepo.findBySlug slug
         data.game.reviews.sort { a, b -> b.score <=> a.score } // desc
-        templateHelper.withGlobals data
         game.data data
     }
 }

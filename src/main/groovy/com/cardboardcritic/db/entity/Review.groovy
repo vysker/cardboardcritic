@@ -6,6 +6,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
@@ -14,7 +15,7 @@ import javax.persistence.ManyToOne
 @EqualsAndHashCode
 @Entity
 class Review extends PanacheEntityBase {
-    @Id @GeneratedValue Long id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id
 
     @ManyToOne
     @JoinColumn(name = 'game_id', referencedColumnName = 'id')
