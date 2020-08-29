@@ -1,6 +1,6 @@
 {#include base}
 {#main}
-<main class="game">
+<main>
   <article>
     <header>
       <h1>Raw Review Edit</h1>
@@ -8,12 +8,16 @@
     <div class="content">
       <form action="/review" method="post">
         <div class="form-row">
+          <label for="url">URL</label>
+          <input type="text" name="url" id="url" placeholder="Link to article" value="{url or ''}" autofocus>
+        </div>
+        <div class="form-row">
           <label for="game">Game</label>
-          <input type="text" name="game" id="game" placeholder="Game name" value="{game or ''}" autofocus>
+          <input type="text" name="game" id="game" placeholder="Game under review" value="{game or ''}" autofocus>
         </div>
         <div class="form-row">
           <label for="critic">Critic</label>
-          <input type="text" name="critic" id="critic" placeholder="Critic name" value="{critic or ''}"/>
+          <input type="text" name="critic" id="critic" placeholder="Article author" value="{critic or ''}"/>
         </div>
         <div class="form-row">
           <label for="outlet">Outlet</label>
@@ -51,9 +55,12 @@
         </div>
         <div class="form-row">
           <label for="raw-review-content">Content</label>
-          <textarea name="content" id="raw-review-content"
+          <textarea name="content" id="raw-review-content" rows="10"
                     placeholder="It appears there was no review content to be found" disabled>{content or ''}</textarea>
         </div>
+
+        <input type="hidden" name="id" id="id" value="{id or ''}" disabled/>
+
         <div class="form-row">
           <button type="submit">Submit</button>
         </div>

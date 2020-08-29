@@ -1,9 +1,9 @@
 package com.cardboardcritic.web.template.data
 
-import com.cardboardcritic.db.entity.Game
+import com.cardboardcritic.db.entity.RawReview
 import groovy.transform.ToString
 
 @ToString(includeNames = true)
-class GameData {
-    Game game
+class RawReviewListData {
+    List<RawReview> rawReviews
 }

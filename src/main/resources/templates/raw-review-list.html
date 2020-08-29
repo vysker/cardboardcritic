@@ -1,0 +1,33 @@
+{#include base}
+{#main}
+<main>
+  <article>
+    <header>
+      <h1>Raw Reviews</h1>
+    </header>
+    <div class="content">
+      <ul class="card-list card-list-compact">
+        {#for review in rawReviews}
+        <li>
+          <div class="review card">
+            <!--  <div class="card-before"></div>-->
+            <div class="card-header">
+              <h4 class="card-title">{review.outlet}</h4>
+              <span class="card-subtitle">{review.critic}</span>
+            </div>
+            <div class="card-content review-content">
+              {review.title}
+              <a href="/raw/{review.id}" class="raw-review-edit-link">Edit</a>
+            </div>
+            <div class="card-after">
+              <span>{review.processed}</span>
+            </div>
+          </div>
+        </li>
+        {/for}
+      </ul>
+    </div>
+  </article>
+</main>
+{/main}
+{/include}

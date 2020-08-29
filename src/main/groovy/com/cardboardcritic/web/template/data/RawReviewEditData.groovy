@@ -4,8 +4,9 @@ import groovy.transform.ToString
 import org.jboss.resteasy.annotations.jaxrs.FormParam
 
 @ToString(includeNames = true)
-class RawReviewEditData extends TemplateData {
-    @FormParam String url, title, game, critic, outlet, summary, content, date
+class RawReviewEditData {
+    @FormParam long id
+    @FormParam String game, critic, outlet, summary, url, title, content, date
     @FormParam int score
     @FormParam boolean recommended
 }

@@ -29,5 +29,20 @@ create table review (
   summary text,
   score int,
   recommended boolean,
-  link text
+  url text
+);
+
+create table raw_review (
+  id serial primary key,
+  game text,
+  critic text,
+  outlet text,
+  recommended boolean default false,
+  score int,
+  summary text,
+  title text,
+  content text,
+  date text,
+  url text,
+  processed boolean default false
 );

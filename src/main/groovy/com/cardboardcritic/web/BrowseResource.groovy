@@ -25,7 +25,7 @@ class BrowseResource {
     @Produces(MediaType.TEXT_HTML)
     TemplateInstance recent() {
         def data = new RecentData()
-        data.games = gameRepo.findAll().list()
+        data.games = gameRepo.listAll()
         recent.data data
     }
 }

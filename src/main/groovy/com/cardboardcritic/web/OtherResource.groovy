@@ -1,6 +1,5 @@
 package com.cardboardcritic.web
 
-import com.cardboardcritic.web.template.data.TemplateData
 import io.quarkus.qute.Template
 import io.quarkus.qute.TemplateInstance
 
@@ -12,7 +11,6 @@ import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 
 @ApplicationScoped
-@Path('/')
 class OtherResource {
 
     @Inject
@@ -24,15 +22,13 @@ class OtherResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     TemplateInstance home() {
-        def data = new TemplateData()
-        home.data data
+        home.data {}
     }
 
     @GET
     @Path('/about')
     @Produces(MediaType.TEXT_HTML)
     TemplateInstance about() {
-        def data = new TemplateData()
-        about.data data
+        about.data {}
     }
 }

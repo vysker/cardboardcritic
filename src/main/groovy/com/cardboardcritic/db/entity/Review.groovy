@@ -30,6 +30,6 @@ class Review extends PanacheEntityBase {
     Outlet outlet
 
     int score
-    String summary, link
+    String summary, url
     boolean recommended
 }

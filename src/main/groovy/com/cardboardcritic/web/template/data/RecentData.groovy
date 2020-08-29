@@ -1,7 +1,9 @@
 package com.cardboardcritic.web.template.data
 
 import com.cardboardcritic.db.entity.Game
+import groovy.transform.ToString
 
-class RecentData extends TemplateData {
+@ToString(includeNames = true)
+class RecentData {
     List<Game> games
 }
