@@ -1,19 +1,11 @@
-package com.cardboardcritic.feed.ars
+package com.cardboardcritic.feed.scraper
 
-import com.cardboardcritic.domain.RawReview
-import com.cardboardcritic.feed.ArticleScraper
+import com.cardboardcritic.db.entity.RawReview
 import groovy.json.JsonSlurper
 import org.jsoup.nodes.Document
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-//articleUrl = 'https://arstechnica.com/gaming/2017/04/gloomhaven-review-2017s-biggest-board-game-is-astoundingly-good'
-//articleUrl = 'https://arstechnica.com/gaming/2020/06/black-angel-review-run-your-own-tabletop-generation-ship/'
-//def htmlRaw = new URL(articleUrl).text
-//new File('ars.html') << htmlRaw
-//def htmlFile = new File('p3.html')
-//def document = Jsoup.parse(htmlFile, 'UTF-8')
-//def document = visit(articleUrl)
 
 class ArsArticleScraper extends ArticleScraper {
 
