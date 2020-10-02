@@ -4,9 +4,11 @@ import com.cardboardcritic.db.entity.RawReview
 import groovy.json.JsonSlurper
 import org.jsoup.nodes.Document
 
+import javax.enterprise.context.ApplicationScoped
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@ApplicationScoped
 class ArsArticleScraper extends ArticleScraper {
 
     @Override
@@ -28,8 +30,7 @@ class ArsArticleScraper extends ArticleScraper {
             title: meta.title,
             date: meta.pub_date ? LocalDateTime.parse(meta.pub_date, DateTimeFormatter.ISO_DATE_TIME) : null,
             critic: meta.author,
-            paragraphs: articleContent,
-            suggestedSummaries: articleContent?.takeRight(3) as List<String>,
+            content: articleContent,
             url: articleUrl
         )
     }

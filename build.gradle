@@ -1,7 +1,9 @@
 plugins {
+    id 'java'
     id 'groovy'
     id 'io.quarkus'
     id 'org.kordamp.gradle.jandex' version '0.6.0'
+    id 'io.freefair.lombok' version '5.2.1'
 }
 
 group = 'com.cardboardcritic'
@@ -10,6 +12,13 @@ version = '0.0.1-SNAPSHOT'
 repositories {
     mavenCentral()
     jcenter()
+}
+
+sourceSets {
+    main {
+        java { srcDirs = [] }
+        groovy { srcDirs = ['src/main/java', 'src/main/groovy'] }
+    }
 }
 
 dependencies {
@@ -35,6 +44,10 @@ dependencies {
 //    testImplementation 'io.rest-assured:rest-assured'
 }
 
+compileJava { options.compilerArgs += ['--enable-preview'] }
+compileGroovy { options.compilerArgs += ['--enable-preview'] }
+
 test {
     useJUnitPlatform()
+    jvmArgs '--enable-preview'
 }
