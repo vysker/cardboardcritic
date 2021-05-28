@@ -6,22 +6,22 @@
       <h1>Raw Review Edit</h1>
     </header>
     <div class="content">
-      <form action="/review" method="post">
+      <form action="/raw" method="post">
         <div class="form-row">
           <label for="url">URL</label>
-          <input type="text" name="url" id="url" placeholder="Link to article" value="{url or ''}" autofocus>
+          <input type="text" name="url" id="url" placeholder="Link to article" value="{review.url or ''}" autofocus>
         </div>
         <div class="form-row">
           <label for="game">Game</label>
-          <input type="text" name="game" id="game" placeholder="Game under review" value="{game or ''}" autofocus>
+          <input type="text" name="game" id="game" placeholder="Game under review" value="{review.game or ''}" required>
         </div>
         <div class="form-row">
           <label for="critic">Critic</label>
-          <input type="text" name="critic" id="critic" placeholder="Article author" value="{critic or ''}"/>
+          <input type="text" name="critic" id="critic" placeholder="Article author" value="{review.critic or ''}"/>
         </div>
         <div class="form-row">
           <label for="outlet">Outlet</label>
-          <input type="text" name="outlet" id="outlet" placeholder="News outlet" value="{outlet or ''}"/>
+          <input type="text" name="outlet" id="outlet" placeholder="News outlet" value="{review.outlet or ''}"/>
         </div>
         <div class="form-row">
           <div>
@@ -35,31 +35,31 @@
         </div>
         <div class="form-row">
           <label for="score">Score</label>
-          <input type="number" name="score" id="score" placeholder="News score" value="{score or ''}"
+          <input type="number" name="score" id="score" placeholder="News score" value="{review.score or ''}"
                  min="0" max="100"/>
         </div>
         <div class="form-row">
           <label for="summary">Summary</label>
-          <textarea name="summary" id="summary" placeholder="Review summary">{summary or ''}</textarea>
+          <textarea name="summary" id="summary" placeholder="Review summary">{review.summary or ''}</textarea>
         </div>
 
         <hr>
 
         <div class="form-row">
           <label for="title">Review title</label>
-          <input type="text" name="title" id="title" placeholder="Review title" value="{title or ''}" disabled/>
+          <input type="text" name="title" id="title" placeholder="Review title" value="{review.title or ''}" disabled/>
         </div>
         <div class="form-row">
           <label for="date">Review publish date</label>
-          <input type="text" name="date" id="date" placeholder="Review publish date" value="{date or ''}" disabled/>
+          <input type="text" name="date" id="date" placeholder="Review publish date" value="{review.date or ''}" disabled/>
         </div>
         <div class="form-row">
           <label for="raw-review-content">Content</label>
           <textarea name="content" id="raw-review-content" rows="10"
-                    placeholder="It appears there was no review content to be found" disabled>{content or ''}</textarea>
+                    placeholder="It appears there was no review content to be found" disabled>{review.content or ''}</textarea>
         </div>
 
-        <input type="hidden" name="id" id="id" value="{id or ''}" disabled/>
+        <input type="hidden" name="id" id="id" value="{review.id or ''}" disabled/>
 
         <div class="form-row">
           <button type="submit">Submit</button>

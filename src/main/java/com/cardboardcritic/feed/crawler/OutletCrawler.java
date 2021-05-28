@@ -2,12 +2,10 @@ package com.cardboardcritic.feed.crawler;
 
 import com.cardboardcritic.db.entity.RawReview;
 import com.cardboardcritic.feed.scraper.ArticleScraper;
-import lombok.Data;
 import org.jsoup.nodes.Document;
 
 import java.util.List;
 
-@Data
 public abstract class OutletCrawler {
     private String outlet;
     private ArticleScraper scraper;
@@ -20,10 +18,28 @@ public abstract class OutletCrawler {
     public abstract List<String> getArticleLinks();
 
     public RawReview getReview(String articleUrl) {
-        Document document = scraper.fetch(articleUrl);
-        RawReview review = scraper.getReview(articleUrl, document);
+        final Document document = scraper.fetch(articleUrl);
+        final RawReview review = scraper.getReview(articleUrl, document);
         review.setOutlet(outlet);
         review.setUrl(articleUrl);
         return review;
+    }
+
+    public String getOutlet() {
+        return outlet;
+    }
+
+    public OutletCrawler setOutlet(String outlet) {
+        this.outlet = outlet;
+        return this;
+    }
+
+    public ArticleScraper getScraper() {
+        return scraper;
+    }
+
+    public OutletCrawler setScraper(ArticleScraper scraper) {
+        this.scraper = scraper;
+        return this;
     }
 }

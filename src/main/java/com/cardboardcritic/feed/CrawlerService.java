@@ -15,24 +15,22 @@ import java.util.stream.Collectors;
  * Responsible for crawling news outlets for reviews.
  */
 @ApplicationScoped
-public class CrawlerService {
-    private final List<OutletCrawler> outletCrawlers;
-    private final ReviewRepository reviewRepository;
-
+public record CrawlerService(List<OutletCrawler> outletCrawlers,
+                             ReviewRepository reviewRepository) {
     public CrawlerService(@Named("outletCrawlers") List<OutletCrawler> outletCrawlers,
                           ReviewRepository reviewRepository) {
         this.outletCrawlers = outletCrawlers;
         this.reviewRepository = reviewRepository;
     }
 
-    List<RawReview> getNewReviews() {
+    public List<RawReview> getNewReviews() {
         return outletCrawlers.stream()
                 .map(this::getNewReviews)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
 
-    List<RawReview> getNewReviews(OutletCrawler crawler) {
+    public List<RawReview> getNewReviews(OutletCrawler crawler) {
         List<String> articleLinks = crawler.getArticleLinks();
         List<String> existing = reviewRepository.list("url in ?1", articleLinks).stream()
                 .map(Review::getUrl)

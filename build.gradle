@@ -1,18 +1,10 @@
 plugins {
     id 'java'
     id 'io.quarkus'
-    id 'org.kordamp.gradle.jandex' version '0.10.0'
-    id 'io.freefair.lombok' version '6.0.0-m2'
 }
 
 group = 'com.cardboardcritic'
 version = '0.0.1-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(16)
-    }
-}
 
 repositories {
     mavenCentral()
@@ -27,15 +19,18 @@ dependencies {
     implementation 'io.quarkus:quarkus-hibernate-orm-panache'
     implementation 'io.quarkus:quarkus-flyway'
     runtimeOnly 'io.quarkus:quarkus-jdbc-postgresql'
-    runtimeOnly 'io.quarkus:quarkus-jdbc-h2' // debug
+
+    quarkusDev 'io.quarkus:quarkus-jdbc-h2'
 
     implementation 'org.jsoup:jsoup:1.13.1'
     compileOnly 'org.postgresql:postgresql:42.2.14'
 
-//    testImplementation 'io.quarkus:quarkus-junit5'
-//    testImplementation 'io.rest-assured:rest-assured'
+    implementation 'org.mapstruct:mapstruct:1.3.1.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.3.1.Final'
 }
 
-test {
-    useJUnitPlatform()
+tasks {
+    compileJava {
+        options.compilerArgs.add('-parameters') // necessary for using typed parameter with Qute
+    }
 }

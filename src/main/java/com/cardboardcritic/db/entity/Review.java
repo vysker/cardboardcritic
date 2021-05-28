@@ -1,26 +1,9 @@
 package com.cardboardcritic.db.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.With;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@With
-@Builder
 @Entity
 public class Review extends PanacheEntityBase {
 
@@ -44,4 +27,76 @@ public class Review extends PanacheEntityBase {
     private String summary;
     private String url;
     private boolean recommended;
+
+    public Long getId() {
+        return id;
+    }
+
+    public Review setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public Review setGame(Game game) {
+        this.game = game;
+        return this;
+    }
+
+    public Critic getCritic() {
+        return critic;
+    }
+
+    public Review setCritic(Critic critic) {
+        this.critic = critic;
+        return this;
+    }
+
+    public Outlet getOutlet() {
+        return outlet;
+    }
+
+    public Review setOutlet(Outlet outlet) {
+        this.outlet = outlet;
+        return this;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public Review setScore(int score) {
+        this.score = score;
+        return this;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public Review setSummary(String summary) {
+        this.summary = summary;
+        return this;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Review setUrl(String url) {
+        this.url = url;
+        return this;
+    }
+
+    public boolean isRecommended() {
+        return recommended;
+    }
+
+    public Review setRecommended(boolean recommended) {
+        this.recommended = recommended;
+        return this;
+    }
 }

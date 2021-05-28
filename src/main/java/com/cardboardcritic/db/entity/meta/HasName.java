@@ -1,7 +1,7 @@
 package com.cardboardcritic.db.entity.meta;
 
-public interface HasName {
+public interface HasName<T> {
     String getName();
 
-    void setName(String name);
+    T setName(String name);
 }

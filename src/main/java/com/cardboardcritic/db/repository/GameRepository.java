@@ -12,13 +12,12 @@ public class GameRepository implements PanacheRepository<Game> {
         return find("slug", slug).firstResult();
     }
 
-    public Game findByName(String name) {
-        return find("name", name).firstResult();
-    }
-
     public Game findOrCreateByName(String name) {
-        Game result = findByName(name);
-        return result != null ? result : persistAndReturn(new Game().withName(name));
+        return find("name", name).firstResultOptional()
+                .or(() -> find("slug", slugify(name)).firstResultOptional())
+                .orElseGet(() -> persistAndReturn(new Game()
+                        .setName(name)
+                        .setSlug(slugify(name))));
     }
 
     public Game persistAndReturn(Game game) {
@@ -26,4 +25,7 @@ public class GameRepository implements PanacheRepository<Game> {
         return game;
     }
 
+    public String slugify(String name) {
+        return name.toLowerCase().replaceAll(" ", "-");
+    }
 }

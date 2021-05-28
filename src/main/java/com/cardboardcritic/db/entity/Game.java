@@ -2,13 +2,6 @@ package com.cardboardcritic.db.entity;
 
 import com.cardboardcritic.db.entity.meta.HasName;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.With;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,14 +10,8 @@ import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@With
-@Builder
 @Entity
-public class Game extends PanacheEntityBase implements HasName {
+public class Game extends PanacheEntityBase implements HasName<Game> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,4 +28,96 @@ public class Game extends PanacheEntityBase implements HasName {
 
     @OneToMany(mappedBy = "game")
     private List<Review> reviews;
+
+    public Long getId() {
+        return id;
+    }
+
+    public Game setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public Game setScore(int score) {
+        this.score = score;
+        return this;
+    }
+
+    public int getRecommended() {
+        return recommended;
+    }
+
+    public Game setRecommended(int recommended) {
+        this.recommended = recommended;
+        return this;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public Game setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public Game setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Game setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public String getDesigner() {
+        return designer;
+    }
+
+    public Game setDesigner(String designer) {
+        this.designer = designer;
+        return this;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public Game setSlug(String slug) {
+        this.slug = slug;
+        return this;
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public Game setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+        return this;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public Game setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+        return this;
+    }
 }

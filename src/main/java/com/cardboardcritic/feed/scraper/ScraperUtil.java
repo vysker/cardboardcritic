@@ -1,5 +1,8 @@
 package com.cardboardcritic.feed.scraper;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class ScraperUtil {
 
     /**
@@ -10,5 +13,11 @@ public class ScraperUtil {
      */
     public static boolean isEmptyString(String s) {
         return s == null || s.isBlank();
+    }
+
+    public static String stringToDate(String raw) {
+        return isEmptyString(raw)
+                ? LocalDateTime.parse(raw, DateTimeFormatter.ISO_DATE_TIME).toString()
+                : null;
     }
 }

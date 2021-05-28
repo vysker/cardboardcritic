@@ -1,11 +1,12 @@
 package com.cardboardcritic.web;
 
+import com.cardboardcritic.data.RawReviewMapper;
+import com.cardboardcritic.data.ReviewMapper;
+import com.cardboardcritic.db.entity.RawReview;
 import com.cardboardcritic.db.entity.Review;
 import com.cardboardcritic.db.repository.ReviewRepository;
-import io.quarkus.qute.Location;
-import io.quarkus.qute.Template;
+import com.cardboardcritic.web.template.form.RawReviewEditForm;
 import io.quarkus.qute.TemplateInstance;
-import io.quarkus.qute.api.ResourcePath;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.inject.Inject;
@@ -15,13 +16,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/review")
+@Path("review")
 public class ReviewResource {
     private final ReviewRepository reviewRepo;
 
     @Inject
-    @Location("raw-review-edit.html") // TODO create non-raw-review edit page
-    Template reviewEdit;
+    ReviewMapper reviewMapper;
+
+    @Inject
+    RawReviewMapper rawReviewMapper;
 
     public ReviewResource(ReviewRepository reviewRepo) {
         this.reviewRepo = reviewRepo;
@@ -29,10 +32,14 @@ public class ReviewResource {
 
     @Transactional
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance edit(@PathParam long id) {
         Review review = reviewRepo.findById(id);
-        return reviewEdit.data(review);
+
+        // TODO create non-raw-review edit page
+        RawReview rawReview = reviewMapper.toRawReview(review);
+        RawReviewEditForm rawReviewEditForm = rawReviewMapper.toTemplateData(rawReview);
+        return RawReviewResource.Templates.edit(rawReviewEditForm);
     }
 }

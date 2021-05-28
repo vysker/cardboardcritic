@@ -1,7 +1,6 @@
 package com.cardboardcritic.feed.crawler;
 
 import com.cardboardcritic.feed.scraper.ArticleScraper;
-import lombok.SneakyThrows;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -23,22 +22,26 @@ public class RssOutletCrawler extends OutletCrawler {
         this.feedUrl = feedUrl;
     }
 
-    @SneakyThrows // FIXME bad, bad code
     @Override
     public List<String> getArticleLinks() {
-        final HttpRequest request = HttpRequest.newBuilder().uri(URI.create(feedUrl)).build();
-        final String rssRaw = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
+        try {
+            final HttpRequest request = HttpRequest.newBuilder().uri(URI.create(feedUrl)).build();
+            final String rssRaw = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
 
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setValidating(true);
-        factory.setIgnoringElementContentWhitespace(true);
-        final DocumentBuilder parser = factory.newDocumentBuilder();
-        final Document document = parser.parse(rssRaw);
+            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setValidating(true);
+            factory.setIgnoringElementContentWhitespace(true);
+            final DocumentBuilder parser = factory.newDocumentBuilder();
+            final Document document = parser.parse(rssRaw);
 
-        final NodeList links = document.getElementsByTagName("link");
-        return IntStream.range(0, links.getLength())
-                .mapToObj(links::item)
-                .map(Node::getNodeValue)
-                .toList();
+            final NodeList links = document.getElementsByTagName("link");
+            return IntStream.range(0, links.getLength())
+                    .mapToObj(links::item)
+                    .map(Node::getNodeValue)
+                    .toList();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to retrieve article links for outlet '%s' using feed url '%s'"
+                    .formatted(getOutlet(), feedUrl));
+        }
     }
 }

@@ -8,18 +8,13 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class OutletRepository implements PanacheRepository<Outlet> {
 
-    public Outlet findByName(String name) {
-        return find("name", name).firstResult();
-    }
-
     public Outlet findOrCreateByName(String name) {
-        Outlet result = findByName(name);
-        return result != null ? result : persistAndReturn(new Outlet().withName(name));
+        return find("name", name).firstResultOptional()
+                .orElseGet(() -> persistAndReturn(new Outlet().setName(name)));
     }
 
     public Outlet persistAndReturn(Outlet outlet) {
         persistAndFlush(outlet);
         return outlet;
     }
-
 }

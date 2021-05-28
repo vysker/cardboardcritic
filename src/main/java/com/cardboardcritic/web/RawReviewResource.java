@@ -1,32 +1,23 @@
 package com.cardboardcritic.web;
 
-import com.cardboardcritic.db.entity.Critic;
-import com.cardboardcritic.db.entity.Game;
-import com.cardboardcritic.db.entity.Outlet;
-import com.cardboardcritic.db.entity.Review;
-import com.cardboardcritic.db.repository.CriticRepository;
-import com.cardboardcritic.db.repository.GameRepository;
-import com.cardboardcritic.db.repository.OutletRepository;
-import com.cardboardcritic.db.repository.RawReviewRepository;
-import com.cardboardcritic.db.repository.ReviewRepository;
-import com.cardboardcritic.web.template.data.RawReviewEditData;
-import com.cardboardcritic.web.template.data.RawReviewListData;
-import io.quarkus.qute.Template;
+import com.cardboardcritic.data.RawReviewMapper;
+import com.cardboardcritic.db.entity.*;
+import com.cardboardcritic.db.repository.*;
+import com.cardboardcritic.web.template.form.RawReviewEditForm;
+import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
-import io.quarkus.qute.api.ResourcePath;
 import org.jboss.resteasy.annotations.Form;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.util.List;
 
-@Path("/raw")
+@Path("raw")
 public class RawReviewResource {
     private final RawReviewRepository rawReviewRepo;
     private final ReviewRepository reviewRepo;
@@ -35,12 +26,14 @@ public class RawReviewResource {
     private final OutletRepository outletRepo;
 
     @Inject
-    @ResourcePath("raw-review-edit.html")
-    Template rawReviewEdit;
+    RawReviewMapper rawReviewMapper;
 
-    @Inject
-    @ResourcePath("raw-review-list.html")
-    Template rawReviewList;
+    @CheckedTemplate
+    public static class Templates {
+        public static native TemplateInstance edit(RawReviewEditForm review);
+
+        public static native TemplateInstance list(List<RawReview> reviews);
+    }
 
     public RawReviewResource(RawReviewRepository rawReviewRepo,
                              ReviewRepository reviewRepo,
@@ -59,39 +52,41 @@ public class RawReviewResource {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance index() {
         var rawReviews = rawReviewRepo.listAll();
-        var data = new RawReviewListData(rawReviews);
-        return rawReviewList.data(data);
+        return Templates.list(rawReviews);
     }
 
     @Transactional
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance edit(@PathParam("id") long id) {
-        return rawReviewEdit.data(rawReviewRepo.findById(id));
+        RawReview rawReview = rawReviewRepo.findById(id);
+        RawReviewEditForm rawReviewEditForm = rawReviewMapper.toTemplateData(rawReview);
+        return Templates.edit(rawReviewEditForm);
     }
 
     @Transactional
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance save(@Form RawReviewEditData rawReview) {
-        Game game = gameRepo.findOrCreateByName(rawReview.getGame());
-        Critic critic = criticRepo.findOrCreateByName(rawReview.getCritic());
-        Outlet outlet = outletRepo.findOrCreateByName(rawReview.getOutlet());
+    public Response save(@Form RawReviewEditForm rawReview) {
+        final Game game = gameRepo.findOrCreateByName(rawReview.getGame());
+        final Critic critic = criticRepo.findOrCreateByName(rawReview.getCritic());
+        final Outlet outlet = outletRepo.findOrCreateByName(rawReview.getOutlet());
 
-        var review = Review.builder()
-                .game(game)
-                .critic(critic)
-                .outlet(outlet)
-                .score(rawReview.getScore())
-                .summary(rawReview.getSummary())
-                .url(rawReview.getUrl())
-                .recommended(rawReview.isRecommended())
-                .build();
+        var review = new Review()
+                .setGame(game)
+                .setCritic(critic)
+                .setOutlet(outlet)
+                .setScore(rawReview.getScore())
+                .setSummary(rawReview.getSummary())
+                .setUrl(rawReview.getUrl())
+                .setRecommended(rawReview.isRecommended());
         reviewRepo.persistAndFlush(review);
-        rawReviewRepo.update("processed = true where id = ?", rawReview.getId());
+        rawReviewRepo.update("processed = true where id = ?1", rawReview.getId());
 
-        return rawReviewEdit.data(rawReview);
+        return Response.status(302)
+                .location(URI.create("/raw"))
+                .build();
     }
 }
