@@ -2,6 +2,7 @@ package com.cardboardcritic.web;
 
 import com.cardboardcritic.db.entity.Review;
 import com.cardboardcritic.db.repository.ReviewRepository;
+import io.quarkus.qute.Location;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import io.quarkus.qute.api.ResourcePath;
@@ -19,7 +20,7 @@ public class ReviewResource {
     private final ReviewRepository reviewRepo;
 
     @Inject
-    @ResourcePath("review-edit.html")
+    @Location("raw-review-edit.html") // TODO create non-raw-review edit page
     Template reviewEdit;
 
     public ReviewResource(ReviewRepository reviewRepo) {

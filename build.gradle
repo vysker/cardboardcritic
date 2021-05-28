@@ -1,24 +1,21 @@
 plugins {
     id 'java'
-    id 'groovy'
     id 'io.quarkus'
-    id 'org.kordamp.gradle.jandex' version '0.6.0'
-    id 'io.freefair.lombok' version '5.2.1'
+    id 'org.kordamp.gradle.jandex' version '0.10.0'
+    id 'io.freefair.lombok' version '6.0.0-m2'
 }
 
 group = 'com.cardboardcritic'
 version = '0.0.1-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-    jcenter()
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(16)
+    }
 }
 
-sourceSets {
-    main {
-        java { srcDirs = [] }
-        groovy { srcDirs = ['src/main/java', 'src/main/groovy'] }
-    }
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -29,25 +26,16 @@ dependencies {
     implementation 'io.quarkus:quarkus-resteasy-qute'
     implementation 'io.quarkus:quarkus-hibernate-orm-panache'
     implementation 'io.quarkus:quarkus-flyway'
-//    runtimeOnly 'io.quarkus:quarkus-jdbc-postgresql'
-    runtimeOnly 'io.quarkus:quarkus-jdbc-h2'
+    runtimeOnly 'io.quarkus:quarkus-jdbc-postgresql'
+    runtimeOnly 'io.quarkus:quarkus-jdbc-h2' // debug
 
-    implementation 'org.codehaus.groovy:groovy-all:3.0.4'
-    runtimeOnly 'org.codehaus.groovy:groovy-all:3.0.4'
-    runtimeOnly 'com.h2database:h2:1.4.197' // Debug
-    compile 'org.jsoup:jsoup:1.13.1'
-    compile 'org.postgresql:postgresql:42.2.14'
+    implementation 'org.jsoup:jsoup:1.13.1'
+    compileOnly 'org.postgresql:postgresql:42.2.14'
 
-    testCompile 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
-    testRuntime 'com.h2database:h2:1.4.197'
 //    testImplementation 'io.quarkus:quarkus-junit5'
 //    testImplementation 'io.rest-assured:rest-assured'
 }
 
-compileJava { options.compilerArgs += ['--enable-preview'] }
-compileGroovy { options.compilerArgs += ['--enable-preview'] }
-
 test {
     useJUnitPlatform()
-    jvmArgs '--enable-preview'
 }
