@@ -22,7 +22,7 @@ public class FeedService {
 
     @Transactional
     public void refresh() {
-        List<RawReview> reviews = crawlerService.getNewReviews();
+        final List<RawReview> reviews = crawlerService.getNewReviews();
         rawReviewRepository.persist(reviews);
     }
 }

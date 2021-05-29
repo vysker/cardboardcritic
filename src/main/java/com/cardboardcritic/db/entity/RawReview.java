@@ -18,7 +18,11 @@ public class RawReview extends PanacheEntityBase {
     private String summary;
     private String url;
     private String title;
+
+    // by default, hibernate assumes the 'text' data type is a varchar(255)
+    @Column(length = 999999)
     private String content;
+
     private String date;
     private int score;
     private boolean recommended;

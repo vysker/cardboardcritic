@@ -1,18 +1,15 @@
 package com.cardboardcritic.feed.crawler;
 
 import com.cardboardcritic.feed.scraper.ArticleScraper;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.parser.Parser;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class RssOutletCrawler extends OutletCrawler {
     private final String feedUrl;
@@ -25,23 +22,16 @@ public class RssOutletCrawler extends OutletCrawler {
     @Override
     public List<String> getArticleLinks() {
         try {
-            final HttpRequest request = HttpRequest.newBuilder().uri(URI.create(feedUrl)).build();
+            final URI feedUri = URI.create(feedUrl);
+            final HttpRequest request = HttpRequest.newBuilder().uri(feedUri).build();
             final String rssRaw = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
 
-            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setValidating(true);
-            factory.setIgnoringElementContentWhitespace(true);
-            final DocumentBuilder parser = factory.newDocumentBuilder();
-            final Document document = parser.parse(rssRaw);
-
-            final NodeList links = document.getElementsByTagName("link");
-            return IntStream.range(0, links.getLength())
-                    .mapToObj(links::item)
-                    .map(Node::getNodeValue)
-                    .toList();
+            final Document document = Jsoup.parse(rssRaw, "", Parser.xmlParser());
+            return document.select("rss channel item link").eachText();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to retrieve article links for outlet '%s' using feed url '%s'"
-                    .formatted(getOutlet(), feedUrl));
+            final var message = "Failed to retrieve article links for outlet '%s' using feed url '%s', because: %s"
+                    .formatted(getOutlet(), feedUrl, e.getMessage());
+            throw new RuntimeException(message);
         }
     }
 }

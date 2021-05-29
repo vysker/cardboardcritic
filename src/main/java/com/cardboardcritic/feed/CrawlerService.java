@@ -31,13 +31,13 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
     }
 
     public List<RawReview> getNewReviews(OutletCrawler crawler) {
-        List<String> articleLinks = crawler.getArticleLinks();
-        List<String> existing = reviewRepository.list("url in ?1", articleLinks).stream()
+        final List<String> articleLinks = crawler.getArticleLinks();
+        final List<String> existing = reviewRepository.list("url in ?1", articleLinks).stream()
                 .map(Review::getUrl)
                 .collect(Collectors.toList());
-        articleLinks.removeAll(existing);
 
         return articleLinks.stream()
+                .filter(link -> !existing.contains(link))
                 .map(crawler::getReview)
                 .collect(Collectors.toList());
     }
