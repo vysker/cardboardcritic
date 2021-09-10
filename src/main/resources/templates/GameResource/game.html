@@ -2,21 +2,23 @@
 {#main}
 <main class="game">
   <article>
+
+    {#with game}
     <header>
-      <h1>{game.name or 'Untitled game'}</h1>
+      <h1>{name or 'Untitled game'}</h1>
 
       <div class="game-details">
         <div class="detail">
           <span class="detail-name">Release date</span>
-          <span class="detail-content date">{game.releaseDate or 'Unknown release date'}</span>
+          <span class="detail-content date">{releaseDate or 'Unknown release date'}</span>
         </div>
         <div class="detail">
           <span class="detail-name">Designer</span>
-          <span class="detail-content designer">{game.designer}</span>
+          <span class="detail-content designer">{designer}</span>
         </div>
         <div class="detail">
           <span class="detail-name">Short description</span>
-          <span class="detail-content short-description">{game.shortDescription}</span>
+          <span class="detail-content short-description">{shortDescription}</span>
         </div>
         <!--        <div class="detail">-->
         <!--          <span class="detail-name">Full description</span>-->
@@ -26,13 +28,7 @@
 
       <div class="stats">
         <div class="stat score-average">
-          <div class="hex">
-            <div class="hex-side hex-left"></div>
-            <div class="hex-center">
-              <span class="average-score-points">{game.score}</span>
-            </div>
-            <div class="hex-side hex-right"></div>
-          </div>
+          {#include hex hexContent=score /}
           <details>
             <summary>Average score</summary>
             <p>Average of all critic scores. All scores are normalized to a 100-based point system before averaging.
@@ -40,13 +36,8 @@
           </details>
         </div>
         <div class="stat score-median">
-          <div class="hex">
-            <div class="hex-side hex-left"></div>
-            <div class="hex-center">
-              <span class="median-score-points">{game.score}</span>
-            </div>
-            <div class="hex-side hex-right"></div>
-          </div>
+          <!-- TODO display median, instead of score -->
+          {#include hex hexContent=score /}
           <details>
             <summary>Median score</summary>
             <p>
@@ -56,13 +47,7 @@
           </details>
         </div>
         <div class="stat recommended">
-          <div class="hex">
-            <div class="hex-side hex-left"></div>
-            <div class="hex-center">
-              <span class="recommended-percent">{game.recommended}%</span>
-            </div>
-            <div class="hex-side hex-right"></div>
-          </div>
+          {#include hex hexContent=recommended hexContentAfter="%" /}
           <details>
             <summary>Recommends</summary>
             <p>
@@ -73,18 +58,16 @@
         </div>
       </div>
     </header>
+    {/with}
 
     <div class="content">
       <div class="reviews">
         <h3>Critic Reviews</h3>
-        <!-- <ul class="card-list"> -->
         <div class="card-grid">
           {#for review in game.reviews}
-            <!-- <li> -->
             {#include review}
               {#review}{review}{/review}
             {/include}
-            <!-- </li> -->
           {/for}
         </div>
       </div>
