@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="widget=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{inject:globals.siteTitle}</title>
   <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
@@ -10,12 +10,5 @@
 <div class="nav-container">{#include menu}{/include}</div>
 {#insert main}{/}
 <!-- footer -->
-<script type="text/javascript">
-  function toggleTooltip(targetSelector) {
-    var target = document.querySelector(targetSelector);
-    var isHidden = target.getAttribute('aria-hidden') == 'true';
-    target.setAttribute('aria-hidden', !isHidden);
-  }
-</script>
 </body>
 </html>

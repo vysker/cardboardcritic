@@ -111,13 +111,15 @@ nav ul li a:hover {
 /* form */
 
 label {
-  margin-bottom: .8rem;
+  display: block;
+  /* margin-bottom: .8rem; */
   text-transform: uppercase;
   font-size: .8rem;
   font-weight: bold;
   font-family: 'Open Sans';
 }
 input[type="radio"] + label {
+  display: inline;
   margin-left: .5rem;
   font-size: 1rem;
   text-transform: none;
@@ -127,6 +129,7 @@ input[type="radio"] + label {
 input[type="text"],
 input[type="number"],
 textarea {
+  width: 100%;
   padding: 1rem;
   font-size: .9rem;
   font-family: 'Open Sans';
@@ -140,10 +143,10 @@ textarea {
 }
 
 button[type="submit"] {
+  width: 100%;
   padding: .7rem 1.4rem;
-  text-transform: uppercase;
+  font-size: 1rem;
   font-family: 'Open Sans';
-  /* font-weight: bold; */
   color: white;
   background: rebeccapurple;
   border: none;
@@ -151,10 +154,30 @@ button[type="submit"] {
   cursor: pointer;
 }
 
-.form-row {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1.5rem;
+/* card */
+
+.card {
+  min-height: 4rem;
+  background-color: var(--card);
+  border-bottom: 3px solid var(--divider);
+  padding: 1rem;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header h4,
+.card-header h5,
+.card-header h6 {
+  margin: 0;
+}
+
+/* card grid */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
 
 /* card list */
@@ -165,28 +188,6 @@ ul.card-list {
   padding: 0;
 }
 
-.card-list .card {
-  min-height: 4rem;
-  background-color: var(--card);
-  border-bottom: 3px solid var(--divider);
-  padding: 1rem;
-}
-.card-list .card a {
-  color: var(--font);
-  text-decoration: none;
-}
-.card-list .card a:hover > h3 {
-  text-decoration: underline;
-}
-
-.card-list .card h3 {
-  margin: 0;
-}
-
-.card-list .card p {
-  margin-bottom: 0;
-}
-
 /* card list compact */
 
 .card-list-compact .card {
@@ -195,33 +196,25 @@ ul.card-list {
   height: 4rem;
   padding: 0;
 }
-.card-list-compact .card .card-header,
-.card-list-compact .card .card-content,
-.card-list-compact .card .card-after {
+.card-list-compact .card-header,
+.card-list-compact .card-content,
+.card-list-compact .card-after {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 1rem;
 }
-.card-list-compact .card .card-header {
-  width: 15rem;
+.card-list-compact .card-header {
+  min-width: 15rem;
 }
-.card-list-compact .card .card-content {
+.card-list-compact .card-content {
   flex-grow: 1;
 }
-.card-list-compact .card .card-after {
+.card-list-compact .card-after {
   width: 4rem;
   text-align: center;
   background: var(--font);
   color: white;
-}
-
-.card-list-compact .card .card-title {
-  margin: 0;
-}
-
-.card-list-compact .card-content a {
-  color: #3b95b3;
 }
 
 /* hexagon */
@@ -297,41 +290,30 @@ main.game .game-details .detail .detail-content {
   align-items: center;
   width: 33%;
 }
-.stat .stat-description,
-.stat .stat-description-tooltip {
-  display: block;
+.stat details summary {
   margin-top: .5rem;
+  cursor: pointer;
   text-align: center;
-  font-size: .8rem;
 }
-.stat .stat-description-tooltip {
-  position: absolute;
-  transform: translateX(-25%);
-  padding: .5rem;
+.stat details p {
+  /* position: absolute;
+  z-index: 5;
+  transform: translateX(-25%); */
+  padding: 1rem;
   border-radius: 2px;
   background: lightgrey;
-}
-.stat .stat-description-tooltip[aria-hidden="true"] {
-  visibility: hidden;
-}
-.stat .stat-description button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  background: lightgrey;
-  border-radius: 1rem;
 }
 
 /* game reviews */
 
-.card-list-compact .card .card-after span:first-child {
+/* .card-list-compact .card .card-after span:first-child {
   font-size: 1.5rem;
   font-weight: bold;
   font-family: Georgia;
 }
 .card-list-compact .card .card-after span:last-child {
   font-size: .8rem;
-}
+} */
 
 /* responsiveness */
 

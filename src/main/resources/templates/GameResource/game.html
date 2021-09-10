@@ -33,14 +33,11 @@
             </div>
             <div class="hex-side hex-right"></div>
           </div>
-          <div class="stat-info">
-            <span class="stat-description" aria-describedby="average-score-tooltip">average score
-              <button type="button" aria-label="more-info" onclick="toggleTooltip('#average-score-tooltip')">i</button>
-            </span>
-            <span class="stat-description-tooltip" role="tooltip" aria-hidden="true" id="average-score-tooltip">
-              Average of all critic scores. All scores are normalized to a 100-based point system before averaging. Only
-              reviews with scores are taken into account.</span>
-          </div>
+          <details>
+            <summary>Average score</summary>
+            <p>Average of all critic scores. All scores are normalized to a 100-based point system before averaging.
+              Only reviews with scores are taken into account.</p>
+          </details>
         </div>
         <div class="stat score-median">
           <div class="hex">
@@ -50,15 +47,13 @@
             </div>
             <div class="hex-side hex-right"></div>
           </div>
-          <div class="stat-info">
-            <span class="stat-description" aria-describedby="median-score-tooltip">median score
-              <button type="button" aria-label="more-info" onclick="toggleTooltip('#median-score-tooltip')">i</button>
-            </span>
-            <span class="stat-description-tooltip" role="tooltip" aria-hidden="true" id="median-score-tooltip">
+          <details>
+            <summary>Median score</summary>
+            <p>
               Median of all critic scores. Median is the 'middle' or 'typical' score.
               All scores are normalized to a 100-based point system beforehand. Only reviews with scores are taken into
-              account.</span>
-          </div>
+              account.</p>
+          </details>
         </div>
         <div class="stat recommended">
           <div class="hex">
@@ -68,15 +63,13 @@
             </div>
             <div class="hex-side hex-right"></div>
           </div>
-          <div class="stat-info">
-          <span class="stat-description" aria-describedby="recommends-tooltip">recommends
-            <button type="button" aria-label="more-info" onclick="toggleTooltip('#recommends-tooltip')">i</button>
-          </span>
-            <span class="stat-description-tooltip" role="tooltip" aria-hidden="true" id="recommends-tooltip">
+          <details>
+            <summary>Recommends</summary>
+            <p>
               Percentage of critics that recommends the game. If a review does not specify a 'recommended' status, then
               the outlet's median score (at that moment in time) is used to determine whether the game is recommended or
-              not.</span>
-          </div>
+              not.</p>
+          </details>
         </div>
       </div>
     </header>
@@ -84,15 +77,16 @@
     <div class="content">
       <div class="reviews">
         <h3>Critic Reviews</h3>
-        <ul class="card-list card-list-compact">
+        <!-- <ul class="card-list"> -->
+        <div class="card-grid">
           {#for review in game.reviews}
-            <li>
+            <!-- <li> -->
             {#include review}
               {#review}{review}{/review}
             {/include}
-            </li>
+            <!-- </li> -->
           {/for}
-        </ul>
+        </div>
       </div>
     </div>
 
