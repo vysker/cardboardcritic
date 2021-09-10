@@ -6,7 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 /**
- * Fetches the contents of an article.
+ * A scraper fetches the contents of an article (review), then parses and converts that content to a "raw review".
  */
 public abstract class ArticleScraper {
 

@@ -1,8 +1,6 @@
 package com.cardboardcritic.config;
 
-import com.cardboardcritic.feed.crawler.ArsCrawler;
-import com.cardboardcritic.feed.crawler.EurogamerCrawler;
-import com.cardboardcritic.feed.crawler.OutletCrawler;
+import com.cardboardcritic.feed.crawler.*;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
@@ -15,7 +13,11 @@ public class CbcConfig {
     @Produces
     @ApplicationScoped
     @Named("outletCrawlers")
-    public List<OutletCrawler> outletCrawlers(ArsCrawler arsCrawler, EurogamerCrawler eurogamerCrawler) {
-        return List.of(arsCrawler, eurogamerCrawler);
+    public List<OutletCrawler> outletCrawlers(ArsCrawler arsCrawler,
+                                              EurogamerCrawler eurogamerCrawler,
+                                              DiceTowerCrawler diceTowerCrawler,
+                                              BoardGameQuestCrawler boardGameQuestCrawler,
+                                              SusdCrawler susdCrawler) {
+        return List.of(arsCrawler, eurogamerCrawler, diceTowerCrawler, boardGameQuestCrawler, susdCrawler);
     }
 }

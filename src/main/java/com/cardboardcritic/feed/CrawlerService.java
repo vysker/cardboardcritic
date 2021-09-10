@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public record CrawlerService(List<OutletCrawler> outletCrawlers,
                              ReviewRepository reviewRepository) {
+
     public CrawlerService(@Named("outletCrawlers") List<OutletCrawler> outletCrawlers,
                           ReviewRepository reviewRepository) {
         this.outletCrawlers = outletCrawlers;

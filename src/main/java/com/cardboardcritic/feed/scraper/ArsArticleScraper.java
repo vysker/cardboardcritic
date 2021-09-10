@@ -2,9 +2,10 @@ package com.cardboardcritic.feed.scraper;
 
 import com.cardboardcritic.db.entity.RawReview;
 import com.cardboardcritic.feed.ScrapeException;
+import com.cardboardcritic.util.ScraperUtil;
+import com.cardboardcritic.util.StringUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -25,21 +26,21 @@ public class ArsArticleScraper extends ArticleScraper {
         final Element articleBody = document.select("div[itemprop=articleBody]").last();
         final Elements articleContentRaw = articleBody.getElementsByTag("p");
         final String articleContent = articleContentRaw.eachText().stream()
-                .filter(content -> !ScraperUtil.isEmptyString(content))
-                .collect(Collectors.joining());
+                .filter(StringUtil::isNotEmpty)
+                .collect(Collectors.joining("\n\n"));
 
         final Element pageMeta = document.select("meta[name=parsely-page]").first();
         final String metaContent = pageMeta == null ? null : pageMeta.attr("content");
 
         try {
-            final JsonNode meta = new ObjectMapper().readTree(metaContent == null ? "{}" : metaContent);
-            final String dateRaw = meta.get("pub_date").asText();
+            final JsonNode meta = ScraperUtil.toJson(metaContent);
+            final String date = meta.get("pub_date").asText();
             final String title = meta.get("title").asText();
             final String critic = meta.get("author").asText();
 
             return new RawReview()
                     .setTitle(title)
-                    .setDate(ScraperUtil.stringToDate(dateRaw))
+                    .setDate(StringUtil.formatDateTime(date))
                     .setCritic(critic)
                     .setContent(articleContent)
                     .setUrl(articleUrl);

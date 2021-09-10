@@ -6,6 +6,9 @@ import org.jsoup.nodes.Document;
 
 import java.util.List;
 
+/**
+ * A crawler finds all relevant (review) links on a website.
+ */
 public abstract class OutletCrawler {
     private String outlet;
     private ArticleScraper scraper;

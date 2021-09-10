@@ -24,8 +24,13 @@ public class Review extends PanacheEntityBase {
     private Outlet outlet;
 
     private int score;
+
+    // by default, hibernate assumes the 'text' data type is a varchar(255)
+    @Column(length = 999999)
     private String summary;
+
     private String url;
+
     private boolean recommended;
 
     public Long getId() {

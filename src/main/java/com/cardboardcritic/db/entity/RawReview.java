@@ -4,6 +4,10 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
 
+/**
+ * A raw review represents an unprocessed review article from a news outlet. After processing, it becomes available on
+ * the website as a non-raw review.
+ */
 @Entity
 @Table(name = "raw_review")
 public class RawReview extends PanacheEntityBase {
