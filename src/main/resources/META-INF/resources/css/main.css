@@ -39,6 +39,10 @@ hr {
   border: 1px solid lightgrey;
 }
 
+details summary {
+  cursor: pointer;
+}
+
 /* main content */
 
 main {
@@ -142,16 +146,21 @@ textarea {
   cursor: not-allowed;
 }
 
-button[type="submit"] {
-  width: 100%;
+button {
   padding: .7rem 1.4rem;
   font-size: 1rem;
   font-family: 'Open Sans';
   color: white;
-  background: rebeccapurple;
+  background: dimgray;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+button[type="submit"] {
+  width: 100%;
+}
+button.primary {
+  background: rebeccapurple;
 }
 
 /* card */
@@ -190,27 +199,27 @@ ul.card-list {
 
 /* card list compact */
 
-.card-list-compact .card {
+.card.compact {
   display: flex;
   justify-content: space-between;
   height: 4rem;
   padding: 0;
 }
-.card-list-compact .card-header,
-.card-list-compact .card-content,
-.card-list-compact .card-after {
+.card.compact .card-header,
+.card.compact .card-content,
+.card.compact .card-after {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 1rem;
 }
-.card-list-compact .card-header {
+.card.compact .card-header {
   min-width: 15rem;
 }
-.card-list-compact .card-content {
+.card.compact .card-content {
   flex-grow: 1;
 }
-.card-list-compact .card-after {
+.card.compact .card-after {
   width: 4rem;
   text-align: center;
   background: var(--font);
@@ -252,7 +261,7 @@ ul.card-list {
   border-left: var(--hex-border);
 }
 
-/* game page details */
+/* game-page details */
 
 main.game header h1 {
   text-align: center;
@@ -276,7 +285,7 @@ main.game .game-details .detail .detail-content {
   font-weight: bold;
 }
 
-/* game page stats */
+/* game-page stats */
 
 .stats {
   display: flex;
@@ -292,7 +301,6 @@ main.game .game-details .detail .detail-content {
 }
 .stat details summary {
   margin-top: .5rem;
-  cursor: pointer;
   text-align: center;
 }
 .stat details p {
@@ -303,17 +311,6 @@ main.game .game-details .detail .detail-content {
   border-radius: 2px;
   background: lightgrey;
 }
-
-/* game reviews */
-
-/* .card-list-compact .card .card-after span:first-child {
-  font-size: 1.5rem;
-  font-weight: bold;
-  font-family: Georgia;
-}
-.card-list-compact .card .card-after span:last-child {
-  font-size: .8rem;
-} */
 
 /* responsiveness */
 

@@ -65,9 +65,13 @@
         <h3>Critic Reviews</h3>
         <div class="card-grid">
           {#for review in game.reviews}
-            {#include review}
-              {#review}{review}{/review}
-            {/include}
+            {#include review
+              outlet=review.outlet.name
+              critic=review.critic.name
+              score=review.score
+              recommended=review.recommended
+              summary=review.summary
+              url=review.url}{/include}
           {/for}
         </div>
       </div>

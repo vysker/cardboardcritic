@@ -57,24 +57,25 @@ public class RawReviewResource {
 
     @Transactional
     @GET
-    @Path("{id}")
+    @Path("{id}/edit")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance edit(@PathParam("id") long id) {
-        RawReview rawReview = rawReviewRepo.findById(id);
-        RawReviewEditForm rawReviewEditForm = rawReviewMapper.toTemplateData(rawReview);
+        final RawReview rawReview = rawReviewRepo.findById(id);
+        final RawReviewEditForm rawReviewEditForm = rawReviewMapper.toForm(rawReview);
         return Templates.edit(rawReviewEditForm);
     }
 
     @Transactional
     @POST
+    @Path("{id}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
-    public Response save(@Form RawReviewEditForm rawReview) {
+    public Response save(@PathParam("id") long id, @Form RawReviewEditForm rawReview) {
         final Game game = gameRepo.findOrCreateByName(rawReview.getGame());
         final Critic critic = criticRepo.findOrCreateByName(rawReview.getCritic());
         final Outlet outlet = outletRepo.findOrCreateByName(rawReview.getOutlet());
 
-        var review = new Review()
+        final var review = new Review()
                 .setGame(game)
                 .setCritic(critic)
                 .setOutlet(outlet)
@@ -83,7 +84,20 @@ public class RawReviewResource {
                 .setUrl(rawReview.getUrl())
                 .setRecommended(rawReview.isRecommended());
         reviewRepo.persistAndFlush(review);
-        rawReviewRepo.update("processed = true where id = ?1", rawReview.getId());
+        rawReviewRepo.update("processed = true where id = ?1", id);
+
+        return Response.status(302)
+                .location(URI.create("/raw"))
+                .build();
+    }
+
+    @Transactional
+    @POST
+    @Path("{id}/deny")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_HTML)
+    public Response deny(@PathParam("id") long id) {
+        rawReviewRepo.update("processed = true where id = ?1", id);
 
         return Response.status(302)
                 .location(URI.create("/raw"))

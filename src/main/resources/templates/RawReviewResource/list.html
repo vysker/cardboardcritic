@@ -6,10 +6,10 @@
       <h1>Raw Reviews</h1>
     </header>
     <div class="content">
-      <ul class="card-list card-list-compact">
+      <ul class="card-list">
         {#for review in reviews}
         <li>
-          <div class="review card">
+          <div class="review card compact">
             <!--  <div class="card-before"></div>-->
             <div class="card-header">
               <h4>{review.outlet}</h4>
@@ -17,12 +17,24 @@
             </div>
             <div class="card-content review-content">
               {review.title}
-              <a href="/raw/{review.id}" class="raw-review-edit-link">Edit</a>
+              <a href="/raw/{review.id}/edit" class="raw-review-edit-link">Edit</a>
             </div>
             <div class="card-after">
-              <span>{review.processed}</span>
+              <span>{review.processed ? 'Done' : 'To do'}</span>
             </div>
           </div>
+          <details>
+            <summary>Preview</summary>
+            <div class="card-grid">
+              {#include review
+                outlet=review.outlet
+                critic=review.critic
+                score=review.score
+                recommended=review.recommended
+                summary=review.summary
+                url=review.url}{/include}
+            </div>
+          </details>
         </li>
         {/for}
       </ul>

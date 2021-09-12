@@ -2,12 +2,14 @@
 {#main}
 <main>
   <article>
-    <header></header>
+    <header>
+      <h1>Recent Games</h1>
+    </header>
     <div class="content">
-      <ul class="card-list card-list-compact">
+      <ul class="card-list">
         {#for game in games}
         <li>
-          <div class="game card">
+          <div class="game card compact">
             <!--  <div class="card-before"></div>-->
             <div class="card-header">
               <h4>{game.name}</h4>

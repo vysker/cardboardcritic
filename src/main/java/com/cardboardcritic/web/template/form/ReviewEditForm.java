@@ -2,16 +2,13 @@ package com.cardboardcritic.web.template.form;
 
 import org.jboss.resteasy.annotations.jaxrs.FormParam;
 
-public class RawReviewEditForm {
+public class ReviewEditForm {
     private long id;
     @FormParam private String game;
     @FormParam private String critic;
     @FormParam private String outlet;
     @FormParam private String summary;
     @FormParam private String url;
-    @FormParam private String title;
-    @FormParam private String content;
-    @FormParam private String date;
     @FormParam private int score;
     @FormParam private boolean recommended;
 
@@ -19,7 +16,7 @@ public class RawReviewEditForm {
         return id;
     }
 
-    public RawReviewEditForm setId(long id) {
+    public ReviewEditForm setId(long id) {
         this.id = id;
         return this;
     }
@@ -28,7 +25,7 @@ public class RawReviewEditForm {
         return game;
     }
 
-    public RawReviewEditForm setGame(String game) {
+    public ReviewEditForm setGame(String game) {
         this.game = game;
         return this;
     }
@@ -37,7 +34,7 @@ public class RawReviewEditForm {
         return critic;
     }
 
-    public RawReviewEditForm setCritic(String critic) {
+    public ReviewEditForm setCritic(String critic) {
         this.critic = critic;
         return this;
     }
@@ -46,7 +43,7 @@ public class RawReviewEditForm {
         return outlet;
     }
 
-    public RawReviewEditForm setOutlet(String outlet) {
+    public ReviewEditForm setOutlet(String outlet) {
         this.outlet = outlet;
         return this;
     }
@@ -55,7 +52,7 @@ public class RawReviewEditForm {
         return summary;
     }
 
-    public RawReviewEditForm setSummary(String summary) {
+    public ReviewEditForm setSummary(String summary) {
         this.summary = summary;
         return this;
     }
@@ -64,35 +61,8 @@ public class RawReviewEditForm {
         return url;
     }
 
-    public RawReviewEditForm setUrl(String url) {
+    public ReviewEditForm setUrl(String url) {
         this.url = url;
-        return this;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public RawReviewEditForm setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public RawReviewEditForm setContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public RawReviewEditForm setDate(String date) {
-        this.date = date;
         return this;
     }
 
@@ -100,7 +70,7 @@ public class RawReviewEditForm {
         return score;
     }
 
-    public RawReviewEditForm setScore(int score) {
+    public ReviewEditForm setScore(int score) {
         this.score = score;
         return this;
     }
@@ -109,7 +79,7 @@ public class RawReviewEditForm {
         return recommended;
     }
 
-    public RawReviewEditForm setRecommended(boolean recommended) {
+    public ReviewEditForm setRecommended(boolean recommended) {
         this.recommended = recommended;
         return this;
     }

@@ -3,67 +3,34 @@
 <main>
   <article>
     <header>
+      <a href="/raw">&larr;Back to list</a>
       <h1>Raw Review Edit</h1>
     </header>
     <div class="content">
-      <form action="/raw" method="post">
-        <p>
-          <label for="url">URL</label>
-          <input type="text" name="url" id="url" placeholder="Link to article" value="{review.url or ''}" autofocus />
-          <a href="{review.url or ''}" target="_blank">Visit original article</a>
-        </p>
-        <p>
-          <label for="game">Game</label>
-          <input type="text" name="game" id="game" placeholder="Game under review" value="{review.game or ''}" required />
-        </p>
-        <p>
-          <label for="critic">Critic</label>
-          <input type="text" name="critic" id="critic" placeholder="Article author" value="{review.critic or ''}"/>
-        </p>
-        <p>
-          <label for="outlet">Outlet</label>
-          <input type="text" name="outlet" id="outlet" placeholder="News outlet" value="{review.outlet or ''}"/>
-        </p>
-        <p>
-          <div>
-            <input type="radio" name="recommended" id="recommended1" value="true" checked/>
-            <label for="recommended1">Recommended</label>
-          </div>
-          <div>
-            <input type="radio" name="recommended" id="recommended2" value="false"/>
-            <label for="recommended2">Not recommended</label>
-          </div>
-        </p>
-        <p>
-          <label for="score">Score</label>
-          <input type="number" name="score" id="score" placeholder="News score" value="{review.score or ''}"
-                 min="0" max="100"/>
-        </p>
-        <p>
-          <label for="summary">Summary</label>
-          <textarea name="summary" id="summary" placeholder="Review summary">{review.summary or ''}</textarea>
-        </p>
-
+      <form action="/raw/{review.id}" method="post">
+        {#include ReviewResource/formFields}{/include}
         <hr>
-
+        <h4>Original review</h4>
         <p>
           <label for="title">Review title</label>
-          <input type="text" name="title" id="title" placeholder="Review title" value="{review.title or ''}" disabled/>
+          <input type="text" name="title" id="title" placeholder="Review title" value="{review.title or ''}" disabled>
         </p>
         <p>
           <label for="date">Review publish date</label>
-          <input type="text" name="date" id="date" placeholder="Review publish date" value="{review.date or ''}" disabled/>
+          <input type="text" name="date" id="date" placeholder="Review publish date" value="{review.date or ''}" disabled>
         </p>
         <p>
           <label for="raw-review-content">Content</label>
           <textarea name="content" id="raw-review-content" rows="10"
-                    placeholder="It appears there was no review content to be found" disabled>{review.content or ''}</textarea>
+                    placeholder="" disabled>{review.content or 'The scraper did not extract any review content'}</textarea>
         </p>
-
-        <input type="hidden" name="id" id="id" value="{review.id or ''}" disabled/>
-
         <p>
-          <button type="submit">Submit</button>
+          <button type="submit" class="primary">Publish</button>
+        </p>
+      </form>
+      <form action="/raw/{review.id}/deny" method="post">
+        <p>
+          <button type="submit" title="Deny content from being published, for being irrelevant to the website">Mark irrelevant</button>
         </p>
       </form>
     </div>

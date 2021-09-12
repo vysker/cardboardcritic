@@ -1,0 +1,34 @@
+<p>
+  <label for="url">URL</label>
+  <input type="text" name="url" id="url" placeholder="Link to article" value="{review.url or ''}" autofocus>
+  <a href="{review.url or ''}" target="_blank">Visit original article</a>
+</p>
+<p>
+  <label for="game">Game</label>
+  <input type="text" name="game" id="game" placeholder="Game under review" value="{review.game or ''}" required>
+</p>
+<p>
+  <label for="critic">Critic</label>
+  <input type="text" name="critic" id="critic" placeholder="Article author" value="{review.critic or ''}">
+</p>
+<p>
+  <label for="outlet">Outlet</label>
+  <input type="text" name="outlet" id="outlet" placeholder="News outlet" value="{review.outlet or ''}">
+</p>
+<p>
+  <input type="radio" name="recommended" id="recommended1" value="true" checked>
+  <label for="recommended1">Recommended</label>
+</p>
+<p>
+  <input type="radio" name="recommended" id="recommended2" value="false">
+  <label for="recommended2">Not recommended</label>
+</p>
+<p>
+  <label for="score">Score</label>
+  <input type="number" name="score" id="score" placeholder="News score" value="{review.score or ''}"
+         min="0" max="100">
+</p>
+<p>
+  <label for="summary">Summary</label>
+  <textarea name="summary" id="summary" placeholder="Review summary">{review.summary or ''}</textarea>
+</p>

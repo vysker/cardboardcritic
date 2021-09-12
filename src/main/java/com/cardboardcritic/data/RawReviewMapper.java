@@ -6,5 +6,5 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "cdi")
 public interface RawReviewMapper {
-    RawReviewEditForm toTemplateData(RawReview data);
+    RawReviewEditForm toForm(RawReview data);
 }
