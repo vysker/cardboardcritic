@@ -1,34 +1,10 @@
 {#include base}
 {#main}
-<main>
-  <article>
-    <header>
-      <h1>Recent Games</h1>
-    </header>
-    <div class="content">
-      <ul class="card-list">
-        {#for game in games}
-        <li>
-          <div class="game card compact">
-            <!--  <div class="card-before"></div>-->
-            <div class="card-header">
-              <h4>{game.name}</h4>
-              <span class="card-subtitle">{game.releaseDate}</span>
-            </div>
-            <div class="card-content game-content">
-              {game.shortDescription}
-              <a href="/game/{game.slug}" class="game-link">Read reviews</a>
-            </div>
-            <div class="card-after">
-              <span>{game.score}</span>
-              <span>{game.recommended}%</span>
-            </div>
-          </div>
-        </li>
-        {/for}
-      </ul>
-    </div>
-  </article>
-</main>
+{#include single}
+{#title}Recent Releases{/title}
+{#content}
+{#include GameResource/list}{/include}
+{/content}
+{/include}
 {/main}
 {/include}

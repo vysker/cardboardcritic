@@ -1,8 +1,23 @@
 {#include base}
 {#main}
-{#include single}
-{#date}{/date}
-{#content}Welcome!{/content}
-{/include}
+<main>
+  <article>
+    <header>
+      <h1>Welcome</h1>
+    </header>
+    <div class="content">
+      <p>
+        Cardboard Critic is a review aggregrate for board games. We are small,
+        open-source, and crafted with love.
+      </p>
+    </div>
+  </article>
+  <article>
+    <header>
+      <h1>Recent Releases</h1>
+    </header>
+    <div class="content">{#include GameResource/list}{/include}</div>
+  </article>
+</main>
 {/main}
 {/include}
