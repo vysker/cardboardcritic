@@ -33,3 +33,4 @@
 * Embed video reviews
 * a11y
 * i18n
+* Studio and publisher info

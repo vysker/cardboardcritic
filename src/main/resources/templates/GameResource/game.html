@@ -3,22 +3,21 @@
 <main class="game">
   <article>
 
-    {#with game}
     <header>
-      <h1>{name or 'Untitled game'}</h1>
+      <h1>{game.name or 'Untitled game'}</h1>
 
       <div class="game-details">
         <div class="detail">
           <span class="detail-name">Release date</span>
-          <span class="detail-content date">{releaseDate or 'Unknown release date'}</span>
+          <span class="detail-content date">{game.releaseDate or 'Unknown release date'}</span>
         </div>
         <div class="detail">
           <span class="detail-name">Designer</span>
-          <span class="detail-content designer">{designer}</span>
+          <span class="detail-content designer">{game.designer}</span>
         </div>
         <div class="detail">
           <span class="detail-name">Short description</span>
-          <span class="detail-content short-description">{shortDescription}</span>
+          <span class="detail-content short-description">{game.shortDescription}</span>
         </div>
         <!--        <div class="detail">-->
         <!--          <span class="detail-name">Full description</span>-->
@@ -28,7 +27,7 @@
 
       <div class="stats">
         <div class="stat score-average">
-          {#include hex hexContent=score /}
+          {#include hex hexContent=game.score /}
           <details>
             <summary>Average score</summary>
             <p>Average of all critic scores. All scores are normalized to a 100-based point system before averaging.
@@ -37,7 +36,7 @@
         </div>
         <div class="stat score-median">
           <!-- TODO display median, instead of score -->
-          {#include hex hexContent=score /}
+          {#include hex hexContent=game.score /}
           <details>
             <summary>Median score</summary>
             <p>
@@ -47,7 +46,7 @@
           </details>
         </div>
         <div class="stat recommended">
-          {#include hex hexContent=recommended hexContentAfter="%" /}
+          {#include hex hexContent=game.recommended hexContentAfter="%" /}
           <details>
             <summary>Recommends</summary>
             <p>
@@ -58,7 +57,6 @@
         </div>
       </div>
     </header>
-    {/with}
 
     <div class="content">
       <div class="reviews">

@@ -11,17 +11,19 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.quarkus:quarkus-resteasy-jsonb'
+//    implementation 'io.quarkus:quarkus-resteasy-jsonb'
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    implementation 'io.quarkus:quarkus-scheduler'
-    implementation 'io.quarkus:quarkus-qute'
-    implementation 'io.quarkus:quarkus-resteasy'
-    implementation 'io.quarkus:quarkus-resteasy-qute'
-    implementation 'io.quarkus:quarkus-hibernate-orm-panache'
+//    implementation 'io.quarkus:quarkus-scheduler'
+    implementation 'io.quarkus:quarkus-resteasy-reactive'
+    implementation 'io.quarkus:quarkus-resteasy-reactive-qute'
+//    implementation 'io.quarkus:quarkus-vertx'
+    implementation 'io.smallrye.reactive:smallrye-mutiny-vertx-web-client'
+    implementation 'io.quarkus:quarkus-hibernate-reactive-panache'
     implementation 'io.quarkus:quarkus-flyway'
-    runtimeOnly 'io.quarkus:quarkus-jdbc-postgresql'
+    implementation 'io.quarkus:quarkus-jdbc-postgresql'
+    implementation 'io.quarkus:quarkus-reactive-pg-client'
 
-    quarkusDev 'io.quarkus:quarkus-jdbc-h2'
+//    quarkusDev 'io.quarkus:quarkus-jdbc-h2'
 
     implementation 'org.jsoup:jsoup:1.13.1'
     compileOnly 'org.postgresql:postgresql:42.2.14'

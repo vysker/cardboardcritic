@@ -1,19 +1,19 @@
 package com.cardboardcritic.web.template.form;
 
-import org.jboss.resteasy.annotations.jaxrs.FormParam;
+import org.jboss.resteasy.reactive.RestForm;
 
 public class RawReviewEditForm {
     private long id;
-    @FormParam private String game;
-    @FormParam private String critic;
-    @FormParam private String outlet;
-    @FormParam private String summary;
-    @FormParam private String url;
-    @FormParam private String title;
-    @FormParam private String content;
-    @FormParam private String date;
-    @FormParam private int score;
-    @FormParam private boolean recommended;
+    @RestForm private String game;
+    @RestForm private String critic;
+    @RestForm private String outlet;
+    @RestForm private String summary;
+    @RestForm private String url;
+    @RestForm private String title;
+    @RestForm private String content;
+    @RestForm private String date;
+    @RestForm private int score;
+    @RestForm private boolean recommended;
 
     public long getId() {
         return id;

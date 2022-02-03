@@ -2,6 +2,7 @@ package com.cardboardcritic.feed.crawler;
 
 import com.cardboardcritic.db.entity.RawReview;
 import com.cardboardcritic.feed.scraper.ArticleScraper;
+import io.smallrye.mutiny.Uni;
 import org.jsoup.nodes.Document;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public abstract class OutletCrawler {
         this.outlet = outlet;
     }
 
-    public abstract List<String> getArticleLinks();
+    public abstract Uni<List<String>> getArticleLinks();
 
     public RawReview getReview(String articleUrl) {
         final Document document = scraper.fetch(articleUrl);

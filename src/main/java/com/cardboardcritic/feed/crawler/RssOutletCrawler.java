@@ -1,18 +1,22 @@
 package com.cardboardcritic.feed.crawler;
 
+import com.cardboardcritic.feed.ScrapeException;
 import com.cardboardcritic.feed.scraper.ArticleScraper;
+import io.smallrye.mutiny.Uni;
+import io.vertx.mutiny.ext.web.client.HttpResponse;
+import io.vertx.mutiny.ext.web.client.WebClient;
+import io.vertx.mutiny.ext.web.codec.BodyCodec;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import javax.inject.Inject;
 import java.util.List;
 
 public class RssOutletCrawler extends OutletCrawler {
     private final String feedUrl;
+
+    @Inject
+    WebClient webClient;
 
     RssOutletCrawler(String outlet, ArticleScraper scraper, String feedUrl) {
         super(outlet, scraper);
@@ -20,18 +24,14 @@ public class RssOutletCrawler extends OutletCrawler {
     }
 
     @Override
-    public List<String> getArticleLinks() {
-        try {
-            final URI feedUri = URI.create(feedUrl);
-            final HttpRequest request = HttpRequest.newBuilder().uri(feedUri).build();
-            final String rssRaw = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
-
-            final Document document = Jsoup.parse(rssRaw, "", Parser.xmlParser());
-            return document.select("rss channel item link").eachText();
-        } catch (Exception e) {
-            final var message = "Failed to retrieve article links for outlet '%s' using feed url '%s', because: %s"
-                    .formatted(getOutlet(), feedUrl, e.getMessage());
-            throw new RuntimeException(message);
-        }
+    public Uni<List<String>> getArticleLinks() {
+        return webClient.get(feedUrl).as(BodyCodec.string()).send()
+                .map(HttpResponse::body)
+                .map(body -> Jsoup.parse(body, "", Parser.xmlParser()))
+                .map(document -> document.select("rss channel item link").eachText())
+//                .onItem().transformToMulti(urls -> Multi.createFrom().iterable(urls))
+                .onFailure().transform(e ->
+                        new ScrapeException("Failed to retrieve article links for outlet '%s' using feed url '%s', because: %s"
+                                .formatted(getOutlet(), feedUrl, e)));
     }
 }

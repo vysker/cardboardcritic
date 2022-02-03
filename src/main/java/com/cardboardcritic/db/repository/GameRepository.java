@@ -1,28 +1,27 @@
 package com.cardboardcritic.db.repository;
 
 import com.cardboardcritic.db.entity.Game;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.hibernate.reactive.panache.PanacheRepository;
+import io.smallrye.mutiny.Uni;
 
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class GameRepository implements PanacheRepository<Game> {
 
-    public Game findBySlug(String slug) {
+    public Uni<Game> findBySlug(String slug) {
         return find("slug", slug).firstResult();
     }
 
-    public Game findOrCreateByName(String name) {
-        return find("name", name).firstResultOptional()
-                .or(() -> find("slug", slugify(name)).firstResultOptional())
-                .orElseGet(() -> persistAndReturn(new Game()
-                        .setName(name)
-                        .setSlug(slugify(name))));
+    public Uni<Game> findOrCreateByName(String name) {
+        return find("name", name)
+                .firstResult()
+                .onFailure().recoverWithUni(() -> find("slug", slugify(name)).firstResult())
+                .onFailure().recoverWithUni(() -> persistAndReturn(new Game().setName(name).setSlug(slugify(name))));
     }
 
-    public Game persistAndReturn(Game game) {
-        persistAndFlush(game);
-        return game;
+    public Uni<Game> persistAndReturn(Game game) {
+        return persistAndFlush(game).map(v -> game);
     }
 
     public String slugify(String name) {

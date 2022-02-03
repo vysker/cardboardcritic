@@ -1,6 +1,8 @@
 package com.cardboardcritic.config;
 
 import com.cardboardcritic.feed.crawler.*;
+import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.ext.web.client.WebClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
@@ -19,5 +21,11 @@ public class CbcConfig {
                                               BoardGameQuestCrawler boardGameQuestCrawler,
                                               SusdCrawler susdCrawler) {
         return List.of(arsCrawler, eurogamerCrawler, diceTowerCrawler, boardGameQuestCrawler, susdCrawler);
+    }
+
+    @Produces
+    @ApplicationScoped
+    public WebClient webClient(Vertx vertx) {
+        return WebClient.create(vertx);
     }
 }

@@ -1,9 +1,6 @@
 package com.cardboardcritic.web;
 
 import com.cardboardcritic.data.ReviewMapper;
-import com.cardboardcritic.db.entity.Critic;
-import com.cardboardcritic.db.entity.Game;
-import com.cardboardcritic.db.entity.Outlet;
 import com.cardboardcritic.db.entity.Review;
 import com.cardboardcritic.db.repository.CriticRepository;
 import com.cardboardcritic.db.repository.GameRepository;
@@ -12,15 +9,12 @@ import com.cardboardcritic.db.repository.ReviewRepository;
 import com.cardboardcritic.web.template.form.ReviewEditForm;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
-import org.jboss.resteasy.annotations.Form;
-import org.jboss.resteasy.annotations.jaxrs.PathParam;
+import io.smallrye.mutiny.Uni;
+import org.jboss.resteasy.reactive.RestPath;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -56,33 +50,51 @@ public class ReviewResource {
     @GET
     @Path("{id}/edit")
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance edit(@PathParam long id) {
-        final Review review = reviewRepo.findById(id);
-        final ReviewEditForm reviewEditForm = reviewMapper.toForm(review);
-        return Templates.edit(reviewEditForm);
+    public Uni<TemplateInstance> edit(@RestPath long id) {
+        return reviewRepo.findById(id)
+                .map(reviewMapper::toForm)
+                .map(Templates::edit);
     }
 
     @Transactional
     @POST // html forms only support POST
     @Path("{id}/edit")
     @Produces(MediaType.TEXT_HTML)
-    public Response save(@PathParam("id") long id, @Form ReviewEditForm reviewForm) {
-        final Game game = gameRepo.findOrCreateByName(reviewForm.getGame());
-        final Critic critic = criticRepo.findOrCreateByName(reviewForm.getCritic());
-        final Outlet outlet = outletRepo.findOrCreateByName(reviewForm.getOutlet());
+    public Uni<Response> save(@RestPath long id, @BeanParam ReviewEditForm reviewForm) {
+//        return Uni.createFrom().item(Response.status(302).location(URI.create("/")).build()).await().indefinitely();
+        return reviewRepo.findById(id)
+                .chain(review -> gameRepo.findOrCreateByName(reviewForm.getGame())
+                        .chain(game -> criticRepo.findOrCreateByName(reviewForm.getCritic())
+                                .chain(critic -> outletRepo.findOrCreateByName(reviewForm.getOutlet())
+                                        .map(outlet -> review.setGame(game)
+                                                .setCritic(critic)
+                                                .setOutlet(outlet)
+                                                .setScore(reviewForm.getScore())
+                                                .setSummary(reviewForm.getSummary())
+                                                .setUrl(reviewForm.getUrl())
+                                                .setRecommended(reviewForm.isRecommended())))))
+                .flatMap(reviewRepo::persistAndFlush)
+                .map(review -> Response.seeOther(getRedirectUri(review)).build());
+//        return Uni.combine().all()
+//                .unis(gameRepo.findOrCreateByName(reviewForm.getGame()),
+//                        criticRepo.findOrCreateByName(reviewForm.getCritic()),
+//                        outletRepo.findOrCreateByName(reviewForm.getOutlet()),
+//                        reviewRepo.findById(id))
+//                .combinedWith((game, critic, outlet, review) ->
+//                        review.setGame(game)
+//                                .setCritic(critic)
+//                                .setOutlet(outlet)
+//                                .setScore(reviewForm.getScore())
+//                                .setSummary(reviewForm.getSummary())
+//                                .setUrl(reviewForm.getUrl())
+//                                .setRecommended(reviewForm.isRecommended()))
+//                .flatMap(r -> reviewRepo.getSession().flatMap(s -> s.merge(r)))
+////                .flatMap(reviewRepo::persistAndFlush)
+//                .map(review -> Response.seeOther(getRedirectUri(review)).build());
+    }
 
-        final Review review = reviewRepo.findById(id);
-        review.setGame(game)
-                .setCritic(critic)
-                .setOutlet(outlet)
-                .setScore(reviewForm.getScore())
-                .setSummary(reviewForm.getSummary())
-                .setUrl(reviewForm.getUrl())
-                .setRecommended(reviewForm.isRecommended());
-        reviewRepo.persistAndFlush(review);
-
-        return Response.status(302)
-                .location(URI.create("/game/" + game.getSlug()))
-                .build();
+    private URI getRedirectUri(Review review) {
+//        return URI.create("/game/" + review.getGame().getSlug());
+        return URI.create("/");
     }
 }

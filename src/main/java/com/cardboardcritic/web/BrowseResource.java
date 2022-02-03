@@ -4,6 +4,7 @@ import com.cardboardcritic.db.entity.Game;
 import com.cardboardcritic.service.GameService;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import io.smallrye.mutiny.Uni;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -27,8 +28,8 @@ public class BrowseResource {
     @GET
     @Path("recent")
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance recent() {
-        final List<Game> games = gameService.recent();
-        return Templates.recent(games);
+    public Uni<TemplateInstance> recent() {
+//        final Uni<List<Game>> games = gameService.recent()
+        return gameService.recent().map(Templates::recent);
     }
 }

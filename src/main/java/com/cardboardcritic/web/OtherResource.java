@@ -4,6 +4,7 @@ import com.cardboardcritic.db.entity.Game;
 import com.cardboardcritic.service.GameService;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import io.smallrye.mutiny.Uni;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -29,9 +30,9 @@ public class OtherResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance home() {
-        final List<Game> games = gameService.recent();
-        return Templates.home(games);
+    public Uni<TemplateInstance> home() {
+        final Uni<List<Game>> games = gameService.recent();
+        return games.map(Templates::home);
     }
 
     @GET
