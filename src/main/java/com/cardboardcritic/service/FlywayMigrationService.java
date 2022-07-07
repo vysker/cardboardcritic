@@ -18,6 +18,7 @@ public class FlywayMigrationService {
 
     public void migrate(@Observes StartupEvent event) {
         final Flyway flyway = Flyway.configure().dataSource("jdbc:" + url, username, password).load();
+        flyway.baseline();
         flyway.migrate();
     }
 }

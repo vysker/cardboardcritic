@@ -4,11 +4,11 @@ A board game critic aggregate.
 
 ## Dev
 
-**Build project on Windows** with `.\gradlew.bat`.
+**Build project on Windows** with `.\mvwn.cmd package`.
 
-**Build project on Linux** with `./gradlew`.
+**Build project on Linux** with `./mvnw package`.
 
-**Run project** with live-reload: `gradlew quarkusDev`.
+**Run project** with live-reload: `./mvnw quarkusDev`.
 
 ## Inner workings
 

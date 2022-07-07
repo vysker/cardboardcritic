@@ -3,7 +3,8 @@ services:
 
   db:
     image: postgres:13-alpine
-#    restart: always
     environment:
       POSTGRES_USER: cbc
       POSTGRES_PASSWORD: cbc
+    ports:
+      - "5555:5432"

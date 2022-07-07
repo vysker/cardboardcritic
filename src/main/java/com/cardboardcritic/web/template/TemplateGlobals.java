@@ -10,10 +10,10 @@ import javax.inject.Named;
 @Named("globals")
 public class TemplateGlobals {
     @ConfigProperty(name = "cbc.globals.baseUrl")
-    private String baseUrl;
+    String baseUrl;
 
     @ConfigProperty(name = "cbc.globals.siteTitle")
-    private String siteTitle;
+    String siteTitle;
 
     public String getBaseUrl() {
         return baseUrl;
