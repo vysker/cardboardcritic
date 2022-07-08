@@ -8,12 +8,12 @@
                 <span class="card-subtitle">{game.releaseDate}</span>
             </div>
             <div class="card-content game-content">
-                {game.shortDescription}
+                {!{game.shortDescription}!}
                 <a href="/game/{game.slug}" class="game-link">Read reviews</a>
             </div>
-            <div class="card-after">
+            <div class="card-after score-{#when game.score}{#is < 30}flat{#is < 60}fine{#is < 90}good{#else}best{/when}">
                 <span>{game.score}</span>
-                <span>{game.recommended}%</span>
+                {!<span>{game.recommended}%</span>!}
             </div>
         </div>
     </li>

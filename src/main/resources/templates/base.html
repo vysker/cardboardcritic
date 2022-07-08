@@ -7,8 +7,13 @@
   <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
-<div class="nav-container">{#include menu}{/include}</div>
+<header class="top-nav">
+  <div class="page-width">
+    {#include logo}{/}
+    {#include menu}{/include}
+  </div>
+</header>
 {#insert main}{/}
-<!-- footer -->
+{#include footer}{/}
 </body>
 </html>

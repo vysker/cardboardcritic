@@ -1,14 +1,21 @@
 * {
   box-sizing: border-box;
-  font-family: Palatino, Georgia, Times, serif;
+  font-family: var(--serif-font);
+  --serif-font: Palatino, Georgia, Times, serif;
+  --sans-font: Roboto, sans-serif;
   --main-width: 800px;
   --main-margin-vertical: 5rem;
   --main-padding-horizontal: auto;
-  --background: #f3f3f3;
+  --background: white;
   --line-height: 1.5rem;
-  --nav: #f7f7f7;
-  --card: #f7f7f7;
-  --font: #191919;
+  --brand-color: lightcoral;
+  --nav-font-color: white;
+  --card-bg: #white;
+  --font-color: #191919;
+  --score-flat-color: var(--brand-color);
+  --score-fine-color: salmon;
+  --score-good-color: lightsalmon;
+  --score-best-color: #937dc2;
   --divider: rgba(0, 0, 0, 0.1);
   --hex-height: 5rem;
   --hex-background: lightgrey;
@@ -22,7 +29,7 @@ body {
 }
 
 html, body, h1, h2, h3, h4, h5, h6, p {
-  color: var(--font);
+  color: var(--font-color);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -51,6 +58,28 @@ article {
   margin-bottom: 3rem;
 }
 
+footer {
+  width: 100%;
+  height: 240px;
+  padding: 2rem 0;
+  background-color: #191919;
+  border-top: 3px solid var(--divider);
+}
+footer span {
+  color: white;
+}
+footer .about {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+}
+footer .about img {
+  height: 40px;
+}
+footer .about span {
+  margin-top: 2rem;
+}
+
 /* main content */
 
 main {
@@ -66,13 +95,13 @@ main li {
 
 /* nav */
 
-.nav-container {
+header.top-nav {
   width: 100%;
-  background-color: var(--nav);
+  background-color: #191919;
   border-bottom: 3px solid var(--divider);
 }
 
-nav {
+header.top-nav div {
   display: flex;
   width: var(--main-width);
   height: 4rem;
@@ -81,15 +110,20 @@ nav {
   padding: 0 var(--main-padding-horizontal);
 }
 
-nav a.site-title {
-  font-family: Georgia, serif;
-  font-size: 2rem;
-  font-weight: bold;
-  text-decoration: none;
-  color: var(--font);
+header.top-nav a.site-title {
+  height: 50px;
+  margin-top: 8px;
+  /*  font-family: Georgia, serif;*/
+  /*  font-size: 2rem;*/
+  /*  font-weight: bold;*/
+  /*  text-decoration: none;*/
+  /*  color: var(--nav-font-color);*/
+}
+header.top-nav a.site-title img {
+  height: 50px;
 }
 
-nav div {
+header.top-nav nav {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
@@ -97,26 +131,27 @@ nav div {
 
 /* nav menu */
 
-nav ul {
+header.top-nav nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-nav ul li {
+header.top-nav nav ul li {
   display: inline-block;
   margin: 0 .5rem;
 }
-nav ul li:last-child {
+header.top-nav nav ul li:last-child {
   margin-right: 0;
 }
 
-nav ul li a {
+header.top-nav nav ul li a {
   display: block;
+  font-family: var(--sans-font);
   text-decoration: none;
-  color: var(--font);
+  color: var(--nav-font-color);
 }
-nav ul li a:hover {
+header.top-nav nav ul li a:hover {
   text-decoration: underline;
 }
 
@@ -128,7 +163,7 @@ label {
   text-transform: uppercase;
   font-size: .8rem;
   font-weight: bold;
-  font-family: 'Open Sans';
+  font-family: var(--sans-font);
 }
 input[type="radio"] + label {
   display: inline;
@@ -144,7 +179,7 @@ textarea {
   width: 100%;
   padding: 1rem;
   font-size: .9rem;
-  font-family: 'Open Sans';
+  font-family: var(--sans-font);
   background: lightgrey;
   border: none;
   border-radius: 5px;
@@ -157,7 +192,7 @@ textarea {
 button {
   padding: .7rem 1.4rem;
   font-size: 1rem;
-  font-family: 'Open Sans';
+  font-family: var(--sans-font);
   color: white;
   background: dimgray;
   border: none;
@@ -175,7 +210,7 @@ button.primary {
 
 .card {
   min-height: 4rem;
-  background-color: var(--card);
+  background-color: var(--card-bg);
   border-bottom: 3px solid var(--divider);
   padding: 1rem;
 }
@@ -187,6 +222,7 @@ button.primary {
 .card-header h5,
 .card-header h6 {
   margin: 0;
+  font-weight: bold;
 }
 
 /* card grid */
@@ -230,8 +266,25 @@ ul.card-list {
 .card.compact .card-after {
   width: 4rem;
   text-align: center;
-  background: var(--font);
-  color: white;
+  padding: 0;
+}
+.card.compact .card-after span {
+  font-family: var(--sans-font);
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: var(--font-color);
+}
+.card.compact .card-after.score-flat {
+  border-right: .5rem solid var(--score-flat-color);
+}
+.card.compact .card-after.score-fine {
+  border-right: .5rem solid var(--score-fine-color);
+}
+.card.compact .card-after.score-good {
+  border-right: .5rem solid var(--score-good-color);
+}
+.card.compact .card-after.score-best {
+  border-right: .5rem solid var(--score-best-color);
 }
 
 /* hexagon */
@@ -254,7 +307,7 @@ ul.card-list {
 .hex-center span {
   font-size: 2rem;
   font-weight: bold;
-  font-family: Georgia;
+  font-family: var(--serif-font);
 }
 
 .hex-side {
@@ -318,6 +371,21 @@ main.game .game-details .detail .detail-content {
   padding: 1rem;
   border-radius: 2px;
   background: lightgrey;
+}
+
+/* Home */
+
+section#topical {
+  display: grid;
+  grid-template-areas: "article article";
+  grid-gap: 2rem;
+}
+
+/* Generic */
+
+.page-width {
+  width: var(--main-width);
+  margin: 0 auto;
 }
 
 /* responsiveness */
