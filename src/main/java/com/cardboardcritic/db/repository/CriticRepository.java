@@ -10,12 +10,11 @@ import javax.enterprise.context.ApplicationScoped;
 public class CriticRepository implements PanacheRepository<Critic> {
 
     public Uni<Critic> findOrCreateByName(String name) {
-        return find("name", name)
-                .firstResult()
-                .onFailure().recoverWithUni(() -> persistAndReturn(new Critic().setName(name)));
+        return find("name", name).firstResult()
+                .onItem().ifNull().switchTo(persistAndReturn(new Critic().setName(name)));
     }
 
     public Uni<Critic> persistAndReturn(Critic critic) {
-        return persistAndFlush(critic).map(v -> critic);
+        return persist(critic).map(v -> critic);
     }
 }

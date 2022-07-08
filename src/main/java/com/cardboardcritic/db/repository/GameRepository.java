@@ -16,12 +16,12 @@ public class GameRepository implements PanacheRepository<Game> {
     public Uni<Game> findOrCreateByName(String name) {
         return find("name", name)
                 .firstResult()
-                .onFailure().recoverWithUni(() -> find("slug", slugify(name)).firstResult())
-                .onFailure().recoverWithUni(() -> persistAndReturn(new Game().setName(name).setSlug(slugify(name))));
+                .onItem().ifNull().switchTo(() -> find("slug", slugify(name)).firstResult())
+                .onItem().ifNull().switchTo((() -> persistAndReturn(new Game().setName(name).setSlug(slugify(name)))));
     }
 
     public Uni<Game> persistAndReturn(Game game) {
-        return persistAndFlush(game).map(v -> game);
+        return persist(game).map(v -> game);
     }
 
     public String slugify(String name) {

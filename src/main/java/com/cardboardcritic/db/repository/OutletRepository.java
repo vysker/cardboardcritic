@@ -11,10 +11,10 @@ public class OutletRepository implements PanacheRepository<Outlet> {
 
     public Uni<Outlet> findOrCreateByName(String name) {
         return find("name", name).firstResult()
-                .onFailure().recoverWithUni(() -> persistAndReturn(new Outlet().setName(name)));
+                .onItem().ifNull().switchTo(() -> persistAndReturn(new Outlet().setName(name)));
     }
 
     public Uni<Outlet> persistAndReturn(Outlet outlet) {
-        return persistAndFlush(outlet).map(v -> outlet);
+        return persist(outlet).map(v -> outlet);
     }
 }

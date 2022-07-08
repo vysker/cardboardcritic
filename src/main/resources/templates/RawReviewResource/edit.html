@@ -7,7 +7,7 @@
       <h1>Raw Review Edit</h1>
     </header>
     <div class="content">
-      <form action="/raw/{review.id}/edit" method="post">
+      <form action="/raw/{review.id}/edit" method="post" enctype="multipart/form-data">
         {#include ReviewResource/formFields}{/include}
         <hr>
         <h4>Original review</h4>
@@ -28,7 +28,7 @@
           <button type="submit" class="primary">Publish</button>
         </p>
       </form>
-      <form action="/raw/{review.id}/deny" method="post">
+      <form action="/raw/{review.id}/deny" method="post" enctype="multipart/form-data">
         <p>
           <button type="submit" title="Deny content from being published, for being irrelevant to the website">Mark irrelevant</button>
         </p>
