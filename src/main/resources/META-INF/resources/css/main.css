@@ -6,12 +6,13 @@
   --main-width: 800px;
   --main-margin-vertical: 5rem;
   --main-padding-horizontal: auto;
-  --background: white;
+  --background: #f7f7f7;
   --line-height: 1.5rem;
   --brand-color: lightcoral;
   --nav-font-color: white;
-  --card-bg: #white;
-  --font-color: #191919;
+  --card-bg: white;
+  --font-color: var(--kinda-black);
+  --kinda-black: #191919;
   --score-flat-color: var(--brand-color);
   --score-fine-color: salmon;
   --score-good-color: lightsalmon;
@@ -62,7 +63,7 @@ footer {
   width: 100%;
   height: 240px;
   padding: 2rem 0;
-  background-color: #191919;
+  background-color: var(--kinda-black);
   border-top: 3px solid var(--divider);
 }
 footer span {
@@ -97,7 +98,7 @@ main li {
 
 header.top-nav {
   width: 100%;
-  background-color: #191919;
+  background-color: var(--kinda-black);
   border-bottom: 3px solid var(--divider);
 }
 
@@ -265,14 +266,14 @@ ul.card-list {
 }
 .card.compact .card-after {
   width: 4rem;
-  text-align: center;
   padding: 0;
+  text-align: center;
+  background: var(--kinda-black);
 }
 .card.compact .card-after span {
   font-family: var(--sans-font);
   font-weight: bold;
-  font-size: 1.3rem;
-  color: var(--font-color);
+  color: white;
 }
 .card.compact .card-after.score-flat {
   border-right: .5rem solid var(--score-flat-color);
@@ -306,8 +307,7 @@ ul.card-list {
 }
 .hex-center span {
   font-size: 2rem;
-  font-weight: bold;
-  font-family: var(--serif-font);
+  font-family: var(--sans-font);
 }
 
 .hex-side {
