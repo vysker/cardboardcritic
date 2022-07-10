@@ -1,6 +1,8 @@
 package com.cardboardcritic.web;
 
 import com.cardboardcritic.feed.FeedService;
+import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
+import io.smallrye.mutiny.Uni;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -21,10 +23,12 @@ public class FeedResource {
     @GET
     @Path("all")
     @Produces(MediaType.TEXT_HTML)
-    public Response refresh() {
-        feedService.refresh();
-        return Response.status(302)
-                .location(URI.create("/browse"))
-                .build();
+    @ReactiveTransactional
+    public Uni<Response> refresh() {
+        return Uni.createFrom().item(
+                Response.status(302)
+                        .location(URI.create("/"))
+                        .build())
+                .call(x -> feedService.refresh());
     }
 }

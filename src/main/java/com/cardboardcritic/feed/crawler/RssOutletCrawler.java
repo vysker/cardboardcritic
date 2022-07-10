@@ -25,10 +25,11 @@ public class RssOutletCrawler extends OutletCrawler {
 
     @Override
     public Uni<List<String>> getArticleLinks() {
-        return webClient.get(feedUrl).as(BodyCodec.string()).send()
+        return webClient.getAbs(feedUrl).as(BodyCodec.string()).send()
                 .map(HttpResponse::body)
-                .map(body -> Jsoup.parse(body, "", Parser.xmlParser()))
-                .map(document -> document.select("rss channel item link").eachText())
+                .invoke(x -> System.out.println("sup"))
+                .map(body -> Jsoup.parse(body, "", Parser.xmlParser())
+                        .select("rss channel item link").eachText())
 //                .onItem().transformToMulti(urls -> Multi.createFrom().iterable(urls))
                 .onFailure().transform(e ->
                         new ScrapeException("Failed to retrieve article links for outlet '%s' using feed url '%s', because: %s"

@@ -1,6 +1,8 @@
 package com.cardboardcritic.feed;
 
 import com.cardboardcritic.db.repository.RawReviewRepository;
+import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
+import io.smallrye.mutiny.Uni;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -13,13 +15,11 @@ public record FeedService(CrawlerService crawlerService,
                           RawReviewRepository rawReviewRepository,
                           Logger log) {
 
-    //    @Scheduled(every = "2S") // 1D = every day
-//    @Transactional
-    public void refresh() {
+//    @Scheduled(every = "2S") // 1D = every day
+    @ReactiveTransactional
+    public Uni<Void> refresh() {
         log.info("Starting new review feed");
-        crawlerService.crawl();
-//        final List<RawReview> reviews = crawlerService.getNewReviews();
-//        rawReviewRepository.persist(reviews);
+        return crawlerService.crawl();
 //        log.infof("Finished feed. Scraped %d new reviews", reviews.size());
     }
 }

@@ -3,6 +3,7 @@ package com.cardboardcritic.db.entity;
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * A raw review represents an unprocessed review article from a news outlet. After processing, it becomes available on
@@ -138,5 +139,18 @@ public class RawReview extends PanacheEntityBase {
     public RawReview setProcessed(boolean processed) {
         this.processed = processed;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RawReview rawReview = (RawReview) o;
+        return score == rawReview.score && recommended == rawReview.recommended && processed == rawReview.processed && Objects.equals(id, rawReview.id) && Objects.equals(game, rawReview.game) && Objects.equals(critic, rawReview.critic) && Objects.equals(outlet, rawReview.outlet) && Objects.equals(summary, rawReview.summary) && Objects.equals(url, rawReview.url) && Objects.equals(title, rawReview.title) && Objects.equals(content, rawReview.content) && Objects.equals(date, rawReview.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, game, critic, outlet, summary, url, title, content, date, score, recommended, processed);
     }
 }
