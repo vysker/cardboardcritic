@@ -1,15 +1,11 @@
 <ul class="card-list">
     {#for game in games}
     <li>
-        <a href="/game/{game.slug}" class="game-link no-deco" title="Read reviews for {game.name}">
+        <a href="/game/{game.slug}" class="game-link no-deco" title="Read reviews for '{game.name}'">
             <div class="game card compact">
-                <!--  <div class="card-before"></div>-->
                 <div class="card-header">
-                        <h4>{game.name}</h4>
+                    <h4>{game.name}</h4>
                     <span class="card-subtitle">{game.releaseDate}</span>
-                </div>
-                <div class="card-content game-content">
-                    {!{game.shortDescription}!}
                 </div>
 
                 <div class="card-after score-{#when game.score}{#is < 30}flat{#is < 60}fine{#is < 90}good{#else}best{/when}">
