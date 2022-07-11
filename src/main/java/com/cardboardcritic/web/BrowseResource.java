@@ -1,7 +1,7 @@
 package com.cardboardcritic.web;
 
 import com.cardboardcritic.db.entity.Game;
-import com.cardboardcritic.service.GameService;
+import com.cardboardcritic.db.repository.GameRepository;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
 import io.smallrye.mutiny.Uni;
@@ -14,22 +14,22 @@ import java.util.List;
 
 @Path("browse")
 public class BrowseResource {
-    private final GameService gameService;
+    private final GameRepository gameRepository;
 
     @CheckedTemplate
     public static class Templates {
         public static native TemplateInstance recent(List<Game> games);
     }
 
-    public BrowseResource(GameService gameService) {
-        this.gameService = gameService;
+    public BrowseResource(GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
     }
 
     @GET
     @Path("recent")
     @Produces(MediaType.TEXT_HTML)
     public Uni<TemplateInstance> recent() {
-//        final Uni<List<Game>> games = gameService.recent()
-        return gameService.recent().map(Templates::recent);
+        return gameRepository.recent()
+                .map(Templates::recent);
     }
 }
