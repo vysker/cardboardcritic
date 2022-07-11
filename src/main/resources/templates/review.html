@@ -6,7 +6,10 @@
   </div>
   <div class="card-content review-content">
     <span><b>{score}/100, {recommended ? 'Play' : 'Nay'}</b></span>
-    <p>{summary or 'No summary available'}</p>
+    <details class="p">
+      <summary>Read more<br>{summary or 'No summary available'}</summary>
+      <p>{summary or 'No summary available'}</p>
+    </details>
     <a href="{url}" target="_blank" class="review-link">Read full review</a>
   </div>
 </div>

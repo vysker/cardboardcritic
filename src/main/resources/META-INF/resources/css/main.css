@@ -41,9 +41,11 @@ h1 { font-size: 2rem; }
 h2 { font-size: 1.6rem; }
 h3 { font-size: 1.2rem; }
 
+.p,
 p {
   font-size: 1.05rem;
   line-height: var(--line-height);
+  margin: 1.05rem 0;
 }
 
 hr {
@@ -392,6 +394,34 @@ main.game .media .no-cover-image {
   width: 180px;
   height: 180px;
   background: var(--card-bg);
+}
+
+/* Game page reviews */
+
+main.game .review-content details,
+main.game .review-content details p,
+main.game .review-content details summary {
+  overflow: hidden;
+  word-break: break-all;
+}
+main.game .review-content details p {
+  margin-top: 2px;
+}
+main.game .review-content details {
+  height: 100px;
+}
+main.game .review-content details[open] {
+  height: auto;
+  min-height: 100px;
+}
+main.game .review-content details[open] summary {
+  color: white;
+  height: var(--line-height);
+}
+main.game .review-content details[open] summary::before {
+  content: '\0025be  Read less';
+  margin-left: -10px;
+  color: var(--font-color);
 }
 
 /* Home */
