@@ -373,6 +373,23 @@ main.game .game-details .detail .detail-content {
   background: lightgrey;
 }
 
+/* Game page media */
+
+main.game .media .no-images {
+  display: flex;
+  justify-content: space-between;
+}
+
+main.game .media .no-image,
+main.game .media .no-cover-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+  height: 180px;
+  background: var(--card-bg);
+}
+
 /* Home */
 
 section#topical {

@@ -21,6 +21,7 @@ public class Game extends PanacheEntityBase implements HasName<Game> {
     private String description;
     private String designer;
     private String slug;
+    private String image;
     private LocalDate releaseDate;
 
     @OneToMany(mappedBy = "game")
@@ -98,6 +99,14 @@ public class Game extends PanacheEntityBase implements HasName<Game> {
     public Game setSlug(String slug) {
         this.slug = slug;
         return this;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public LocalDate getReleaseDate() {

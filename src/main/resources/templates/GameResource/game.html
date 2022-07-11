@@ -56,6 +56,20 @@
           </details>
         </div>
       </div>
+
+      <div class="media">
+        <h3>Media</h3>
+        {#if game.image}
+          <img src="{game.image}" alt="Cover image of {game.name}"/>
+        {#else}
+          <div class="no-images">
+            <div class="no-cover-image">No cover image</div>
+            <div class="no-image">No images</div>
+            <div class="no-image">No images</div>
+            <div class="no-image">No images</div>
+          </div>
+        {/if}
+      </div>
     </header>
 
     <div class="content">
