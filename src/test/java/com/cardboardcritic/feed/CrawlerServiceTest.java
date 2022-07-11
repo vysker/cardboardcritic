@@ -2,10 +2,10 @@ package com.cardboardcritic.feed;
 
 import com.cardboardcritic.db.entity.RawReview;
 import com.cardboardcritic.db.entity.Review;
+import com.cardboardcritic.db.repository.RawReviewRepository;
+import com.cardboardcritic.db.repository.ReviewRepository;
 import com.cardboardcritic.feed.crawler.OutletCrawler;
 import com.cardboardcritic.feed.crawler.RssOutletCrawler;
-import com.cardboardcritic.service.RawReviewService;
-import com.cardboardcritic.service.ReviewService;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.jboss.logging.Logger;
@@ -22,17 +22,17 @@ import static org.mockito.Mockito.when;
 
 public class CrawlerServiceTest {
     Logger log = Logger.getLogger(CrawlerServiceTest.class);
-    RawReviewService rawReviewService;
-    ReviewService reviewService;
+    RawReviewRepository rawReviewRepository;
+    ReviewRepository reviewRepository;
     OutletCrawler crawler;
     CrawlerService service;
 
     @BeforeEach
     public void setUp() {
         crawler = Mockito.mock(RssOutletCrawler.class);
-        rawReviewService = Mockito.mock(RawReviewService.class);
-        reviewService = Mockito.mock(ReviewService.class);
-        service = new CrawlerService(List.of(crawler), rawReviewService, reviewService, log);
+        rawReviewRepository = Mockito.mock(RawReviewRepository.class);
+        reviewRepository = Mockito.mock(ReviewRepository.class);
+        service = new CrawlerService(List.of(crawler), rawReviewRepository, reviewRepository, log);
     }
 
     @Test
@@ -42,9 +42,9 @@ public class CrawlerServiceTest {
         when(crawler.getReview(anyString()))
                 .thenReturn(new RawReview().setUrl("tuv"))
                 .thenReturn(new RawReview().setUrl("xyz"));
-        when(rawReviewService.visited(anyList()))
+        when(rawReviewRepository.visited(anyList()))
                 .thenReturn(uni(List.of(new RawReview().setUrl("abc"), new RawReview().setUrl("jkl"))));
-        when(reviewService.visited(anyList()))
+        when(reviewRepository.visited(anyList()))
                 .thenReturn(uni(List.of(new Review().setUrl("abc"))));
 
         service.crawl(crawler)
@@ -54,8 +54,8 @@ public class CrawlerServiceTest {
 
         Mockito.verify(crawler, times(1)).getReview("tuv");
         Mockito.verify(crawler, times(1)).getReview("xyz");
-        Mockito.verify(rawReviewService, times(1)).persist(new RawReview().setUrl("tuv"));
-        Mockito.verify(rawReviewService, times(1)).persist(new RawReview().setUrl("xyz"));
+        Mockito.verify(rawReviewRepository, times(1)).persist(new RawReview().setUrl("tuv"));
+        Mockito.verify(rawReviewRepository, times(1)).persist(new RawReview().setUrl("xyz"));
     }
 
     // Just a helper method

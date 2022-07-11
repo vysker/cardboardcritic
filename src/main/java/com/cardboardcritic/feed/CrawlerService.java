@@ -2,9 +2,9 @@ package com.cardboardcritic.feed;
 
 import com.cardboardcritic.db.entity.RawReview;
 import com.cardboardcritic.db.entity.Review;
+import com.cardboardcritic.db.repository.RawReviewRepository;
+import com.cardboardcritic.db.repository.ReviewRepository;
 import com.cardboardcritic.feed.crawler.OutletCrawler;
-import com.cardboardcritic.service.RawReviewService;
-import com.cardboardcritic.service.ReviewService;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import org.jboss.logging.Logger;
@@ -20,17 +20,17 @@ import java.util.stream.Stream;
  */
 @ApplicationScoped
 public record CrawlerService(List<OutletCrawler> outletCrawlers,
-                             RawReviewService rawReviewService,
-                             ReviewService reviewService,
+                             RawReviewRepository rawReviewRepository,
+                             ReviewRepository reviewRepository,
                              Logger log) {
 
     public CrawlerService(@Named("outletCrawlers") List<OutletCrawler> outletCrawlers,
-                          RawReviewService rawReviewService,
-                          ReviewService reviewService,
+                          RawReviewRepository rawReviewRepository,
+                          ReviewRepository reviewRepository,
                           Logger log) {
         this.outletCrawlers = outletCrawlers;
-        this.rawReviewService = rawReviewService;
-        this.reviewService = reviewService;
+        this.rawReviewRepository = rawReviewRepository;
+        this.reviewRepository = reviewRepository;
         this.log = log;
     }
 
@@ -46,8 +46,8 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
 
         return crawler.getArticleLinks()
                 .flatMap(linksFound -> {
-                    final Uni<List<RawReview>> visitedRawReviews$ = rawReviewService.visited(linksFound);
-                    final Uni<List<Review>> visitedReviews$ = reviewService.visited(linksFound);
+                    final Uni<List<RawReview>> visitedRawReviews$ = rawReviewRepository.visited(linksFound);
+                    final Uni<List<Review>> visitedReviews$ = reviewRepository.visited(linksFound);
 
                     return Uni.combine().all().unis(visitedRawReviews$, visitedReviews$)
                             .combinedWith((visitedRawReviews, visitedReviews) -> Stream.concat(
@@ -70,7 +70,7 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
                     }
                 })
                 .filter(Objects::nonNull)
-                .call(rawReviewService::persist)
+                .call(rawReviewRepository::persist)
                 .collect().asList()
                 .replaceWithVoid();
     }
