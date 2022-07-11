@@ -38,8 +38,8 @@ public class GameRepository implements PanacheRepository<Game> {
 
     public Uni<List<Game>> topOfYear() {
         final LocalDate firstDayOfThisYear = LocalDate.of(LocalDate.now().getYear(), 1, 1);
-        final Sort sortByScore = Sort.by("score", Sort.Direction.Descending);
-        return find("releaseDate >= ?1", sortByScore, firstDayOfThisYear)
+        final Sort sortByAverage = Sort.by("average", Sort.Direction.Descending);
+        return find("releaseDate >= ?1", sortByAverage, firstDayOfThisYear)
                 .page(Page.ofSize(10))
                 .list();
     }

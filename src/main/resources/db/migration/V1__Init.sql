@@ -5,7 +5,8 @@ create table game (
   description text,
   designer text,
   release_date date,
-  score int,
+  average int,
+  median int,
   recommended int,
   slug text
 );

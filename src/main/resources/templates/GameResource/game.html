@@ -27,7 +27,7 @@
 
       <div class="stats">
         <div class="stat score-average">
-          {#include hex hexContent=game.score /}
+          {#include hex hexContent=game.average /}
           <details>
             <summary>Average score</summary>
             <p>Average of all critic scores. All scores are normalized to a 100-based point system before averaging.
@@ -35,8 +35,7 @@
           </details>
         </div>
         <div class="stat score-median">
-          <!-- TODO display median, instead of score -->
-          {#include hex hexContent=game.score /}
+          {#include hex hexContent=game.median /}
           <details>
             <summary>Median score</summary>
             <p>

@@ -14,7 +14,8 @@ public class Game extends PanacheEntityBase implements HasName<Game> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int score;
+    private int average;
+    private int median;
     private int recommended;
     private String name;
     private String shortDescription;
@@ -36,13 +37,21 @@ public class Game extends PanacheEntityBase implements HasName<Game> {
         return this;
     }
 
-    public int getScore() {
-        return score;
+    public int getAverage() {
+        return average;
     }
 
-    public Game setScore(int score) {
-        this.score = score;
+    public Game setAverage(int average) {
+        this.average = average;
         return this;
+    }
+
+    public int getMedian() {
+        return median;
+    }
+
+    public void setMedian(int median) {
+        this.median = median;
     }
 
     public int getRecommended() {

@@ -8,8 +8,8 @@
                     <span class="card-subtitle">{game.releaseDate}</span>
                 </div>
 
-                <div class="card-after score-{#when game.score}{#is < 30}flat{#is < 60}fine{#is < 90}good{#else}best{/when}">
-                    <span>{game.score}</span>
+                <div class="card-after score-{#when game.average}{#is < 30}flat{#is < 60}fine{#is < 90}good{#else}best{/when}">
+                    <span>{game.average}</span>
                     {!<span>{game.recommended}%</span>!}
                 </div>
             </div>
