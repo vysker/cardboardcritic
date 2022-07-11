@@ -1,4 +1,4 @@
-package com.cardboardcritic.service;
+package com.cardboardcritic.db;
 
 import io.quarkus.runtime.StartupEvent;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
