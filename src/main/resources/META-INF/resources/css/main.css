@@ -81,7 +81,7 @@ footer .about span {
   margin-top: 2rem;
 }
 
-/* main content */
+/* Main content */
 
 main {
   width: var(--main-width);
@@ -94,7 +94,7 @@ main li {
   line-height: var(--line-height);
 }
 
-/* nav */
+/* Nav */
 
 header.top-nav {
   width: 100%;
@@ -130,7 +130,7 @@ header.top-nav nav {
   justify-content: flex-end;
 }
 
-/* nav menu */
+/* Nav menu */
 
 header.top-nav nav ul {
   list-style: none;
@@ -156,7 +156,7 @@ header.top-nav nav ul li a:hover {
   text-decoration: underline;
 }
 
-/* form */
+/* Form */
 
 label {
   display: block;
@@ -207,7 +207,7 @@ button.primary {
   background: rebeccapurple;
 }
 
-/* card */
+/* Card */
 
 .card {
   min-height: 4rem;
@@ -226,7 +226,7 @@ button.primary {
   font-weight: bold;
 }
 
-/* card grid */
+/* Card grid */
 
 .card-grid {
   display: grid;
@@ -234,7 +234,7 @@ button.primary {
   gap: 1rem;
 }
 
-/* card list */
+/* Card list */
 
 ul.card-list {
   list-style: none;
@@ -242,7 +242,7 @@ ul.card-list {
   padding: 0;
 }
 
-/* card list compact */
+/* Card list compact */
 
 .card.compact {
   display: flex;
@@ -288,7 +288,7 @@ ul.card-list {
   border-right: .5rem solid var(--score-best-color);
 }
 
-/* hexagon */
+/* Hexagon */
 
 .hex {
   display: flex;
@@ -322,7 +322,7 @@ ul.card-list {
   border-left: var(--hex-border);
 }
 
-/* game-page details */
+/* Game page details */
 
 main.game header h1 {
   text-align: center;
@@ -346,7 +346,7 @@ main.game .game-details .detail .detail-content {
   font-weight: bold;
 }
 
-/* game-page stats */
+/* Game page stats */
 
 .stats {
   display: flex;
@@ -405,7 +405,7 @@ section#topical {
   margin: 0 auto;
 }
 
-/* responsiveness */
+/* Responsiveness */
 
 @media only screen and (max-width: 1100px) {
   * {
