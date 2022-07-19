@@ -9,7 +9,7 @@
       <div class="game-details">
         <div class="detail">
           <span class="detail-name">Release date</span>
-          <span class="detail-content date">{game.releaseDate.format('d MMM uuuu') or 'No release date'}</span>
+          <span class="detail-content date">{time:format(game.releaseDate, 'd MMM uuuu') or 'No release date'}</span>
         </div>
         <div class="detail">
           <span class="detail-name">Designer</span>

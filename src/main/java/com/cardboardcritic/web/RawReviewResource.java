@@ -102,9 +102,7 @@ public class RawReviewResource {
                                 .setRecommended(rawReview.recommended))
                 .flatMap(reviewRepo::persist)
                 .flatMap(x -> rawReviewRepo.update("processed = true where id = ?1", id))
-                .map(x -> Response.status(302)
-                        .location(URI.create("/raw"))
-                        .build());
+                .map(x -> Response.seeOther(URI.create("/raw")).build());
     }
 
     @POST
@@ -114,8 +112,6 @@ public class RawReviewResource {
     @ReactiveTransactional
     public Uni<Response> deny(@RestPath long id) {
         return rawReviewRepo.update("processed = true where id = ?1", id)
-                .map(x -> Response.status(302)
-                        .location(URI.create("/raw"))
-                        .build());
+                .map(x -> Response.seeOther(URI.create("/raw")).build());
     }
 }
