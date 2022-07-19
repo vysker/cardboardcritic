@@ -41,3 +41,10 @@ insert into raw_review (
   values
   ('Abc', 'Herb Bergerstern', null, false, 0, null, 'We like Anachrony', 'Lorem ipsum', '2017-01-01', null, false)
   ;
+
+-- Password hashes can be generated with UserRepositoryTest
+insert into users (
+  username, password, role)
+  values
+  ('admin', '$2a$10$YlTxbCDSZ1ThYC7kS0Dqb.CCKi2i08euy8Ltl/tOpoKMt23kyeQyO', 'admin') -- Password: admin
+  ;

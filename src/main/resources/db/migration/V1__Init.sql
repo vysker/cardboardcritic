@@ -47,3 +47,11 @@ create table raw_review (
   url text,
   processed boolean default false
 );
+
+-- This is plural, because "user" is a reserved keyword
+create table users (
+    id serial primary key,
+    username text,
+    password text,
+    role text
+);

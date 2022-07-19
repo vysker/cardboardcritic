@@ -27,6 +27,8 @@ public class OtherResource {
         public static native TemplateInstance home(List<Game> recent, List<Game> topOfYear);
 
         public static native TemplateInstance about();
+
+        public static native TemplateInstance error();
     }
 
     @GET
@@ -44,5 +46,12 @@ public class OtherResource {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance about() {
         return Templates.about().data(Collections.emptyMap());
+    }
+
+    @GET
+    @Path("error")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance error() {
+        return Templates.error();
     }
 }
