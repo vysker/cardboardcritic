@@ -12,6 +12,7 @@ jobs:
     secrets: inherit
 
   publish:
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
