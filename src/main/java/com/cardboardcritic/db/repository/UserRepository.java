@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 
 @ApplicationScoped
 public class UserRepository implements PanacheRepository<User> {
-    @ConfigProperty(name = "cbc.password-salt")
+    @ConfigProperty(name = "cbc.password.salt")
     String salt;
 
     public Uni<User> create(User user) {

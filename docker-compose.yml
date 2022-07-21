@@ -1,10 +1,18 @@
 version: '3.1'
 services:
 
+  app:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+
   db:
     image: postgres:13-alpine
-    environment:
-      POSTGRES_USER: cbc
-      POSTGRES_PASSWORD: cbc
+    env_file:
+      - .env
     ports:
       - "5555:5432"
