@@ -1,12 +1,15 @@
+[![Build & Test](https://github.com/vysker/cardboardcritic/actions/workflows/maven.yml/badge.svg)](https://github.com/vysker/cardboardcritic/actions/workflows/maven.yml)
+[![Docker](https://github.com/vysker/cardboardcritic/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/vysker/cardboardcritic/actions/workflows/docker-publish.yml)
+
 # Cardboard Critic
 
 A board game critic aggregate.
 
 ## Dev
 
-**Build project on Windows** with `.\mvwn.cmd package`.
+**Create a .env**, e.g. by copying `.env.example`.
 
-**Build project on Linux** with `./mvnw package`.
+**Build project** with `./mvnw package` (`mvwn.cmd package` on Windows).
 
 **Run project** with live-reload: `./mvnw quarkusDev`.
 
