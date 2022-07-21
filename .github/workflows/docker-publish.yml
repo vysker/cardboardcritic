@@ -8,7 +8,7 @@ env:
 
 jobs:
   build:
-    uses: https://github.com/vysker/cardboardcritic/edit/main/.github/workflows/maven.yml@main
+    uses: ./.github/workflows/maven.yml
     secrets: inherit
 
   publish:
