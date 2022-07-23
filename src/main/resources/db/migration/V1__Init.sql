@@ -8,7 +8,8 @@ create table game (
   average int,
   median int,
   recommended int,
-  slug text
+  slug text,
+  image text
 );
 
 create table critic (
