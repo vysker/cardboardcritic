@@ -7,11 +7,15 @@ A board game critic aggregate.
 
 ## Dev
 
+Note: use `mvnw.cmd` on Windows.
+
 **Create a .env**, e.g. by copying `.env.example`.
 
-**Build project** with `./mvnw package` (`mvwn.cmd package` on Windows).
+**Build project** with `./mvnw package`.
 
 **Run project** with live-reload: `./mvnw quarkusDev`.
+
+**Build native image** with `./mvnw package -P native`
 
 ## Inner workings
 
@@ -30,6 +34,25 @@ A board game critic aggregate.
   * filtering out links that have already been crawled;
   * calling the appropriate scrapers
   * storing the resulting reviews
+
+## Hosting
+
+* Host a machine with docker & docker-compose installed
+* Run the following steps from that machine
+* Git clone this repository
+* Authenticate with the github package registry (ghcr.io), see [guide](
+  https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry)
+* Create a .env file, see .env.example in this repository
+* Run `docker compose -f docker-compose-prod.yml up -d db`
+* Run `docker compose -f docker-compose-prod.yml up flyway`
+* Run `docker compose -f docker-compose-prod.yml up -d app`
+
+### Updates
+
+* Git pull
+* Run `docker compose -f docker-compose-prod.yml up flyway`
+* Update docker image with: `docker pull ghcr.io/vysker/cardboardcritic:main`
+or `docker compose -f docker-compose-prod.yml up --pull app`
 
 ## Roadmap
 
