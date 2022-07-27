@@ -25,7 +25,10 @@ public class GameRepository implements PanacheRepository<Game> {
     }
 
     public String slugify(String name) {
-        return name.toLowerCase().replaceAll(" ", "-");
+        return name.toLowerCase()
+                .replaceAll("\\W", "-") // Remove non-word characters
+                .replaceAll("-+", "-") // Remove sequences of multiple dashes, i.e. "--" -> "-"
+                .replaceAll("(^-+|-+$)", ""); // Remove leading and trailing dashes
     }
 
     public Uni<List<Game>> recent() {
