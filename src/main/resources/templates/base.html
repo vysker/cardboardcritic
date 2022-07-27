@@ -8,9 +8,17 @@
 </head>
 <body>
 <header class="top-nav">
-  <div class="page-width">
+  <div class="nav-inner page-width">
     {#include logo}{/}
-    {#include menu}{/include}
+    <div id="desktop-menu">
+      {#include menu}{/include}
+    </div>
+    <div id="mobile-menu">
+      <details>
+        <summary>Menu</summary>
+        {#include menu}{/include}
+      </details>
+    </div>
   </div>
 </header>
 {#insert main}{/}

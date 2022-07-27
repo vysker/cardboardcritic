@@ -1,20 +1,21 @@
 <ul class="card-list">
   {#for review in reviews}
-  <li>
+    <li>
     <div class="review card compact">
       <!--  <div class="card-before"></div>-->
       <div class="card-header">
-        <h4>{review.outlet}</h4>
+        <h4>{review.outlet ?: 'Unknown outlet'}</h4>
         <span class="card-subtitle">{review.critic}</span>
       </div>
       <div class="card-content review-content">
-        {review.title}
+        <p>{review.title ?: 'No title'}</p>
         <a href="/raw/{review.id}/edit" class="raw-review-edit-link">Edit</a>
       </div>
       <div class="card-after">
         <span>{review.processed ? 'done' : 'to do'}</span>
       </div>
     </div>
+
     <details>
       <summary>Preview</summary>
       <div class="card-grid">
@@ -27,6 +28,6 @@
           url=review.url}{/include}
       </div>
     </details>
-  </li>
+    </li>
   {/for}
 </ul>

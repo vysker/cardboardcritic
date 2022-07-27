@@ -1,8 +1,8 @@
 <div class="review card">
 <!--  <div class="card-before"></div>-->
   <div class="card-header">
-    <h2>{outlet}</h2>
-    <span class="card-subtitle">{critic}</span>
+    <h2>{outlet ?: 'Unknown outlet'}</h2>
+    <span class="card-subtitle">{critic ?: 'Unknown critic'}</span>
   </div>
   <div class="card-content review-content">
     <span><b>{score}/100, {recommended ? 'Play' : 'Nay'}</b></span>

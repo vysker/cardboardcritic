@@ -1,6 +1,4 @@
-* {
-  box-sizing: border-box;
-  font-family: var(--serif-font);
+:root {
   --serif-font: Palatino, Georgia, Times, serif;
   --sans-font: Roboto, sans-serif;
   --main-width: 800px;
@@ -22,6 +20,11 @@
   --hex-background: lightgrey;
   --hex-border: calc(var(--hex-height)/4) solid var(--hex-background);
   --hex-border-invis: calc(var(--hex-height)/2) solid transparent;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: var(--serif-font);
 }
 
 body {
@@ -98,13 +101,17 @@ main li {
 
 /* Nav */
 
+#mobile-menu {
+  display: none;
+}
+
 header.top-nav {
   width: 100%;
   background-color: var(--kinda-black);
   border-bottom: 3px solid var(--divider);
 }
 
-header.top-nav div {
+header.top-nav .nav-inner {
   display: flex;
   width: var(--main-width);
   height: 4rem;
@@ -168,7 +175,7 @@ label {
   font-weight: bold;
   font-family: var(--sans-font);
 }
-input[type="radio"] + label {
+input[type=radio] + label {
   display: inline;
   margin-left: .5rem;
   font-size: 1rem;
@@ -176,8 +183,9 @@ input[type="radio"] + label {
   font-weight: normal;
 }
 
-input[type="text"],
-input[type="number"],
+input[type=text],
+input[type=number],
+input[type=password],
 textarea {
   width: 100%;
   padding: 1rem;
@@ -202,7 +210,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
-button[type="submit"] {
+button[type=submit] {
   width: 100%;
 }
 button.primary {
@@ -304,7 +312,8 @@ ul.card-list {
 .hex-center {
   display: flex;
   flex-direction: column;
-  min-width: calc(var(--hex-height)*.75);
+  /* Should be min-width, perhaps, but elongated hexes are ugly */
+  width: calc(var(--hex-height)*.75);
   height: var(--hex-height);
   justify-content: center;
   align-items: center;
@@ -330,25 +339,25 @@ ul.card-list {
 
 /* Game page details */
 
-main.game header h1 {
+main#game header h1 {
   text-align: center;
 }
-main.game .game-details {
+main#game .game-details {
   display: flex;
   justify-content: space-between;
   width: 75%;
   margin: 2rem auto 2rem auto;
 }
-main.game .game-details .detail {
+main#game .game-details .detail {
   display: flex;
   flex-direction: column;
   text-align: center;
   width: 33%;
 }
-main.game .game-details .detail .detail-name {
+main#game .game-details .detail .detail-name {
   font-size: .8rem;
 }
-main.game .game-details .detail .detail-content {
+main#game .game-details .detail .detail-content {
   font-weight: bold;
 }
 
@@ -381,44 +390,44 @@ main.game .game-details .detail .detail-content {
 
 /* Game page media */
 
-main.game .media .no-images {
+main#game .media .no-images {
   display: flex;
   justify-content: space-between;
 }
 
-main.game .media .no-image,
-main.game .media .no-cover-image {
+main#game .media .no-image {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 180px;
   height: 180px;
   background: var(--card-bg);
+  flex-shrink: 0;
 }
 
 /* Game page reviews */
 
-main.game .review-content details,
-main.game .review-content details p,
-main.game .review-content details summary {
+main#game .review-content details,
+main#game .review-content details p,
+main#game .review-content details summary {
   overflow: hidden;
   word-break: break-all;
 }
-main.game .review-content details p {
+main#game .review-content details p {
   margin-top: 2px;
 }
-main.game .review-content details {
+main#game .review-content details {
   height: 100px;
 }
-main.game .review-content details[open] {
+main#game .review-content details[open] {
   height: auto;
   min-height: 100px;
 }
-main.game .review-content details[open] summary {
+main#game .review-content details[open] summary {
   color: white;
   height: var(--line-height);
 }
-main.game .review-content details[open] summary::before {
+main#game .review-content details[open] summary::before {
   content: '\0025be  Read less';
   margin-left: -10px;
   color: var(--font-color);
@@ -447,31 +456,86 @@ section#topical {
 /* Responsiveness */
 
 @media only screen and (max-width: 1100px) {
-  * {
+  :root {
     --main-width: 100%;
-    --main-padding-horizontal: 2rem;
+  }
+
+  main#game .game-details {
+    width: auto;
   }
 }
 
 @media only screen and (max-width: 520px) {
-  nav {
-    flex-direction: column;
-    height: 8rem;
+  :root {
+    --main-margin-vertical: 1rem;
+    --main-padding-horizontal: 1rem;
   }
 
-  nav a.site-title {
-    margin: 0 auto;
+  /* Nav */
+  #desktop-menu {
+    display: none;
   }
-
-  nav div {
-    justify-content: space-around;
+  #mobile-menu {
+    display: block;
+    width: 100%;
   }
-
-  /* nav ul li {
-    height: 2rem;
-    line-height: 2rem;
-    padding: 0 0.8rem;
-    background-color: #efefef;
+  #mobile-menu summary {
+    text-align: right;
+    color: var(--nav-font-color);
+  }
+  header.top-nav nav {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: fit-content;
+    padding: 1rem;
+    left: 0;
+    z-index: 2;
+    background: white;
+  }
+  header.top-nav nav ul li {
+    background: var(--kinda-black);
+    width: 100%;
+    height: 3rem;
+    line-height: 3rem;
+    margin: 0;
+    padding: 0 1rem;
     border-radius: 0.2rem;
-  } */
+  }
+
+  /* Card */
+  .card-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .card.compact .card-header {
+    min-width: 10rem;
+  }
+
+  /* Generic */
+  section#topical {
+    display: inherit;
+  }
+
+  footer {
+    padding: 2rem;
+  }
+
+  /* Game reviews page */
+  main#game .stats {
+    margin-bottom: 2rem;
+  }
+  main#game .media .no-images {
+    overflow-x: scroll;
+  }
+  main#game .media .no-image {
+    margin-right: 1rem;
+  }
+  main#game .media .no-image:last-child {
+    margin-right: 0;
+  }
+
+  /* Raw reviews page */
+  main#raw-reviews .review-content p {
+    display: none;
+  }
 }
