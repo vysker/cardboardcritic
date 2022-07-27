@@ -13,7 +13,9 @@ import io.quarkus.qute.TemplateInstance;
 import io.smallrye.mutiny.Uni;
 import org.jboss.resteasy.reactive.RestPath;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -24,6 +26,7 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 
 @Path("review")
+@RolesAllowed("admin")
 public class ReviewResource {
     private final ReviewRepository reviewRepo;
     private final GameRepository gameRepo;
@@ -62,10 +65,10 @@ public class ReviewResource {
 
     @POST // Should be PATCH, but HTML forms only support POST
     @Path("{id}/edit")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     @ReactiveTransactional
-    public Uni<Response> save(@RestPath long id, ReviewEditForm reviewForm) {
+    public Uni<Response> save(@RestPath long id, @BeanParam ReviewEditForm reviewForm) {
         return reviewRepo.findById(id)
                 .chain(review -> gameRepo.findOrCreateByName(reviewForm.game)
                         .chain(game -> criticRepo.findOrCreateByName(reviewForm.critic)

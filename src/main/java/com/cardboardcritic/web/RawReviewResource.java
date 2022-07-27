@@ -16,10 +16,12 @@ import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactiona
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
 import io.smallrye.mutiny.Uni;
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestPath;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -31,7 +33,10 @@ import java.net.URI;
 import java.util.List;
 
 @Path("raw")
+@RolesAllowed("admin")
 public class RawReviewResource {
+    private static final Logger log = Logger.getLogger(RawReviewResource.class);
+
     private final RawReviewRepository rawReviewRepo;
     private final ReviewRepository reviewRepo;
     private final GameRepository gameRepo;
@@ -63,29 +68,29 @@ public class RawReviewResource {
         this.outletRepo = outletRepo;
     }
 
-    @Transactional
     @GET
     @Produces(MediaType.TEXT_HTML)
+    @ReactiveTransactional
     public Uni<TemplateInstance> index() {
         return rawReviewRepo.listAll().map(Templates::index);
     }
 
-    @Transactional
     @GET
     @Path("{id}/edit")
     @Produces(MediaType.TEXT_HTML)
+    @ReactiveTransactional
     public Uni<TemplateInstance> edit(@RestPath long id) {
         return rawReviewRepo.findById(id)
                 .map(rawReviewMapper::toForm)
                 .map(Templates::edit);
     }
 
-    @POST
+    @POST // Should be PATCH, but HTML forms only support POST
     @Path("{id}/edit")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     @ReactiveTransactional
-    public Uni<Response> save(@RestPath long id, RawReviewEditForm rawReview) {
+    public Uni<Response> save(@RestPath long id, @BeanParam RawReviewEditForm rawReview) {
         final Uni<Game> game$ = gameRepo.findOrCreateByName(rawReview.game);
         final Uni<Critic> critic$ = criticRepo.findOrCreateByName(rawReview.critic);
         final Uni<Outlet> outlet$ = outletRepo.findOrCreateByName(rawReview.outlet);
@@ -107,7 +112,7 @@ public class RawReviewResource {
 
     @POST
     @Path("{id}/deny")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     @ReactiveTransactional
     public Uni<Response> deny(@RestPath long id) {
