@@ -17,6 +17,8 @@ Note: use `mvnw.cmd` on Windows.
 
 **Build native image** with `./mvnw package -P native`
 
+**Push native image** with `docker push ghcr.io/vysker/cardboardcritic:latest-native`
+
 ## Inner workings
 
 ### Domain objects
@@ -43,16 +45,16 @@ Note: use `mvnw.cmd` on Windows.
 * Authenticate with the github package registry (ghcr.io), see [guide](
   https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry)
 * Create a .env file, see .env.example in this repository
-* Run `docker compose -f docker-compose-prod.yml up -d db`
-* Run `docker compose -f docker-compose-prod.yml up flyway`
-* Run `docker compose -f docker-compose-prod.yml up -d app`
+* Run `docker compose up -d db`
+* Run `docker compose up flyway`
+* Run `docker compose up -d app`
 
 ### Updates
 
-* Git pull
-* Run `docker compose -f docker-compose-prod.yml up flyway`
+* Run `git pull`
+* Run `docker compose up flyway`
 * Update docker image with: `docker pull ghcr.io/vysker/cardboardcritic:main`
-or `docker compose -f docker-compose-prod.yml up --pull app`
+or `docker compose build --pull app`
 
 ## Roadmap
 

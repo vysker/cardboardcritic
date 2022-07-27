@@ -171,7 +171,9 @@
                 <quarkus.package.type>native</quarkus.package.type>
                 <quarkus.native.container-build>true</quarkus.native.container-build>
                 <quarkus.container-image.build>true</quarkus.container-image.build>
-                <quarkus.container-image.additional-tags>${version}-native</quarkus.container-image.additional-tags>
+                <quarkus.container-image.registry>ghcr.io</quarkus.container-image.registry>
+                <quarkus.container-image.group>vysker</quarkus.container-image.group>
+                <quarkus.container-image.tag>${version}-native</quarkus.container-image.tag>
                 <quarkus.container-image.additional-tags>latest-native</quarkus.container-image.additional-tags>
             </properties>
         </profile>

@@ -2,17 +2,23 @@ version: '3.1'
 services:
 
   app:
-    build:
-      context: .
-      dockerfile: src/main/docker/Dockerfile.jvm
+    image: ghcr.io/vysker/cardboardcritic:latest-native
     env_file:
       - .env
     ports:
       - "8080:8080"
 
   db:
-    image: postgres:13-alpine
+    image: postgres:14-alpine
     env_file:
       - .env
     ports:
-      - "5555:5432"
+      - "5432:5432"
+
+  flyway:
+    image: flyway/flyway
+    command: -url="jdbc:$QUARKUS_DATASOURCE_REACTIVE_URL" -user="$POSTGRES_USER" -password="$POSTGRES_PASSWORD" -baselineVersion=0 -baselineOnMigrate=true migrate
+    volumes:
+      - ./src/main/resources/db/migration:/flyway/sql
+    env_file:
+      - .env
