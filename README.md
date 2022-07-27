@@ -48,12 +48,13 @@ Note: use `mvnw.cmd` on Windows.
 * Run `docker compose up -d db`
 * Run `docker compose up flyway`
 * Run `docker compose up -d app`
+* Add nginx and configure a reverse proxy, see `./nginx.conf.example`
 
 ### Updates
 
 * Run `git pull`
 * Run `docker compose up flyway`
-* Update docker image with: `docker pull ghcr.io/vysker/cardboardcritic:main`
+* Update docker image with: `docker pull ghcr.io/vysker/cardboardcritic:latest-native`
 or `docker compose build --pull app`
 
 ## Roadmap
