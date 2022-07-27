@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ArsArticleScraper extends ArticleScraper {
 
     @Override
-    public RawReview getReview(String articleUrl, Document document) {
+    public Uni<RawReview> getReview(String articleUrl, Document document) {
         // we are only interested in the content on the final page, since that is usually where the summary is
         final String finalPageUrl = getFinalPageUrl(document);
         if (finalPageUrl != null && !finalPageUrl.equals(articleUrl))
