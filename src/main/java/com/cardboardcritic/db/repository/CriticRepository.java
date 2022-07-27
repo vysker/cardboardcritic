@@ -11,10 +11,6 @@ public class CriticRepository implements PanacheRepository<Critic> {
 
     public Uni<Critic> findOrCreateByName(String name) {
         return find("name", name).firstResult()
-                .onItem().ifNull().switchTo(persistAndReturn(new Critic().setName(name)));
-    }
-
-    public Uni<Critic> persistAndReturn(Critic critic) {
-        return persist(critic).map(v -> critic);
+                .onItem().ifNull().switchTo(persist(new Critic().setName(name)));
     }
 }

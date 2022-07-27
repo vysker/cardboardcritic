@@ -40,8 +40,8 @@ public class CrawlerServiceTest {
         when(crawler.getArticleLinks())
                 .thenReturn(uni(List.of("abc", "jkl", "tuv", "xyz")));
         when(crawler.getReview(anyString()))
-                .thenReturn(new RawReview().setUrl("tuv"))
-                .thenReturn(new RawReview().setUrl("xyz"));
+                .thenReturn(uni(new RawReview().setUrl("tuv")))
+                .thenReturn(uni(new RawReview().setUrl("xyz")));
         when(rawReviewRepository.visited(anyList()))
                 .thenReturn(uni(List.of(new RawReview().setUrl("abc"), new RawReview().setUrl("jkl"))));
         when(reviewRepository.visited(anyList()))

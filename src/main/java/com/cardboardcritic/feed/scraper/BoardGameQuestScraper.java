@@ -4,6 +4,7 @@ import com.cardboardcritic.db.entity.RawReview;
 import com.cardboardcritic.feed.ScrapeException;
 import com.cardboardcritic.util.ScraperUtil;
 import com.cardboardcritic.util.StringUtil;
+import io.smallrye.mutiny.Uni;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -13,7 +14,7 @@ import javax.enterprise.context.ApplicationScoped;
 public class BoardGameQuestScraper extends ArticleScraper {
 
     @Override
-    public RawReview getReview(String articleUrl, Document document) throws ScrapeException {
+    public Uni<RawReview> getReview(String articleUrl, Document document) throws ScrapeException {
         final Element body = document.select("div[itemprop=reviewBody]").first();
         final String title = document.select("meta[property=og:title]").attr("content"); // alternatively use "header h1.entry-title"
         final String date = document.select("header time").attr("datetime");
@@ -42,7 +43,7 @@ public class BoardGameQuestScraper extends ArticleScraper {
             content = body.wholeText();
         }
 
-        return new RawReview()
+        final var review = new RawReview()
                 .setGame(game)
                 .setDate(StringUtil.formatDateTime(date))
                 .setTitle(title)
@@ -50,5 +51,6 @@ public class BoardGameQuestScraper extends ArticleScraper {
                 .setContent(content)
                 .setScore(ScraperUtil.normalizeScore(score, 5f))
                 .setUrl(articleUrl);
+        return Uni.createFrom().item(review);
     }
 }

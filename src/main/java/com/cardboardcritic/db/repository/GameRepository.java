@@ -21,11 +21,7 @@ public class GameRepository implements PanacheRepository<Game> {
         return find("name", name)
                 .firstResult()
                 .onItem().ifNull().switchTo(() -> find("slug", slugify(name)).firstResult())
-                .onItem().ifNull().switchTo((() -> persistAndReturn(new Game().setName(name).setSlug(slugify(name)))));
-    }
-
-    public Uni<Game> persistAndReturn(Game game) {
-        return persist(game).map(v -> game);
+                .onItem().ifNull().switchTo((() -> persist(new Game().setName(name).setSlug(slugify(name)))));
     }
 
     public String slugify(String name) {

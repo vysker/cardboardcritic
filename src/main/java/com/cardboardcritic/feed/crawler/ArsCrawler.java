@@ -8,6 +8,6 @@ import javax.inject.Singleton;
 public class ArsCrawler extends RssOutletCrawler {
 
     public ArsCrawler(ArsArticleScraper scraper) {
-        super("ars", scraper, "http://feeds.arstechnica.com/arstechnica/cardboard.rss");
+        super("ars", scraper, "https://feeds.arstechnica.com/arstechnica/cardboard.rss");
     }
 }

@@ -4,6 +4,7 @@ import com.cardboardcritic.feed.FeedService;
 import com.cardboardcritic.feed.ScoreService;
 import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.infrastructure.Infrastructure;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
@@ -39,7 +40,9 @@ public class DebugResource {
     @Produces(MediaType.TEXT_HTML)
     @ReactiveTransactional
     public Uni<Response> feed() {
-        return Uni.createFrom().item(Response.seeOther(URI.create("/")).build())
-                .call(x -> feedService.refresh());
+        feedService.refresh()
+                .emitOn(Infrastructure.getDefaultWorkerPool())
+                .subscribe().with(x -> System.out.println("done"));
+        return Uni.createFrom().item(Response.seeOther(URI.create("/")).build());
     }
 }

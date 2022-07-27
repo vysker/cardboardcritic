@@ -63,7 +63,7 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
                 .onItem().transformToUniAndMerge(link -> {
                     try {
                         log.infof("Visiting link: %s", link);
-                        return Uni.createFrom().item(crawler.getReview(link));
+                        return crawler.getReview(link);
                     } catch (Exception e) {
                         log.warnf("Failed to scrape article '%s'. Reason: %s", link, e);
                         return Uni.createFrom().nullItem();

@@ -11,10 +11,6 @@ public class OutletRepository implements PanacheRepository<Outlet> {
 
     public Uni<Outlet> findOrCreateByName(String name) {
         return find("name", name).firstResult()
-                .onItem().ifNull().switchTo(() -> persistAndReturn(new Outlet().setName(name)));
-    }
-
-    public Uni<Outlet> persistAndReturn(Outlet outlet) {
-        return persist(outlet).map(v -> outlet);
+                .onItem().ifNull().switchTo(() -> persist(new Outlet().setName(name)));
     }
 }
