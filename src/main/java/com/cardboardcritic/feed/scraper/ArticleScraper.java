@@ -28,7 +28,6 @@ public abstract class ArticleScraper {
     public Uni<Document> fetch(String articleUrl) throws ScrapeException {
         try {
             log.infof("Fetching article content from url '%s'", articleUrl);
-//            return Jsoup.connect(articleUrl).get();
             return webClient.getAbs(articleUrl)
                     .as(BodyCodec.string())
                     .send()

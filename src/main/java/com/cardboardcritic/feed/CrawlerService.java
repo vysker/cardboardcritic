@@ -5,6 +5,7 @@ import com.cardboardcritic.db.entity.Review;
 import com.cardboardcritic.db.repository.RawReviewRepository;
 import com.cardboardcritic.db.repository.ReviewRepository;
 import com.cardboardcritic.feed.crawler.OutletCrawler;
+import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import org.jboss.logging.Logger;
@@ -36,11 +37,11 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
 
     public Uni<Void> crawl() {
         return Multi.createFrom().iterable(outletCrawlers)
-                .onItem().transformToUni(this::crawl)
-                .concatenate()
-                .toUni().replaceWithVoid();
+                .onItem().transformToUniAndMerge(this::crawl)
+                .onItem().ignoreAsUni();
     }
 
+    @ReactiveTransactional
     public Uni<Void> crawl(OutletCrawler crawler) {
         log.infof("Crawling article links for '%s'", crawler.getOutlet());
 
@@ -56,8 +57,8 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
                             .map(visitedLinks -> linksFound.stream()
                                     .filter(link -> !visitedLinks.contains(link))
                                     .toList())
-                            .invoke(visitedLinks -> log.infof("Found %d articles, %d of which are new",
-                                    linksFound.size(), linksFound.size() - visitedLinks.size()));
+                            .invoke(newLinks -> log.infof("Found %d articles, %d of which are new",
+                                    linksFound.size(), newLinks.size()));
                 })
                 .onItem().transformToMulti(links -> Multi.createFrom().iterable(links))
                 .onItem().transformToUniAndMerge(link -> {
@@ -70,8 +71,11 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
                     }
                 })
                 .filter(Objects::nonNull)
-                .call(rawReviewRepository::persist)
-                .collect().asList()
-                .replaceWithVoid();
+                .onItem().transformToUniAndConcatenate(x ->
+                        // The deferred method makes sure we don't propagate failures to the upstream, so we can
+                        // continue on failures
+                        Uni.createFrom().deferred(() -> rawReviewRepository.persistAndFlush(x))
+                                .onFailure().recoverWithItem(new RawReview()))
+                .onItem().ignoreAsUni();
     }
 }

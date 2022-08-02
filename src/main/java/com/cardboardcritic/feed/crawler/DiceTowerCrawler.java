@@ -8,6 +8,6 @@ import javax.inject.Singleton;
 public class DiceTowerCrawler extends RssOutletCrawler {
 
     public DiceTowerCrawler(DiceTowerScraper scraper) {
-        super("dicetower", scraper, "https://www.dicetower.com/feeds/videos.rss");
+        super("Dice Tower", scraper, "https://www.dicetower.com/feeds/videos.rss");
     }
 }

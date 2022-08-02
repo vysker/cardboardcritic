@@ -23,6 +23,7 @@ public abstract class OutletCrawler {
     public Uni<RawReview> getReview(String articleUrl) {
         return scraper.fetch(articleUrl)
                 .flatMap(document -> scraper.getReview(articleUrl, document))
+                .onFailure().recoverWithNull()
                 .onItem().ifNotNull().transform(review -> {
                     review.setOutlet(outlet);
                     review.setUrl(articleUrl);

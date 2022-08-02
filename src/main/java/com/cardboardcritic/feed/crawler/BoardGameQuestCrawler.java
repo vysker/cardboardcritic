@@ -7,7 +7,7 @@ import io.vertx.mutiny.ext.web.client.HttpResponse;
 import io.vertx.mutiny.ext.web.client.WebClient;
 import io.vertx.mutiny.ext.web.codec.BodyCodec;
 import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
+import org.jsoup.parser.Parser;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -21,19 +21,15 @@ public class BoardGameQuestCrawler extends OutletCrawler {
     WebClient webClient;
 
     public BoardGameQuestCrawler(BoardGameQuestScraper scraper) {
-        super("boardgamequest", scraper);
+        super("Board Game Quest", scraper);
     }
 
     @Override
     public Uni<List<String>> getArticleLinks() {
-        return webClient.get(url).as(BodyCodec.string()).send()
+        return webClient.getAbs(url).as(BodyCodec.string()).send()
                 .map(HttpResponse::body)
-                .map(Jsoup::parse)
-                .map(document -> {
-                    final Elements articles = document.select("div.letter-section ul li a");
-                    return articles.eachAttr("href");
-                })
-//                .onItem().transformToMulti(urls -> Multi.createFrom().iterable(urls))
+                .map(body -> Jsoup.parse(body, "", Parser.xmlParser())
+                        .select("div.letter-section ul li a").eachAttr("href"))
                 .onFailure().transform(e ->
                         new ScrapeException("Failed to fetch article links for outlet '%s' from url '%s'. Because: %s"
                                 .formatted(getOutlet(), url, e)));

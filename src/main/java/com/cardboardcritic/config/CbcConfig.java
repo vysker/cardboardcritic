@@ -1,6 +1,11 @@
 package com.cardboardcritic.config;
 
-import com.cardboardcritic.feed.crawler.*;
+import com.cardboardcritic.feed.crawler.ArsCrawler;
+import com.cardboardcritic.feed.crawler.BoardGameQuestCrawler;
+import com.cardboardcritic.feed.crawler.DiceTowerCrawler;
+import com.cardboardcritic.feed.crawler.EurogamerCrawler;
+import com.cardboardcritic.feed.crawler.OutletCrawler;
+import com.cardboardcritic.feed.crawler.SusdCrawler;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.ext.web.client.WebClient;
 
