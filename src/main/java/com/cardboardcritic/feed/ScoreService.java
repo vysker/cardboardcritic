@@ -32,6 +32,7 @@ public class ScoreService {
 
                     final List<Integer> scores = game.getReviews().stream()
                             .map(Review::getScore)
+                            .filter(score -> score > 0) // Score==0 means unscored
                             .sorted()
                             .toList();
                     final int average = (int) game.getReviews().stream()
