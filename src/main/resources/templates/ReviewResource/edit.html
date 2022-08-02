@@ -7,7 +7,7 @@
     </header>
     <div class="content">
       <form action="/review/{review.id}/edit" method="post">
-        {#include ReviewResource/formFields}{/include}
+        {#include ReviewResource/formFields games=games critics=critics outlets=outlets}{/include}
         <p>
           <button type="submit" class="primary">Submit</button>
         </p>

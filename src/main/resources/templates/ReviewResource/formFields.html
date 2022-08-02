@@ -3,18 +3,51 @@
   <input type="text" name="url" id="url" placeholder="Link to article" value="{review.url or ''}" autofocus>
   <a href="{review.url or ''}" target="_blank">Visit original article</a>
 </p>
-<p>
-  <label for="game">Game</label>
-  <input type="text" name="game" id="game" placeholder="Game under review" value="{review.game or ''}" required>
-</p>
-<p>
-  <label for="critic">Critic</label>
-  <input type="text" name="critic" id="critic" placeholder="Article author" value="{review.critic or ''}">
-</p>
-<p>
-  <label for="outlet">Outlet</label>
-  <input type="text" name="outlet" id="outlet" placeholder="News outlet" value="{review.outlet or ''}">
-</p>
+<div class="grid-col-2">
+  <p>
+    <label for="game">Game</label>
+    <select name="game" id="game">
+      <option value="no-game-selected">Select a game</option>
+      {#for game in games}
+        <option value="{game.name}" {#if review.game == game.name}selected{/if}>{game.name}</option>
+      {/for}
+    </select>
+  </p>
+  <p>
+    <label for="new-game">Or create a new game</label>
+    <input type="text" name="newGame" id="new-game" placeholder="Name of the new game" value="{review.game or ''}">
+  </p>
+</div>
+<div class="grid-col-2">
+  <p>
+    <label for="critic">Critic</label>
+    <select name="critic" id="critic">
+      <option value="no-critic-selected">Select a critic</option>
+      {#for critic in critics}
+        <option value="{critic.name}" {#if review.critic == critic.name}selected{/if}>{critic.name}</option>
+      {/for}
+    </select>
+  </p>
+  <p>
+    <label for="new-critic">Or create a new critic</label>
+    <input type="text" name="newCritic" id="new-critic" placeholder="Name of the new critic" value="{review.critic or ''}">
+  </p>
+</div>
+<div class="grid-col-2">
+  <p>
+    <label for="outlet">Outlet</label>
+    <select name="outlet" id="outlet">
+        <option value="no-outlet-selected">Select an outlet</option>
+      {#for outlet in outlets}
+        <option value="{outlet.name}" {#if review.outlet == outlet.name}selected{/if}>{outlet.name}</option>
+      {/for}
+    </select>
+  </p>
+  <p>
+    <label for="new-outlet">Or create a new outlet</label>
+    <input type="text" name="newOutlet" id="new-outlet" placeholder="Name of the new outlet">
+  </p>
+</div>
 <p>
   <input type="radio" name="recommended" id="recommended1" value="true" checked>
   <label for="recommended1">Recommended</label>

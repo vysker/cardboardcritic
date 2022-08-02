@@ -21,6 +21,13 @@
     </div>
   </div>
 </header>
+{#if global:errors != null}
+<div id="errors">
+  {#for error in global:errors}
+    <p>{error}</p>
+  {/for}
+</div>
+{/if}
 {#insert main}{/}
 {#include footer}{/}
 </body>

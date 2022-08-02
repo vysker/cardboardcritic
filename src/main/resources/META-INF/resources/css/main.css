@@ -183,6 +183,7 @@ input[type=radio] + label {
   font-weight: normal;
 }
 
+select,
 input[type=text],
 input[type=number],
 input[type=password],
@@ -441,6 +442,15 @@ section#topical {
   grid-gap: 2rem;
 }
 
+/* Errors */
+
+#errors {
+  width: 100%;
+  padding: 1rem;
+  background: lightcoral;
+  z-index: 2;
+}
+
 /* Generic */
 
 .page-width {
@@ -451,6 +461,12 @@ section#topical {
 .no-deco {
   text-decoration: none;
   color: inherit;
+}
+
+.grid-col-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
 }
 
 /* Responsiveness */

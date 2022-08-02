@@ -8,7 +8,7 @@
     </header>
     <div class="content">
       <form action="/raw/{review.id}/edit" method="post">
-        {#include ReviewResource/formFields}{/include}
+        {#include ReviewResource/formFields games=games critics=critics outlets=outlets}{/include}
         <hr>
         <h4>Original review</h4>
         <p>

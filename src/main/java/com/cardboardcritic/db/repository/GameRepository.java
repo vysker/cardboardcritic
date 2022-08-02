@@ -1,6 +1,7 @@
 package com.cardboardcritic.db.repository;
 
 import com.cardboardcritic.db.entity.Game;
+import com.cardboardcritic.util.StringUtil;
 import io.quarkus.hibernate.reactive.panache.PanacheRepository;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
@@ -22,6 +23,12 @@ public class GameRepository implements PanacheRepository<Game> {
                 .firstResult()
                 .onItem().ifNull().switchTo(() -> find("slug", slugify(name)).firstResult())
                 .onItem().ifNull().switchTo((() -> persist(new Game().setName(name).setSlug(slugify(name)))));
+    }
+
+    public Uni<Game> createNewOrFindExisting(String newGame, String existingGame) {
+        if (StringUtil.isNotEmpty(newGame))
+            return findOrCreateByName(newGame);
+        return find("name", existingGame).firstResult();
     }
 
     public String slugify(String name) {
