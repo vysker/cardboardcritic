@@ -237,7 +237,7 @@ button.primary {
   margin: 0;
   font-weight: bold;
   overflow: hidden;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 /* Card grid */
@@ -412,7 +412,7 @@ main#game .review-content details,
 main#game .review-content details p,
 main#game .review-content details summary {
   overflow: hidden;
-  word-break: break-all;
+  word-break: break-word;
 }
 main#game .review-content details p {
   margin-top: 2px;
