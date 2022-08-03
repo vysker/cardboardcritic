@@ -10,7 +10,6 @@ import io.smallrye.mutiny.Uni;
 import io.vertx.ext.web.RoutingContext;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.control.ActivateRequestContext;
 import javax.inject.Inject;
 import java.util.Set;
 
@@ -25,13 +24,11 @@ public class FormBasedAuth implements HttpAuthenticationMechanism {
     FormAuthenticationMechanism formAuthenticationMechanism;
 
     @Override
-    @ActivateRequestContext
     public Uni<SecurityIdentity> authenticate(RoutingContext context, IdentityProviderManager identityProviderManager) {
         return formAuthenticationMechanism.authenticate(context, identityProviderManager);
     }
 
     @Override
-    @ActivateRequestContext
     public Uni<ChallengeData> getChallenge(RoutingContext context) {
         return formAuthenticationMechanism.getChallenge(context);
     }

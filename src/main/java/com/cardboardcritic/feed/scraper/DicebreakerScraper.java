@@ -2,7 +2,6 @@ package com.cardboardcritic.feed.scraper;
 
 import com.cardboardcritic.db.entity.RawReview;
 import com.cardboardcritic.util.StringUtil;
-import io.smallrye.mutiny.Uni;
 import org.jsoup.nodes.Document;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 public class DicebreakerScraper extends ArticleScraper {
 
     @Override
-    public Uni<RawReview> getReview(String articleUrl, Document document) {
+    public RawReview getReview(String articleUrl, Document document) {
         final String date = document.select("meta[property=article:published_time]").first().attr("content");
         final String title = document.select("meta[property=og:title]").first().attr("content");
         final String critic = document.select("div.author span.name a").first().text();
@@ -22,13 +21,12 @@ public class DicebreakerScraper extends ArticleScraper {
         final String articleTag = document.select("meta[property=article:tag]").first().attr("content");
         final boolean recommended = "Dicebreaker Recommends".equals(articleTag);
 
-        final var review = new RawReview()
+        return new RawReview()
                 .setTitle(title)
                 .setDate(StringUtil.formatDateTime(date))
                 .setCritic(critic)
                 .setContent(content)
                 .setRecommended(recommended)
                 .setUrl(articleUrl);
-        return Uni.createFrom().item(review);
     }
 }

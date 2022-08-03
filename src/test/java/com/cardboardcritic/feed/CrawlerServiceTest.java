@@ -6,9 +6,6 @@ import com.cardboardcritic.db.repository.RawReviewRepository;
 import com.cardboardcritic.db.repository.ReviewRepository;
 import com.cardboardcritic.feed.crawler.OutletCrawler;
 import com.cardboardcritic.feed.crawler.RssOutletCrawler;
-import io.smallrye.mutiny.TimeoutException;
-import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +13,6 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -40,22 +36,16 @@ public class CrawlerServiceTest {
     @Test
     public void crawl() {
         when(crawler.getArticleLinks())
-                .thenReturn(uni(List.of("abc", "jkl", "tuv", "xyz")));
+                .thenReturn(List.of("abc", "jkl", "tuv", "xyz"));
         when(crawler.getReview(anyString()))
-                .thenReturn(uni(new RawReview().setUrl("tuv")))
-                .thenReturn(uni(new RawReview().setUrl("xyz")));
+                .thenReturn(new RawReview().setUrl("tuv"))
+                .thenReturn(new RawReview().setUrl("xyz"));
         when(rawReviewRepository.visited(anyList()))
-                .thenReturn(uni(List.of(new RawReview().setUrl("abc"), new RawReview().setUrl("jkl"))));
+                .thenReturn(List.of(new RawReview().setUrl("abc"), new RawReview().setUrl("jkl")));
         when(reviewRepository.visited(anyList()))
-                .thenReturn(uni(List.of(new Review().setUrl("abc"))));
-        when(rawReviewRepository.persistAndFlush(any()))
-                .thenReturn(uni(new RawReview()))
-                .thenReturn(uni(new RawReview()));
+                .thenReturn(List.of(new Review().setUrl("abc")));
 
-        service.crawl(crawler)
-                .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .assertCompleted()
-                .getItem();
+        service.crawl();
 
         Mockito.verify(crawler, times(1)).getReview("tuv");
         Mockito.verify(crawler, times(1)).getReview("xyz");
@@ -69,32 +59,20 @@ public class CrawlerServiceTest {
         final var reviewThatPasses = new RawReview().setUrl("xyz");
 
         when(crawler.getArticleLinks())
-                .thenReturn(uni(List.of("abc", "jkl", "tuv", "xyz")));
+                .thenReturn(List.of("abc", "jkl", "tuv", "xyz"));
         when(crawler.getReview(anyString()))
-                .thenReturn(uni(reviewWithTimeout))
-                .thenReturn(uni(reviewThatPasses));
+                .thenReturn(reviewWithTimeout)
+                .thenReturn(reviewThatPasses);
         when(rawReviewRepository.visited(anyList()))
-                .thenReturn(uni(List.of(new RawReview().setUrl("abc"), new RawReview().setUrl("jkl"))));
+                .thenReturn(List.of(new RawReview().setUrl("abc"), new RawReview().setUrl("jkl")));
         when(reviewRepository.visited(anyList()))
-                .thenReturn(uni(List.of(new Review().setUrl("abc"))));
-        when(rawReviewRepository.persistAndFlush(reviewWithTimeout))
-                .thenThrow(new TimeoutException());
-        when(rawReviewRepository.persistAndFlush(reviewThatPasses))
-                .thenReturn(uni(new RawReview()));
+                .thenReturn(List.of(new Review().setUrl("abc")));
 
-        service.crawl(crawler)
-                .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .assertCompleted()
-                .getItem();
+        service.crawl();
 
         Mockito.verify(crawler, times(1)).getReview("tuv");
         Mockito.verify(crawler, times(1)).getReview("xyz");
         Mockito.verify(rawReviewRepository, times(1)).persist(reviewWithTimeout);
         Mockito.verify(rawReviewRepository, times(1)).persist(reviewThatPasses);
-    }
-
-    // Just a helper method
-    <T> Uni<T> uni(T t) {
-        return Uni.createFrom().item(t);
     }
 }

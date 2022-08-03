@@ -11,14 +11,13 @@ import com.cardboardcritic.db.repository.GameRepository;
 import com.cardboardcritic.db.repository.OutletRepository;
 import com.cardboardcritic.db.repository.ReviewRepository;
 import com.cardboardcritic.web.template.form.ReviewEditForm;
-import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
-import io.smallrye.mutiny.Uni;
-import org.jboss.resteasy.reactive.RestPath;
+import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -69,58 +68,52 @@ public class ReviewResource {
     @GET
     @Path("{id}/edit")
     @Produces(MediaType.TEXT_HTML)
-    @ReactiveTransactional
-    public Uni<TemplateInstance> edit(@RestPath long id) {
-        final Uni<List<Game>> games$ = gameRepo.listAll();
-        final Uni<List<Critic>> critics$ = criticRepo.listAll();
-        final Uni<List<Outlet>> outlets$ = outletRepo.listAll();
-        final Uni<Review> review$ = reviewRepo.findById(id);
+    public TemplateInstance edit(@PathParam long id) {
+        final List<Game> games = gameRepo.listAll();
+        final List<Critic> critics = criticRepo.listAll();
+        final List<Outlet> outlets = outletRepo.listAll();
+        final Review review = reviewRepo.findById(id);
 
-        return Uni.combine().all().unis(review$, games$, critics$, outlets$)
-                .combinedWith((review, games, critics, outlets) ->
-                        Templates.edit(reviewMapper.toForm(review), games, critics, outlets));
+        return Templates.edit(reviewMapper.toForm(review), games, critics, outlets);
     }
 
     @POST // Should be PATCH, but HTML forms only support POST
     @Path("{id}/edit")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
-    @ReactiveTransactional
-    public Uni<Response> save(@RestPath long id, @BeanParam ReviewEditForm form) {
-        final Uni<Review> review$ = reviewRepo.findById(id);
-        final Uni<Game> game$ = gameRepo.createNewOrFindExisting(form.newGame, form.game);
-        final Uni<Critic> critic$ = criticRepo.createNewOrFindExisting(form.newCritic, form.critic);
-        final Uni<Outlet> outlet$ = outletRepo.createNewOrFindExisting(form.newOutlet, form.outlet);
+    @Transactional
+    public Response save(@PathParam long id, @BeanParam ReviewEditForm form) {
+        final Review review = reviewRepo.findById(id);
+        final Game game = gameRepo.createNewOrFindExisting(form.newGame, form.game);
+        final Critic critic = criticRepo.createNewOrFindExisting(form.newCritic, form.critic);
+        final Outlet outlet = outletRepo.createNewOrFindExisting(form.newOutlet, form.outlet);
 
-        return Uni.combine().all().unis(review$, game$, critic$, outlet$)
-                .combinedWith((review, game, critic, outlet) -> {
-                    final List<String> errors = Stream.of(
-                            game == null ? "No game was provided. Please select or create a game" : null,
-                            critic == null ? "No critic was provided. Please select or create a critic" : null,
-                            outlet == null ? "No outlet was provided. Please select or create a outlet" : null
-                    ).filter(Objects::nonNull).toList();
+        final List<String> errors = Stream.of(
+                game == null ? "No game was provided. Please select or create a game" : null,
+                critic == null ? "No critic was provided. Please select or create a critic" : null,
+                outlet == null ? "No outlet was provided. Please select or create a outlet" : null
+        ).filter(Objects::nonNull).toList();
 
-                    if (!errors.isEmpty()) {
-                        return gameRepo.flush()
-                                .flatMap(x -> criticRepo.flush())
-                                .flatMap(x -> outletRepo.flush())
-                                .flatMap(x -> edit(id))
-                                .invoke(template ->
-                                        template.setAttribute(GlobalTemplateExtensions.ERRORS_ATTRIBUTE, errors))
-                                .map(template -> Response.ok(template, MediaType.TEXT_HTML).build());
-                    }
+        if (!errors.isEmpty()) {
+            gameRepo.flush();
+            criticRepo.flush();
+            outletRepo.flush();
 
-                    review.setGame(game)
-                            .setCritic(critic)
-                            .setOutlet(outlet)
-                            .setScore(form.score)
-                            .setSummary(form.summary)
-                            .setUrl(form.url)
-                            .setRecommended(form.recommended);
-                    return reviewRepo.persist(review)
-                            .map(x -> Response.seeOther(getRedirectUri(review)).build());
-                })
-                .flatMap(response -> response);
+            final TemplateInstance template = edit(id);
+            template.setAttribute(GlobalTemplateExtensions.ERRORS_ATTRIBUTE, errors);
+
+            return Response.ok(template, MediaType.TEXT_HTML).build();
+        }
+
+        review.setGame(game)
+                .setCritic(critic)
+                .setOutlet(outlet)
+                .setScore(form.score)
+                .setSummary(form.summary)
+                .setUrl(form.url)
+                .setRecommended(form.recommended);
+        reviewRepo.persist(review);
+        return Response.seeOther(getRedirectUri(review)).build();
     }
 
     private URI getRedirectUri(Review review) {

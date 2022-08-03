@@ -5,13 +5,11 @@ import com.cardboardcritic.db.entity.Review;
 import com.cardboardcritic.db.repository.RawReviewRepository;
 import com.cardboardcritic.db.repository.ReviewRepository;
 import com.cardboardcritic.feed.crawler.OutletCrawler;
-import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
-import io.smallrye.mutiny.Multi;
-import io.smallrye.mutiny.Uni;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -35,48 +33,55 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
         this.log = log;
     }
 
-    public Uni<Void> crawl() {
-        return Multi.createFrom().iterable(outletCrawlers)
-                // We tried doing a transformToUniAndMerge() here, but that messed with database connections and whatnot
-                .onItem().transformToUniAndConcatenate(this::crawl)
-                .onItem().ignoreAsUni();
+//    @Scheduled(every = "2S") // 1D = every day
+    public boolean crawl() {
+        log.info("Starting new review feed");
+
+        outletCrawlers.stream()
+                .parallel()
+                .flatMap(crawler -> crawl(crawler).stream()
+                        .parallel()
+                        .map(link -> getReview(crawler, link)))
+                .filter(Objects::nonNull)
+                .forEach(this::persist);
+
+//        log.infof("Finished feed. Scraped %d new reviews", reviews.size());
+        return true;
     }
 
-    @ReactiveTransactional
-    public Uni<Void> crawl(OutletCrawler crawler) {
+    // This method is merely here for the @Transactional annotation
+    @Transactional
+    public void persist(RawReview rawReview) {
+        rawReviewRepository.persist(rawReview);
+    }
+
+    @Transactional
+    public List<String> crawl(OutletCrawler crawler) {
         log.infof("Crawling article links for '%s'", crawler.getOutlet());
 
-        return crawler.getArticleLinks()
-                .flatMap(linksFound -> {
-                    final Uni<List<RawReview>> visitedRawReviews$ = rawReviewRepository.visited(linksFound);
-                    final Uni<List<Review>> visitedReviews$ = reviewRepository.visited(linksFound);
+        final List<String> linksFound = crawler.getArticleLinks();
+        final List<String> visitedRawReviews = rawReviewRepository.visited(linksFound).stream()
+                .map(RawReview::getUrl).toList();
+        final List<String> visitedReviews = reviewRepository.visited(linksFound).stream()
+                .map(Review::getUrl).toList();
 
-                    return Uni.combine().all().unis(visitedRawReviews$, visitedReviews$)
-                            .combinedWith((visitedRawReviews, visitedReviews) -> Stream.concat(
-                                    visitedRawReviews.stream().map(RawReview::getUrl),
-                                    visitedReviews.stream().map(Review::getUrl)).distinct().toList())
-                            .map(visitedLinks -> linksFound.stream()
-                                    .filter(link -> !visitedLinks.contains(link))
-                                    .toList())
-                            .invoke(newLinks -> log.infof("Found %d articles, %d of which are new",
-                                    linksFound.size(), newLinks.size()));
-                })
-                .onItem().transformToMulti(links -> Multi.createFrom().iterable(links))
-                .onItem().transformToUniAndMerge(link -> {
-                    try {
-                        log.infof("Visiting link: %s", link);
-                        return crawler.getReview(link);
-                    } catch (Exception e) {
-                        log.warnf("Failed to scrape article '%s'. Reason: %s", link, e);
-                        return Uni.createFrom().nullItem();
-                    }
-                })
-                .filter(Objects::nonNull)
-                .onItem().transformToUniAndConcatenate(x ->
-                        // The deferred method makes sure we don't propagate failures to the upstream, so we can
-                        // continue on failures
-                        Uni.createFrom().deferred(() -> rawReviewRepository.persist(x))
-                                .onFailure().recoverWithItem(new RawReview()))
-                .onItem().ignoreAsUni();
+        final List<String> visitedLinks = Stream.concat(visitedRawReviews.stream(), visitedReviews.stream())
+                .distinct().toList();
+        final List<String> newLinks = linksFound.stream()
+                .filter(link -> !visitedLinks.contains(link))
+                .toList();
+
+        log.infof("Found %d articles, %d of which are new", linksFound.size(), newLinks.size());
+        return newLinks;
+    }
+
+    public RawReview getReview(OutletCrawler crawler, String link) {
+        try {
+            log.infof("Visiting link: %s", link);
+            return crawler.getReview(link);
+        } catch (Exception e) {
+            log.warnf("Failed to scrape article '%s'. Reason: %s", link, e);
+            return null;
+        }
     }
 }

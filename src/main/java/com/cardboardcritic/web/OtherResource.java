@@ -2,10 +2,8 @@ package com.cardboardcritic.web;
 
 import com.cardboardcritic.db.entity.Game;
 import com.cardboardcritic.db.repository.GameRepository;
-import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
-import io.smallrye.mutiny.Uni;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
@@ -35,12 +33,10 @@ public class OtherResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    @ReactiveTransactional
-    public Uni<TemplateInstance> home() {
-        final Uni<List<Game>> recent = gameRepository.recent();
-        final Uni<List<Game>> topOfYear = gameRepository.topOfYear();
-        return Uni.combine().all().unis(recent, topOfYear)
-                .combinedWith(Templates::home);
+    public TemplateInstance home() {
+        final List<Game> recent = gameRepository.recent();
+        final List<Game> topOfYear = gameRepository.topOfYear();
+        return Templates.home(recent, topOfYear);
     }
 
     @GET

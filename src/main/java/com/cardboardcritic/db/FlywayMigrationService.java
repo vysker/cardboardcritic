@@ -12,7 +12,7 @@ import javax.enterprise.event.Observes;
  */
 @ApplicationScoped
 public class FlywayMigrationService {
-    @ConfigProperty(name = "quarkus.datasource.reactive.url")
+    @ConfigProperty(name = "quarkus.datasource.jdbc.url")
     String url;
     @ConfigProperty(name = "quarkus.datasource.username")
     String username;
@@ -25,7 +25,7 @@ public class FlywayMigrationService {
         if (!migrateAtStart)
             return;
 
-        final Flyway flyway = Flyway.configure().dataSource("jdbc:" + url, username, password).load();
+        final Flyway flyway = Flyway.configure().dataSource(url, username, password).load();
         flyway.baseline();
         flyway.migrate();
     }

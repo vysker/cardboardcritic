@@ -6,24 +6,22 @@ import com.cardboardcritic.util.ScraperUtil;
 import com.cardboardcritic.util.StringUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.smallrye.mutiny.Uni;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.time.Duration;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ArsArticleScraper extends ArticleScraper {
 
     @Override
-    public Uni<RawReview> getReview(String articleUrl, Document document) {
+    public RawReview getReview(String articleUrl, Document document) {
         // we are only interested in the content on the final page, since that is usually where the summary is
         final String finalPageUrl = getFinalPageUrl(document);
         if (finalPageUrl != null && !finalPageUrl.equals(articleUrl))
-            document = fetch(finalPageUrl).await().atMost(Duration.ofSeconds(20));
+            document = fetch(finalPageUrl);
 
         final Element articleBody = document.select("div[itemprop=articleBody]").last();
         final Elements articleContentRaw = articleBody.getElementsByTag("p");
@@ -43,13 +41,12 @@ public class ArsArticleScraper extends ArticleScraper {
             if ("Ars Staff".equalsIgnoreCase(critic))
                 critic = document.select("article header section.post-meta span[itemprop=name]").first().text();
 
-            final var review = new RawReview()
+            return new RawReview()
                     .setTitle(title)
                     .setDate(StringUtil.formatDateTime(date))
                     .setCritic(critic)
                     .setContent(articleContent)
                     .setUrl(articleUrl);
-            return Uni.createFrom().item(review);
         } catch (JsonProcessingException e) {
             throw ScrapeException.articleError(articleUrl, "Failed to parse page metadata, because: " + e.getMessage());
         }

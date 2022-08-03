@@ -1,13 +1,10 @@
 package com.cardboardcritic.web;
 
-import com.cardboardcritic.db.entity.Critic;
 import com.cardboardcritic.db.entity.Game;
 import com.cardboardcritic.db.entity.Review;
 import com.cardboardcritic.db.repository.GameRepository;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
-import io.smallrye.mutiny.Uni;
-import org.hibernate.reactive.mutiny.Mutiny;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
@@ -16,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Comparator;
+import java.util.List;
 
 @Path("game")
 @PermitAll
@@ -34,15 +32,15 @@ public class GameResource {
     @GET
     @Path("{slug}")
     @Produces(MediaType.TEXT_HTML)
-    public Uni<TemplateInstance> game(@PathParam("slug") String slug) {
+    public TemplateInstance game(@PathParam("slug") String slug) {
         // FIXME: http://hibernate.org/reactive/documentation/1.0/reference/html_single/#_fetching_lazy_associations
-        return gameRepo.findBySlug(slug)
-                .flatMap(game -> Mutiny.fetch(game.getReviews()).map(reviews -> {
-                    reviews.sort(Comparator.comparing(Review::getScore).reversed()); // Desc
-                    reviews.forEach(review -> Mutiny.fetch(Critic.class));
-                    game.setReviews(reviews);
-                    return game;
-                }))
-                .map(Templates::game);
+        final Game game = gameRepo.findBySlug(slug);
+
+        final List<Review> reviews = game.getReviews();
+        reviews.sort(Comparator.comparing(Review::getScore).reversed()); // Desc
+        reviews.forEach(Review::getCritic); // Trigger hibernate relation fetch
+        game.setReviews(reviews);
+
+        return Templates.game(game);
     }
 }
