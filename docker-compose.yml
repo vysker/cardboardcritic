@@ -17,7 +17,7 @@ services:
 
   flyway:
     image: flyway/flyway
-    command: -url="jdbc:$QUARKUS_DATASOURCE_REACTIVE_URL" -user="$POSTGRES_USER" -password="$POSTGRES_PASSWORD" -baselineVersion=0 -baselineOnMigrate=true migrate
+    command: -url="$QUARKUS_DATASOURCE_JDBC_URL" -user="$POSTGRES_USER" -password="$POSTGRES_PASSWORD" -baselineVersion=0 -baselineOnMigrate=true migrate
     volumes:
       - ./src/main/resources/db/migration:/flyway/sql
     env_file:
