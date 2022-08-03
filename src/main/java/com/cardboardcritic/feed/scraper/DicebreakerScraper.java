@@ -9,15 +9,14 @@ import javax.enterprise.context.ApplicationScoped;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class EurogamerScraper extends ArticleScraper {
+public class DicebreakerScraper extends ArticleScraper {
 
     @Override
     public Uni<RawReview> getReview(String articleUrl, Document document) {
-//        final String date = document.select("span[itemprop=datePublished]").first().attr("content");
         final String date = document.select("meta[property=article:published_time]").first().attr("content");
         final String title = document.select("meta[property=og:title]").first().attr("content");
-        final String critic = document.select("div[class=author-name] a").first().text();
-        final String content = document.select("div[class=body] section p").eachText().stream()
+        final String critic = document.select("div.author span.name a").first().text();
+        final String content = document.select("div.article_body_content p").eachText().stream()
                 .filter(StringUtil::isNotEmpty)
                 .collect(Collectors.joining("\n\n"));
         final String articleTag = document.select("meta[property=article:tag]").first().attr("content");

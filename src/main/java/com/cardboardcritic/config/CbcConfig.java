@@ -3,7 +3,7 @@ package com.cardboardcritic.config;
 import com.cardboardcritic.feed.crawler.ArsCrawler;
 import com.cardboardcritic.feed.crawler.BoardGameQuestCrawler;
 import com.cardboardcritic.feed.crawler.DiceTowerCrawler;
-import com.cardboardcritic.feed.crawler.EurogamerCrawler;
+import com.cardboardcritic.feed.crawler.DicebreakerCrawler;
 import com.cardboardcritic.feed.crawler.OutletCrawler;
 import com.cardboardcritic.feed.crawler.SusdCrawler;
 import io.vertx.mutiny.core.Vertx;
@@ -21,11 +21,17 @@ public class CbcConfig {
     @ApplicationScoped
     @Named("outletCrawlers")
     public List<OutletCrawler> outletCrawlers(ArsCrawler arsCrawler,
-                                              EurogamerCrawler eurogamerCrawler,
+                                              DicebreakerCrawler dicebreakerCrawler,
                                               DiceTowerCrawler diceTowerCrawler,
                                               BoardGameQuestCrawler boardGameQuestCrawler,
                                               SusdCrawler susdCrawler) {
-        return List.of(arsCrawler, eurogamerCrawler, diceTowerCrawler, boardGameQuestCrawler, susdCrawler);
+        return List.of(
+                arsCrawler,
+                dicebreakerCrawler,
+                diceTowerCrawler,
+                boardGameQuestCrawler,
+                susdCrawler
+        );
     }
 
     @Produces
