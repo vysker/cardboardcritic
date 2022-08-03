@@ -1,6 +1,9 @@
 package com.cardboardcritic.db.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +19,12 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "raw_review")
+@FilterDef(name = "RawReview.byGame", defaultCondition = "game LIKE :name", parameters = @ParamDef(name = "name", type = "string"))
+@Filter(name = "RawReview.byGame")
+@FilterDef(name = "RawReview.byCritic", defaultCondition = "critic LIKE :name", parameters = @ParamDef(name = "name", type = "string"))
+@Filter(name = "RawReview.byCritic")
+@FilterDef(name = "RawReview.byOutlet", defaultCondition = "outlet LIKE :name", parameters = @ParamDef(name = "name", type = "string"))
+@Filter(name = "RawReview.byOutlet")
 public class RawReview extends PanacheEntityBase {
 
     @Id

@@ -15,6 +15,8 @@
   --score-fine-color: salmon;
   --score-good-color: lightsalmon;
   --score-best-color: #937dc2;
+  --color-good: lightgreen;
+  --color-bad: lightcoral;
   --divider: rgba(0, 0, 0, 0.1);
   --hex-height: 5rem;
   --hex-background: lightgrey;
@@ -283,7 +285,6 @@ ul.card-list {
   width: 4rem;
   padding: 0;
   text-align: center;
-  background: var(--kinda-black);
 }
 .card.compact .card-after span {
   font-family: var(--sans-font);
@@ -447,7 +448,6 @@ section#topical {
 #errors {
   width: 100%;
   padding: 1rem;
-  background: lightcoral;
 }
 
 /* Generic */
@@ -462,10 +462,38 @@ section#topical {
   color: inherit;
 }
 
-.grid-col-2 {
+.grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   grid-gap: 1rem;
+}
+.grid.col-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.grid.col-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.grid.col-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.margin-top {
+  margin-top: 1rem;
+}
+.margin-top-big {
+  margin-top: 2rem;
+}
+
+.bg-none {
+  background: none;
+}
+.bg-dark {
+  background: var(--kinda-black);
+}
+.bg-good {
+  background: var(--color-good);
+}
+.bg-bad {
+  background: var(--color-bad);
 }
 
 /* Responsiveness */

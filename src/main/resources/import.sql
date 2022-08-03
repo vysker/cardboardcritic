@@ -19,8 +19,8 @@ insert into critic (
 insert into outlet (
   name, website)
   values
-  ('Ars Technica', 'https://arstechnica.com/'),
-  ('Eurogamer', 'https://eurogamer.net')
+  ('Boardgame Scorers', 'https://example.com'),
+  ('Cardboard Reviewers', 'https://example.com')
   ;
 
 insert into review (
@@ -39,7 +39,9 @@ insert into review (
 insert into raw_review (
   game, critic, outlet, recommended, score, summary, title, content, date, url, processed)
   values
-  ('Abc', 'Herb Bergerstern', null, false, 0, null, 'We like Anachrony', 'Lorem ipsum', '2017-01-01', null, false)
+  ('Abc', 'Herb Bergerstern', 'Cardboard Reviewers', false, 0, null, 'We like Anachrony', 'Lorem ipsum', '2017-01-01', null, false),
+  ('Anachrony', 'John Doe', 'Boardgame Scorers', false, 0, null, 'It is a game alright', 'Lorem ipsum', '2021-05-29', null, false),
+  ('Gloomhaven', 'John Doe', 'Boardgame Scorers', false, 0, null, 'This is the game', 'Lorem ipsum', '2022-06-15', null, false)
   ;
 
 -- Password hashes can be generated with UserRepositoryTest

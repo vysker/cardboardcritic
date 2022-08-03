@@ -1,33 +1,70 @@
-<ul class="card-list">
-  {#for review in reviews}
-    <li>
-    <div class="review card compact">
-      <!--  <div class="card-before"></div>-->
-      <div class="card-header">
-        <h4>{review.outlet ?: 'Unknown outlet'}</h4>
-        <span class="card-subtitle">{review.critic}</span>
-      </div>
-      <div class="card-content review-content">
-        <p>{review.title ?: 'No title'}</p>
-        <a href="/raw/{review.id}/edit" class="raw-review-edit-link">Edit</a>
-      </div>
-      <div class="card-after">
-        <span>{review.processed ? 'done' : 'to do'}</span>
-      </div>
-    </div>
+<form action="/raw" method="get" class="grid col-4 card">
+  <div>
+    <label for="game">Game</label>
+    <select name="game" id="game">
+      <option value="">Select a game</option>
+      {#for game in games}
+        <option value="{game.slug}">{game.name}</option>
+      {/for}
+    </select>
+  </div>
+  <div>
+    <label for="critic">Critic</label>
+    <select name="critic" id="critic">
+      <option value="">Select a critic</option>
+      {#for critic in critics}
+        <option value="{critic.name}">{critic.name}</option>
+      {/for}
+    </select>
+  </div>
+  <div>
+    <label for="outlet">Outlet</label>
+    <select name="outlet" id="outlet">
+      <option value="">Select an outlet</option>
+      {#for outlet in outlets}
+        <option value="{outlet.name}">{outlet.name}</option>
+      {/for}
+    </select>
+  </div>
+  <div>
+    <button type="submit">&#10983; Filter</button>
+  </div>
+</form>
 
-    <details>
-      <summary>Preview</summary>
-      <div class="card-grid">
-        {#include review
-          outlet=review.outlet
-          critic=review.critic
-          score=review.score
-          recommended=review.recommended
-          summary=review.summary
-          url=review.url}{/include}
-      </div>
-    </details>
-    </li>
-  {/for}
-</ul>
+<div class="margin-top-big">
+  <ul class="card-list">
+    {#for review in reviews}
+      <li>
+        <div class="review card compact">
+          <!--  <div class="card-before"></div>-->
+          <div class="card-header">
+            <h4>{review.outlet ?: 'Unknown outlet'}</h4>
+            <span class="card-subtitle">{review.critic}</span>
+          </div>
+          <div class="card-content review-content">
+            <p>{review.title ?: 'No title'}</p>
+          </div>
+          <div class="card-after bg-none">
+            <a href="/raw/{review.id}/edit">&#9998; Edit</a>
+          </div>
+          <div class="card-after bg-{review.processed ? 'good' : 'bad'}">
+            <span>{review.processed ? 'done' : 'to do'}</span>
+          </div>
+        </div>
+
+        <details>
+          <summary>Preview</summary>
+          <div class="card-grid">
+            {#include review
+              outlet=review.outlet
+              critic=review.critic
+              score=review.score
+              recommended=review.recommended
+              summary=review.summary
+              url=review.url}{/include}
+          </div>
+        </details>
+      </li>
+    {/for}
+  </ul>
+</div>

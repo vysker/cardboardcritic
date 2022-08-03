@@ -12,7 +12,10 @@ import com.cardboardcritic.db.repository.GameRepository;
 import com.cardboardcritic.db.repository.OutletRepository;
 import com.cardboardcritic.db.repository.RawReviewRepository;
 import com.cardboardcritic.db.repository.ReviewRepository;
+import com.cardboardcritic.util.StringUtil;
 import com.cardboardcritic.web.template.form.RawReviewEditForm;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Parameters;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
 import org.jboss.logging.Logger;
@@ -27,11 +30,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Path("raw")
@@ -55,10 +60,16 @@ public class RawReviewResource {
                                                    List<Critic> critics,
                                                    List<Outlet> outlets);
 
-        public static native TemplateInstance list(List<RawReview> reviews);
+        public static native TemplateInstance list(List<RawReview> reviews,
+                                                   List<Game> games,
+                                                   List<Critic> critics,
+                                                   List<Outlet> outlets);
 
 
-        public static native TemplateInstance index(List<RawReview> reviews);
+        public static native TemplateInstance index(List<RawReview> reviews,
+                                                    List<Game> games,
+                                                    List<Critic> critics,
+                                                    List<Outlet> outlets);
     }
 
     public RawReviewResource(RawReviewRepository rawReviewRepo,
@@ -75,8 +86,19 @@ public class RawReviewResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance index() {
-        return Templates.index(rawReviewRepo.listAll());
+    public TemplateInstance index(@QueryParam("game") Optional<String> gameFilter,
+                                  @QueryParam("outlet") Optional<String> outletFilter,
+                                  @QueryParam("critic") Optional<String> criticFilter) {
+        final PanacheQuery<RawReview> rawReviewQuery = rawReviewRepo.findAll();
+
+        if (gameFilter.filter(StringUtil::isNotEmpty).isPresent())
+            rawReviewQuery.filter("RawReview.byGame", Parameters.with("name", gameFilter.get()));
+        if (criticFilter.filter(StringUtil::isNotEmpty).isPresent())
+            rawReviewQuery.filter("RawReview.byCritic", Parameters.with("name", criticFilter.get()));
+        if (outletFilter.filter(StringUtil::isNotEmpty).isPresent())
+            rawReviewQuery.filter("RawReview.byOutlet", Parameters.with("name", outletFilter.get()));
+
+        return Templates.index(rawReviewQuery.list(), gameRepo.listAll(), criticRepo.listAll(), outletRepo.listAll());
     }
 
     @GET
