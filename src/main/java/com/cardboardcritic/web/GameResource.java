@@ -9,6 +9,7 @@ import io.quarkus.qute.TemplateInstance;
 import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.Comparator;
 
 @Path("game")
+@PermitAll
 public class GameResource {
     private final GameRepository gameRepo;
 
@@ -33,7 +35,7 @@ public class GameResource {
     @Path("{slug}")
     @Produces(MediaType.TEXT_HTML)
     public Uni<TemplateInstance> game(@PathParam("slug") String slug) {
-        // FIXME http://hibernate.org/reactive/documentation/1.0/reference/html_single/#_fetching_lazy_associations
+        // FIXME: http://hibernate.org/reactive/documentation/1.0/reference/html_single/#_fetching_lazy_associations
         return gameRepo.findBySlug(slug)
                 .flatMap(game -> Mutiny.fetch(game.getReviews()).map(reviews -> {
                     reviews.sort(Comparator.comparing(Review::getScore).reversed()); // Desc

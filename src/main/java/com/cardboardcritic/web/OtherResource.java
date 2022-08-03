@@ -7,6 +7,7 @@ import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
 import io.smallrye.mutiny.Uni;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Path("")
+@PermitAll
 public class OtherResource {
     private final GameRepository gameRepository;
 
