@@ -29,6 +29,9 @@ public class ScoreService {
                     .filter(score -> score > 0) // Score==0 means unscored
                     .sorted()
                     .toList();
+            if (scores.isEmpty())
+                return;
+
             final int average = (int) game.getReviews().stream()
                     .mapToInt(Review::getScore)
                     .average().orElse(0);
