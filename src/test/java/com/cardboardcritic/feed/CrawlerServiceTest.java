@@ -59,8 +59,8 @@ public class CrawlerServiceTest {
 
         Mockito.verify(crawler, times(1)).getReview("tuv");
         Mockito.verify(crawler, times(1)).getReview("xyz");
-        Mockito.verify(rawReviewRepository, times(1)).persistAndFlush(new RawReview().setUrl("tuv"));
-        Mockito.verify(rawReviewRepository, times(1)).persistAndFlush(new RawReview().setUrl("xyz"));
+        Mockito.verify(rawReviewRepository, times(1)).persist(new RawReview().setUrl("tuv"));
+        Mockito.verify(rawReviewRepository, times(1)).persist(new RawReview().setUrl("xyz"));
     }
 
     @Test
@@ -89,8 +89,8 @@ public class CrawlerServiceTest {
 
         Mockito.verify(crawler, times(1)).getReview("tuv");
         Mockito.verify(crawler, times(1)).getReview("xyz");
-        Mockito.verify(rawReviewRepository, times(1)).persistAndFlush(reviewWithTimeout);
-        Mockito.verify(rawReviewRepository, times(1)).persistAndFlush(reviewThatPasses);
+        Mockito.verify(rawReviewRepository, times(1)).persist(reviewWithTimeout);
+        Mockito.verify(rawReviewRepository, times(1)).persist(reviewThatPasses);
     }
 
     // Just a helper method

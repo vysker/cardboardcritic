@@ -37,7 +37,8 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
 
     public Uni<Void> crawl() {
         return Multi.createFrom().iterable(outletCrawlers)
-                .onItem().transformToUniAndMerge(this::crawl)
+                // We tried doing a transformToUniAndMerge() here, but that messed with database connections and whatnot
+                .onItem().transformToUniAndConcatenate(this::crawl)
                 .onItem().ignoreAsUni();
     }
 
@@ -74,7 +75,7 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
                 .onItem().transformToUniAndConcatenate(x ->
                         // The deferred method makes sure we don't propagate failures to the upstream, so we can
                         // continue on failures
-                        Uni.createFrom().deferred(() -> rawReviewRepository.persistAndFlush(x))
+                        Uni.createFrom().deferred(() -> rawReviewRepository.persist(x))
                                 .onFailure().recoverWithItem(new RawReview()))
                 .onItem().ignoreAsUni();
     }

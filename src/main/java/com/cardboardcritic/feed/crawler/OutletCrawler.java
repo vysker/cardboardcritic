@@ -3,6 +3,7 @@ package com.cardboardcritic.feed.crawler;
 import com.cardboardcritic.db.entity.RawReview;
 import com.cardboardcritic.feed.scraper.ArticleScraper;
 import io.smallrye.mutiny.Uni;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 
@@ -10,6 +11,8 @@ import java.util.List;
  * A crawler finds all relevant (review) links on a website.
  */
 public abstract class OutletCrawler {
+    private static final Logger log = Logger.getLogger(OutletCrawler.class);
+
     private String outlet;
     private ArticleScraper scraper;
 
@@ -23,7 +26,10 @@ public abstract class OutletCrawler {
     public Uni<RawReview> getReview(String articleUrl) {
         return scraper.fetch(articleUrl)
                 .flatMap(document -> scraper.getReview(articleUrl, document))
-                .onFailure().recoverWithNull()
+                .onFailure().recoverWithUni(error -> {
+                    log.error("Failed to get review '%s'. Reason: %s", articleUrl, error);
+                    return Uni.createFrom().nullItem();
+                })
                 .onItem().ifNotNull().transform(review -> {
                     review.setOutlet(outlet);
                     review.setUrl(articleUrl);
