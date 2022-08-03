@@ -15,7 +15,7 @@ Note: use `mvnw.cmd` on Windows.
 
 **Run project** with live-reload: `./mvnw quarkusDev`.
 
-**Build native image** with `./mvnw package -P native`
+**Build native image** with `./mvnw clean && ./mvnw package -P native`
 
 **Push native image** with `docker push ghcr.io/vysker/cardboardcritic:latest-native`
 
