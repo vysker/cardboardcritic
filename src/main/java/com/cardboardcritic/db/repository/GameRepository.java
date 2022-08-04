@@ -41,13 +41,13 @@ public class GameRepository implements PanacheRepository<Game> {
     }
 
     public List<Game> recent() {
-        return findAll(Sort.by("releaseDate")).page(Page.ofSize(10)).list();
+        return findAll(Sort.by("releaseDate").descending()).page(Page.ofSize(10)).list();
     }
 
     public List<Game> topOfYear() {
         final LocalDate firstDayOfThisYear = LocalDate.of(LocalDate.now().getYear(), 1, 1);
-        final Sort sortByAverage = Sort.by("average", Sort.Direction.Descending);
-        return find("releaseDate >= ?1", sortByAverage, firstDayOfThisYear)
+        final Sort sortByAverage = Sort.by("median", Sort.Direction.Descending);
+        return find("releaseDate >= ?1 and median > 0", sortByAverage, firstDayOfThisYear)
                 .page(Page.ofSize(10))
                 .list();
     }
