@@ -1,6 +1,8 @@
 package com.cardboardcritic.config;
 
+import io.quarkus.arc.Arc;
 import io.quarkus.qute.TemplateExtension;
+import io.quarkus.security.identity.SecurityIdentity;
 import org.jboss.logging.Logger;
 
 import java.util.List;
@@ -22,5 +24,12 @@ public class GlobalTemplateExtensions {
 
         log.warn("Errors attribute was set, but was not of type List or String");
         return null;
+    }
+
+    public static String username() {
+        final SecurityIdentity identity = Arc.container().instance(SecurityIdentity.class).get();
+        if (identity == null)
+            return null;
+        return identity.getPrincipal().getName();
     }
 }

@@ -39,7 +39,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Path("raw")
+@Path("raw-review")
 @RolesAllowed("admin")
 public class RawReviewResource {
     private static final Logger log = Logger.getLogger(RawReviewResource.class);
