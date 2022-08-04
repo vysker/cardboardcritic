@@ -8,9 +8,8 @@
                     <span class="card-subtitle">{game.releaseDate.format('d MMM uuuu') or 'No release date'}</span>
                 </div>
 
-                <div class="card-after bg-dark score-{#when game.average}{#is < 30}flat{#is < 60}fine{#is < 90}good{#else}best{/when}">
-                    <span>{game.average}</span>
-                    {!<span>{game.recommended}%</span>!}
+                <div class="card-after bg-dark score-{#when game.median}{#is < 30}flat{#is < 60}fine{#is < 90}good{#else}best{/when}">
+                    <span>{#if game.median == 0}?{#else}{game.median}{/if}</span>
                 </div>
             </div>
         </a>
