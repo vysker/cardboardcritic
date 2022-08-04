@@ -103,6 +103,9 @@ main li {
 
 /* Nav */
 
+#desktop-menu {
+  width: 100%;
+}
 #mobile-menu {
   display: none;
 }
@@ -115,10 +118,8 @@ header.top-nav {
 
 header.top-nav .nav-inner {
   display: flex;
-  width: var(--main-width);
   height: 4rem;
   line-height: 4rem;
-  margin: 0 auto;
   padding: 0 var(--main-padding-horizontal);
 }
 
