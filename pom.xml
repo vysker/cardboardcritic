@@ -6,7 +6,7 @@
 
     <groupId>com.cardboardcritic</groupId>
     <artifactId>cardboardcritic</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
 
     <properties>
         <quarkus.platform.version>2.10.3.Final</quarkus.platform.version>
