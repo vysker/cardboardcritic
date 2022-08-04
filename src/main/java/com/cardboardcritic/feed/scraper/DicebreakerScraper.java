@@ -15,6 +15,7 @@ public class DicebreakerScraper extends ArticleScraper {
         final String date = document.select("meta[property=article:published_time]").first().attr("content");
         final String title = document.select("meta[property=og:title]").first().attr("content");
         final String critic = document.select("div.author span.name a").first().text();
+        final String game = document.select("aside.about_game a").first().text();
         final String content = document.select("div.article_body_content p").eachText().stream()
                 .filter(StringUtil::isNotEmpty)
                 .collect(Collectors.joining("\n\n"));
@@ -25,6 +26,7 @@ public class DicebreakerScraper extends ArticleScraper {
                 .setTitle(title)
                 .setDate(StringUtil.formatDateTime(date))
                 .setCritic(critic)
+                .setGame(game)
                 .setContent(content)
                 .setRecommended(recommended)
                 .setUrl(articleUrl);
