@@ -33,6 +33,11 @@
           <button type="submit" title="Deny content from being published, for being irrelevant to the website">Mark irrelevant</button>
         </p>
       </form>
+      <form action="/raw-review/{review.id}/re-scrape" method="post">
+        <p>
+          <button type="submit" title="Scrape this review again, updating its content">Re-scrape</button>
+        </p>
+      </form>
     </div>
   </article>
 </main>

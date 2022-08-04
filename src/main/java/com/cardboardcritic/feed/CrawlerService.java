@@ -12,6 +12,7 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -83,5 +84,11 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
             log.warnf("Failed to scrape article '%s'. Reason: %s", link, e);
             return null;
         }
+    }
+
+    public Optional<OutletCrawler> getCrawlerByOutlet(String outlet) {
+        return outletCrawlers.stream()
+                .filter(crawler -> crawler.getOutlet().equals(outlet))
+                .findFirst();
     }
 }

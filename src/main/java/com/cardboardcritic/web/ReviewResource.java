@@ -99,9 +99,7 @@ public class ReviewResource {
             criticRepo.flush();
             outletRepo.flush();
 
-            final TemplateInstance template = edit(id);
-            template.setAttribute(GlobalTemplateExtensions.ERRORS_ATTRIBUTE, errors);
-
+            final TemplateInstance template = edit(id).setAttribute(GlobalTemplateExtensions.ERRORS_ATTRIBUTE, errors);
             return Response.ok(template, MediaType.TEXT_HTML).build();
         }
 
