@@ -5,7 +5,9 @@
     <span class="card-subtitle">{critic ?: 'Unknown critic'}</span>
   </div>
   <div class="card-content review-content">
-    <span><b>{score}/100, {recommended ? 'Play' : 'Nay'}</b></span>
+    <div class="margin-top">
+      <b>{#if score == 0}No score{#else}{score}/100{/if}, {recommended ? 'Recommended' : 'Not recommended'}</b>
+    </div>
     <details class="p">
       <summary>Read more<br>{summary or 'No summary available'}</summary>
       <p>{summary or 'No summary available'}</p>
