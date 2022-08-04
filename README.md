@@ -17,7 +17,7 @@ Note: use `mvnw.cmd` on Windows.
 
 **Build native image** with `./mvnw clean && ./mvnw package -P native`
 
-**Push native image** with `docker push ghcr.io/vysker/cardboardcritic:latest-native`
+**Push native image** with `docker push ghcr.io/vysker/cardboardcritic:latest-native` and `docker push ghcr.io/vysker/cardboardcritic:{version}-native`
 
 ## Inner workings
 
@@ -56,6 +56,23 @@ Note: use `mvnw.cmd` on Windows.
 * Run `docker compose up flyway`
 * Update docker image with: `docker pull ghcr.io/vysker/cardboardcritic:latest-native`
 or `docker compose build --pull app`
+
+### Operation
+
+Finding and removing duplicate entries:
+
+```postgresql
+select url, count(*)
+from raw_review
+group by url
+having count(*) > 1;
+```
+
+```postgresql
+delete from raw_review rr using raw_review rr2
+where rr.id < rr2.id
+and rr.url = rr2.url;
+```
 
 ## Roadmap
 
