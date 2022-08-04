@@ -25,6 +25,8 @@ import java.util.Objects;
 @Filter(name = "RawReview.byCritic")
 @FilterDef(name = "RawReview.byOutlet", defaultCondition = "outlet LIKE :name", parameters = @ParamDef(name = "name", type = "string"))
 @Filter(name = "RawReview.byOutlet")
+@FilterDef(name = "RawReview.byProcessed", defaultCondition = "processed = :value", parameters = @ParamDef(name = "value", type = "boolean"))
+@Filter(name = "RawReview.byProcessed")
 public class RawReview extends PanacheEntityBase {
 
     @Id

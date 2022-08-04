@@ -3,11 +3,11 @@
 <main>
   <article>
     <header>
-      <a href="/raw">&larr;Back to list</a>
+      <a href="/raw-review">&larr;Back to list</a>
       <h1>Raw Review Edit</h1>
     </header>
     <div class="content">
-      <form action="/raw/{review.id}/edit" method="post">
+      <form action="/raw-review/{review.id}/edit" method="post">
         {#include ReviewResource/formFields games=games critics=critics outlets=outlets}{/include}
         <hr>
         <h4>Original review</h4>
@@ -28,7 +28,7 @@
           <button type="submit" class="primary">Publish</button>
         </p>
       </form>
-      <form action="/raw/{review.id}/deny" method="post">
+      <form action="/raw-review/{review.id}/deny" method="post">
         <p>
           <button type="submit" title="Deny content from being published, for being irrelevant to the website">Mark irrelevant</button>
         </p>

@@ -35,6 +35,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -63,13 +64,15 @@ public class RawReviewResource {
         public static native TemplateInstance list(List<RawReview> reviews,
                                                    List<Game> games,
                                                    List<Critic> critics,
-                                                   List<Outlet> outlets);
+                                                   List<Outlet> outlets,
+                                                   Map<String, String> filters);
 
 
         public static native TemplateInstance index(List<RawReview> reviews,
                                                     List<Game> games,
                                                     List<Critic> critics,
-                                                    List<Outlet> outlets);
+                                                    List<Outlet> outlets,
+                                                    Map<String, String> filters);
     }
 
     public RawReviewResource(RawReviewRepository rawReviewRepo,
@@ -88,17 +91,33 @@ public class RawReviewResource {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance index(@QueryParam("game") Optional<String> gameFilter,
                                   @QueryParam("outlet") Optional<String> outletFilter,
-                                  @QueryParam("critic") Optional<String> criticFilter) {
+                                  @QueryParam("critic") Optional<String> criticFilter,
+                                  @QueryParam("status") Optional<String> statusFilter) {
         final PanacheQuery<RawReview> rawReviewQuery = rawReviewRepo.findAll();
 
-        if (gameFilter.filter(StringUtil::isNotEmpty).isPresent())
-            rawReviewQuery.filter("RawReview.byGame", Parameters.with("name", gameFilter.get()));
-        if (criticFilter.filter(StringUtil::isNotEmpty).isPresent())
-            rawReviewQuery.filter("RawReview.byCritic", Parameters.with("name", criticFilter.get()));
-        if (outletFilter.filter(StringUtil::isNotEmpty).isPresent())
-            rawReviewQuery.filter("RawReview.byOutlet", Parameters.with("name", outletFilter.get()));
+        gameFilter.filter(StringUtil::isNotEmpty)
+                .ifPresent(name -> rawReviewQuery.filter("RawReview.byGame", Parameters.with("name", name)));
+        criticFilter.filter(StringUtil::isNotEmpty)
+                .ifPresent(name -> rawReviewQuery.filter("RawReview.byCritic", Parameters.with("name", name)));
+        outletFilter.filter(StringUtil::isNotEmpty)
+                .ifPresent(name -> rawReviewQuery.filter("RawReview.byOutlet", Parameters.with("name", name)));
+        statusFilter.filter(StringUtil::isNotEmpty)
+                .ifPresent(status -> {
+                    if ("done".equals(status))
+                        rawReviewQuery.filter("RawReview.byProcessed", Parameters.with("value", true));
+                    if ("todo".equals(status))
+                        rawReviewQuery.filter("RawReview.byProcessed", Parameters.with("value", false));
+                });
 
-        return Templates.index(rawReviewQuery.list(), gameRepo.listAll(), criticRepo.listAll(), outletRepo.listAll());
+        final Map<String, String> filters = Map.of(
+                "game", gameFilter.orElse(""),
+                "critic", criticFilter.orElse(""),
+                "outlet", outletFilter.orElse(""),
+                "status", statusFilter.orElse("both")
+        );
+
+        return Templates.index(
+                rawReviewQuery.list(), gameRepo.listAll(), criticRepo.listAll(), outletRepo.listAll(), filters);
     }
 
     @GET
@@ -151,7 +170,7 @@ public class RawReviewResource {
         reviewRepo.persist(review);
         rawReviewRepo.update("processed = true where id = ?1", id);
 
-        return Response.seeOther(URI.create("/raw")).build();
+        return Response.seeOther(URI.create("/raw-review")).build();
     }
 
     @POST
@@ -161,6 +180,6 @@ public class RawReviewResource {
     @Transactional
     public Response deny(@PathParam long id) {
         rawReviewRepo.update("processed = true where id = ?1", id);
-        return Response.seeOther(URI.create("/raw")).build();
+        return Response.seeOther(URI.create("/raw-review")).build();
     }
 }

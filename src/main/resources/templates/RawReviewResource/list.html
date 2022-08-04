@@ -1,29 +1,37 @@
-<form action="/raw" method="get" class="grid col-4 card">
+<form action="/raw-review" method="get" class="grid col-5 card">
   <div>
     <label for="game">Game</label>
     <select name="game" id="game">
-      <option value="">Select a game</option>
+      <option value="">Filter by game</option>
       {#for game in games}
-        <option value="{game.slug}">{game.name}</option>
+        <option value="{game.slug}" {#if filters.game == game.slug}selected{/if}>{game.name}</option>
       {/for}
     </select>
   </div>
   <div>
     <label for="critic">Critic</label>
     <select name="critic" id="critic">
-      <option value="">Select a critic</option>
+      <option value="">Filter by critic</option>
       {#for critic in critics}
-        <option value="{critic.name}">{critic.name}</option>
+        <option value="{critic.name}" {#if filters.critic == critic.name}selected{/if}>{critic.name}</option>
       {/for}
     </select>
   </div>
   <div>
     <label for="outlet">Outlet</label>
     <select name="outlet" id="outlet">
-      <option value="">Select an outlet</option>
+      <option value="">Filter by outlet</option>
       {#for outlet in outlets}
-        <option value="{outlet.name}">{outlet.name}</option>
+        <option value="{outlet.name}" {#if filters.outlet == outlet.name}selected{/if}>{outlet.name}</option>
       {/for}
+    </select>
+  </div>
+  <div>
+    <label for="status">Status</label>
+    <select name="status" id="status">
+      <option value="both" {#if filters.status == 'both'}selected{/if}>Both</option>
+      <option value="done" {#if filters.status == 'done'}selected{/if}>Done</option>
+      <option value="todo" {#if filters.status == 'todo'}selected{/if}>To do</option>
     </select>
   </div>
   <div>
@@ -45,7 +53,7 @@
             <p>{review.title ?: 'No title'}</p>
           </div>
           <div class="card-after bg-none">
-            <a href="/raw/{review.id}/edit">&#9998; Edit</a>
+            <a href="/raw-review/{review.id}/edit">&#9998; Edit</a>
           </div>
           <div class="card-after bg-{review.processed ? 'good' : 'bad'}">
             <span>{review.processed ? 'done' : 'to do'}</span>
