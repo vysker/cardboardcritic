@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Path("browse")
@@ -64,10 +65,11 @@ public class BrowseResource {
                 : Sort.Direction.Descending;
 
         final PanacheQuery<Game> gameQuery = gameRepository.findAll(Sort.by(sort, sortDirection));
-        final PanacheQuery<Game> allGames = gameRepository.findAll();
+        final List<Game> allGames = gameRepository.findAll().list();
 
         final List<String> years = allGames.stream()
                 .map(Game::getReleaseDate)
+                .filter(Objects::nonNull)
                 .map(LocalDate::getYear)
                 .distinct()
                 .sorted(Comparator.comparingInt(year -> year))
@@ -75,6 +77,7 @@ public class BrowseResource {
                 .toList();
         final List<String> designers = allGames.stream()
                 .map(Game::getDesigner)
+                .filter(Objects::nonNull)
                 .sorted(Comparator.comparing(designer -> designer, Comparator.naturalOrder()))
                 .toList();
 
