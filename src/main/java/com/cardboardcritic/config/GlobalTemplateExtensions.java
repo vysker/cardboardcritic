@@ -32,4 +32,14 @@ public class GlobalTemplateExtensions {
             return null;
         return identity.getPrincipal().getName();
     }
+
+    @TemplateExtension(namespace = "")
+    public static String uppercaseFirst(String subject) {
+        return subject.substring(0, 1).toUpperCase() + subject.substring(1);
+    }
+
+    @TemplateExtension(namespace = "")
+    public static int add(int subject, int amount) {
+        return subject + amount;
+    }
 }

@@ -1,0 +1,61 @@
+{#include base}
+{#main}
+{#include single}
+  {#title}Browse Games{/title}
+  {#content}
+    <form action="/browse" method="get">
+      <section class="grid col-4 card">
+        <div>
+          <label for="year">Year</label>
+          <select name="year" id="year">
+            <option value="">All years</option>
+            {#for year in years}
+              <option value="{year}" {#if filters.year == year}selected{/if}>{year}</option>
+            {/for}
+          </select>
+        </div>
+        <div>
+          <label for="designer">Designer</label>
+          <select name="designer" id="designer">
+            <option value="">All designers</option>
+            {#for designer in designers}
+              <option value="{designer}" {#if filters.designer == designer}selected{/if}>{designer}</option>
+            {/for}
+          </select>
+        </div>
+        <div>
+          <label for="sort">Sort</label>
+          <select name="sort" id="sort">
+            {#for sort in sorts}
+              <option value="{sort}" {#if filters.sort == sort}selected{/if}>{sort.uppercaseFirst}</option>
+            {/for}
+          </select>
+        </div>
+        <div style="display: flex">
+          <button type="submit" style="align-self: end">&#10983; Filter</button>
+        </div>
+      </section>
+
+      {#if totalPages > 1}
+        <div class="pagination margin-top-big" style="text-align: right">
+          {#if page > 0}
+            <span>
+              <input type="submit" name="page-action" value="Previous" alt="Go to previous page">
+            </span>
+          {/if}
+          Page {page.add(1)}/{totalPages}
+          {#if page.add(1) < totalPages}
+            <span>
+              <input type="submit" name="page-action" value="Next" alt="Go to next page">
+            </span>
+          {/if}
+        </div>
+        <input type="hidden" name="page" value="{page}">
+      {/if}
+    </form>
+
+    {#include GameResource/list}{/include}
+  {/content}
+{/include}
+{/main}
+{/include}

@@ -2,6 +2,9 @@ package com.cardboardcritic.db.entity;
 
 import com.cardboardcritic.db.entity.meta.HasName;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +16,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@FilterDef(name = "Game.byYear",
+        defaultCondition = "date_part('year', release_date) = :year",
+        parameters = @ParamDef(name = "year", type = "int"))
+@Filter(name = "Game.byYear")
+@FilterDef(name = "Game.byDesigner",
+        defaultCondition = "designer = :designer",
+        parameters = @ParamDef(name = "designer", type = "string"))
+@Filter(name = "Game.byDesigner")
 public class Game extends PanacheEntityBase implements HasName<Game> {
 
     @Id
