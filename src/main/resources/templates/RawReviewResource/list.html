@@ -4,7 +4,7 @@
     <select name="game" id="game">
       <option value="">Filter by game</option>
       {#for game in games}
-        <option value="{game.slug}" {#if filters.game == game.slug}selected{/if}>{game.name}</option>
+        <option value="{game.name}" {#if filters.game == game.name}selected{/if}>{game.name}</option>
       {/for}
     </select>
   </div>
@@ -34,8 +34,8 @@
       <option value="todo" {#if filters.status == 'todo'}selected{/if}>To do</option>
     </select>
   </div>
-  <div>
-    <button type="submit">&#10983; Filter</button>
+  <div style="display: flex">
+    <button type="submit" style="align-self: end">&#10983; Filter</button>
   </div>
 </form>
 

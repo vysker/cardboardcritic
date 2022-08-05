@@ -19,11 +19,11 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "raw_review")
-@FilterDef(name = "RawReview.byGame", defaultCondition = "game LIKE :name", parameters = @ParamDef(name = "name", type = "string"))
+@FilterDef(name = "RawReview.byGame", defaultCondition = "game = :name", parameters = @ParamDef(name = "name", type = "string"))
 @Filter(name = "RawReview.byGame")
-@FilterDef(name = "RawReview.byCritic", defaultCondition = "critic LIKE :name", parameters = @ParamDef(name = "name", type = "string"))
+@FilterDef(name = "RawReview.byCritic", defaultCondition = "critic = :name", parameters = @ParamDef(name = "name", type = "string"))
 @Filter(name = "RawReview.byCritic")
-@FilterDef(name = "RawReview.byOutlet", defaultCondition = "outlet LIKE :name", parameters = @ParamDef(name = "name", type = "string"))
+@FilterDef(name = "RawReview.byOutlet", defaultCondition = "outlet = :name", parameters = @ParamDef(name = "name", type = "string"))
 @Filter(name = "RawReview.byOutlet")
 @FilterDef(name = "RawReview.byProcessed", defaultCondition = "processed = :value", parameters = @ParamDef(name = "value", type = "boolean"))
 @Filter(name = "RawReview.byProcessed")
