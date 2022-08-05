@@ -16,7 +16,6 @@ import io.quarkus.qute.TemplateInstance;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
@@ -38,9 +37,7 @@ public class ReviewResource {
     private final GameRepository gameRepo;
     private final CriticRepository criticRepo;
     private final OutletRepository outletRepo;
-
-    @Inject
-    ReviewMapper reviewMapper;
+    private final ReviewMapper reviewMapper;
 
     @CheckedTemplate
     public static class Templates {
@@ -58,11 +55,13 @@ public class ReviewResource {
     public ReviewResource(ReviewRepository reviewRepo,
                           GameRepository gameRepo,
                           CriticRepository criticRepo,
-                          OutletRepository outletRepo) {
+                          OutletRepository outletRepo,
+                          ReviewMapper reviewMapper) {
         this.reviewRepo = reviewRepo;
         this.gameRepo = gameRepo;
         this.criticRepo = criticRepo;
         this.outletRepo = outletRepo;
+        this.reviewMapper = reviewMapper;
     }
 
     @GET
