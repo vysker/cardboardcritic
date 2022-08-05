@@ -54,8 +54,7 @@ Note: use `mvnw.cmd` on Windows.
 
 * Run `git pull`
 * Run `docker compose up flyway`
-* Update docker image with: `docker pull ghcr.io/vysker/cardboardcritic:latest-native`
-or `docker compose build --pull app`
+* Run `docker compose up -d app`
 
 ### Operation
 
