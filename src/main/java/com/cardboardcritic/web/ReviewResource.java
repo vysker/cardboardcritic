@@ -68,7 +68,7 @@ public class ReviewResource {
     @GET
     @Path("{id}/edit")
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance edit(@PathParam long id) {
+    public TemplateInstance edit(@PathParam int id) {
         final List<Game> games = gameRepo.listAll();
         final List<Critic> critics = criticRepo.listAll();
         final List<Outlet> outlets = outletRepo.listAll();
@@ -82,7 +82,7 @@ public class ReviewResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     @Transactional
-    public Response save(@PathParam long id, @BeanParam ReviewEditForm form) {
+    public Response save(@PathParam int id, @BeanParam ReviewEditForm form) {
         final Review review = reviewRepo.findById(id);
         final Game game = gameRepo.createNewOrFindExisting(form.newGame, form.game);
         final Critic critic = criticRepo.createNewOrFindExisting(form.newCritic, form.critic);

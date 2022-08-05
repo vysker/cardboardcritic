@@ -3,6 +3,7 @@ package com.cardboardcritic.db.entity;
 import com.cardboardcritic.db.entity.meta.HasName;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +16,8 @@ public class Outlet extends PanacheEntityBase implements HasName<Outlet> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "INTEGER")
+    private Integer id;
 
     private String name;
     private String website;
@@ -23,11 +25,11 @@ public class Outlet extends PanacheEntityBase implements HasName<Outlet> {
     @OneToMany(mappedBy = "outlet")
     private List<Review> reviews;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Outlet setId(Long id) {
+    public Outlet setId(Integer id) {
         this.id = id;
         return this;
     }

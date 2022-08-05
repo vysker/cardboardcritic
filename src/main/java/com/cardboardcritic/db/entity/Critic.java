@@ -3,6 +3,7 @@ package com.cardboardcritic.db.entity;
 import com.cardboardcritic.db.entity.meta.HasName;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,18 +16,19 @@ public class Critic extends PanacheEntityBase implements HasName<Critic> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "INTEGER")
+    private Integer id;
 
     private String name;
 
     @OneToMany(mappedBy = "critic")
     private List<Review> reviews;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Critic setId(Long id) {
+    public Critic setId(Integer id) {
         this.id = id;
         return this;
     }

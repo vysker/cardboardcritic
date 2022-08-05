@@ -31,7 +31,8 @@ public class RawReview extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "INTEGER")
+    private Integer id;
 
     private String game;
     private String critic;
@@ -49,11 +50,11 @@ public class RawReview extends PanacheEntityBase {
     private boolean recommended;
     private boolean processed;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public RawReview setId(Long id) {
+    public RawReview setId(Integer id) {
         this.id = id;
         return this;
     }

@@ -3,6 +3,7 @@ package com.cardboardcritic.db.entity;
 import com.cardboardcritic.db.entity.meta.HasName;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +17,8 @@ public class Game extends PanacheEntityBase implements HasName<Game> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "INTEGER")
+    private Integer id;
 
     private int average;
     private int median;
@@ -32,11 +34,11 @@ public class Game extends PanacheEntityBase implements HasName<Game> {
     @OneToMany(mappedBy = "game")
     private List<Review> reviews;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Game setId(Long id) {
+    public Game setId(Integer id) {
         this.id = id;
         return this;
     }

@@ -105,25 +105,26 @@ main li {
 
 #desktop-menu {
   width: 100%;
+  margin-left: 2rem;
 }
 #mobile-menu {
   display: none;
 }
 
-header.top-nav {
+.top-nav {
   width: 100%;
   background-color: var(--kinda-black);
   border-bottom: 3px solid var(--divider);
 }
 
-header.top-nav .nav-inner {
+.top-nav .nav-inner {
   display: flex;
   height: 4rem;
   line-height: 4rem;
   padding: 0 var(--main-padding-horizontal);
 }
 
-header.top-nav a.site-title {
+.top-nav a.site-title {
   height: 50px;
   margin-top: 8px;
   /*  font-family: Georgia, serif;*/
@@ -132,40 +133,48 @@ header.top-nav a.site-title {
   /*  text-decoration: none;*/
   /*  color: var(--nav-font-color);*/
 }
-header.top-nav a.site-title img {
+.top-nav a.site-title img {
   height: 50px;
-}
-
-header.top-nav nav {
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-end;
 }
 
 /* Nav menu */
 
-header.top-nav nav ul {
+.top-nav nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-header.top-nav nav ul li {
+.top-nav nav ul li {
   display: inline-block;
   margin: 0 .5rem;
 }
-header.top-nav nav ul li:last-child {
+.top-nav nav ul li:last-child {
   margin-right: 0;
 }
 
-header.top-nav nav ul li a {
+.top-nav nav ul li a {
   display: block;
   font-family: var(--sans-font);
   text-decoration: none;
   color: var(--nav-font-color);
 }
-header.top-nav nav ul li a:hover {
+.top-nav nav ul li a:hover {
   text-decoration: underline;
+}
+
+#desktop-menu nav {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+
+#desktop-menu .top-nav-search-input {
+  padding: .5rem 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: white;
+  border-bottom: 1px solid white;
 }
 
 /* Form */
@@ -486,6 +495,12 @@ section#topical {
 .margin-top-big {
   margin-top: 2rem;
 }
+.margin-left {
+  margin-left: 1rem;
+}
+.margin-left-big {
+  margin-left: 2rem;
+}
 
 .bg-none {
   background: none;
@@ -510,17 +525,11 @@ section#topical {
 @media only screen and (max-width: 1100px) {
   :root {
     --main-width: 100%;
+    --main-padding-horizontal: 2rem;
   }
 
   main#game .game-details {
     width: auto;
-  }
-}
-
-@media only screen and (max-width: 520px) {
-  :root {
-    --main-margin-vertical: 1rem;
-    --main-padding-horizontal: 1rem;
   }
 
   /* Nav */
@@ -553,6 +562,13 @@ section#topical {
     margin: 0;
     padding: 0 1rem;
     border-radius: 0.2rem;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  :root {
+    --main-margin-vertical: 1rem;
+    --main-padding-horizontal: 1rem;
   }
 
   /* Card */

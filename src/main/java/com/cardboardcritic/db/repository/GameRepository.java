@@ -2,7 +2,7 @@ package com.cardboardcritic.db.repository;
 
 import com.cardboardcritic.db.entity.Game;
 import com.cardboardcritic.util.StringUtil;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @ApplicationScoped
-public class GameRepository implements PanacheRepository<Game> {
+public class GameRepository implements PanacheRepositoryBase<Game, Integer> {
 
     public Game findBySlug(String slug) {
         return find("slug", slug).firstResult();

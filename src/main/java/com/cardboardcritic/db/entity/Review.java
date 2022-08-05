@@ -15,7 +15,8 @@ public class Review extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "INTEGER")
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "game_id", referencedColumnName = "id")
@@ -39,11 +40,11 @@ public class Review extends PanacheEntityBase {
 
     private boolean recommended;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Review setId(Long id) {
+    public Review setId(Integer id) {
         this.id = id;
         return this;
     }

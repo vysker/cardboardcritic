@@ -129,7 +129,7 @@ public class RawReviewResource {
     @GET
     @Path("{id}/edit")
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance edit(@PathParam long id) {
+    public TemplateInstance edit(@PathParam int id) {
         final RawReview rawReview = rawReviewRepo.findById(id);
         final List<Game> games = gameRepo.listAll(Sort.by("name"));
         final List<Critic> critics = criticRepo.listAll(Sort.by("name"));
@@ -143,7 +143,7 @@ public class RawReviewResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     @Transactional
-    public Response save(@PathParam long id, @BeanParam RawReviewEditForm form) {
+    public Response save(@PathParam int id, @BeanParam RawReviewEditForm form) {
         final Game game = gameRepo.createNewOrFindExisting(form.newGame, form.game);
         final Critic critic = criticRepo.createNewOrFindExisting(form.newCritic, form.critic);
         final Outlet outlet = outletRepo.createNewOrFindExisting(form.newOutlet, form.outlet);
@@ -182,7 +182,7 @@ public class RawReviewResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     @Transactional
-    public Response deny(@PathParam long id) {
+    public Response deny(@PathParam int id) {
         rawReviewRepo.update("processed = true where id = ?1", id);
         return Response.seeOther(URI.create("/raw-review")).build();
     }
@@ -192,7 +192,7 @@ public class RawReviewResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     @Transactional
-    public Response reScrape(@PathParam long id) {
+    public Response reScrape(@PathParam int id) {
         final RawReview review = rawReviewRepo.findById(id);
         final String outlet = review.getOutlet();
 
@@ -233,7 +233,7 @@ public class RawReviewResource {
         return Response.seeOther(getEditLink(id)).build();
     }
 
-    private URI getEditLink(long id) {
+    private URI getEditLink(int id) {
         return URI.create("/raw-review/" + id + "/edit");
     }
 }

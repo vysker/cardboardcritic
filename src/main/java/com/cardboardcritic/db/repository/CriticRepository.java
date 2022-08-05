@@ -2,12 +2,12 @@ package com.cardboardcritic.db.repository;
 
 import com.cardboardcritic.db.entity.Critic;
 import com.cardboardcritic.util.StringUtil;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class CriticRepository implements PanacheRepository<Critic> {
+public class CriticRepository implements PanacheRepositoryBase<Critic, Integer> {
     public Critic findOrCreateByName(String name) {
         return find("name", name).firstResultOptional()
                 .orElseGet(() -> {

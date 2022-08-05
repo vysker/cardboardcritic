@@ -3,7 +3,7 @@ package com.cardboardcritic.web.template.form;
 import org.jboss.resteasy.annotations.jaxrs.FormParam;
 
 public class ReviewEditForm {
-    public long id;
+    public int id;
     @FormParam public String game;
     @FormParam public String newGame;
     @FormParam public String critic;
