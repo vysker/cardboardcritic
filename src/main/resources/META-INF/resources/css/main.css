@@ -622,8 +622,20 @@ section#topical {
     margin-right: 0;
   }
 
-  /* Raw reviews page */
-  main#raw-reviews .review-content p {
-    display: none;
+  /* Admin pages */
+  main#raw-reviews .card.compact {
+    flex-direction: column;
+    height: auto;
+  }
+  main#raw-reviews .card-header {
+    padding-top: 1rem;
+    flex-direction: row;
+    gap: 1rem;
+  }
+  main#raw-reviews .card-content {
+    padding: 0 1rem;
+  }
+  main#raw-reviews .card-after {
+    width: 100%;
   }
 }
