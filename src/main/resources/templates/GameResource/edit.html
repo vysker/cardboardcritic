@@ -1,0 +1,57 @@
+{#include base}
+{#main}
+  <main>
+    <article>
+      <header>
+        <h1>Game Edit</h1>
+      </header>
+      <div class="content">
+        <form action="/game/{game.id}/edit" method="post">
+          <a href="/game/{game.slug}" target="_blank">Visit game page</a>
+          <p>
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="Name of the game" value="{game.name or ''}" autofocus>
+          </p>
+          <p>
+            <label for="short-description">Short description</label>
+            <input type="text" name="shortDescription" id="short-description" placeholder="The game in one sentence"
+                   value="{game.shortDescription or ''}">
+          </p>
+          <p>
+            <label for="description">Description</label>
+            <input type="text" name="description" id="description" placeholder="An elaborate description of the game"
+                   value="{game.description or ''}">
+          </p>
+          <div class="grid col-2">
+            <p>
+              <label for="designer">Designer</label>
+              <select name="designer" id="designer">
+                <option value="no-designer-selected">Select a designer</option>
+                {#for designer in designers}
+                  <option value="{designer}" {#if game.designer == designer}selected{/if}>{designer}</option>
+                {/for}
+              </select>
+            </p>
+            <p>
+              <label for="new-designer">Or create a new designer</label>
+              <input type="text" name="newDesigner" id="new-designer" placeholder="Name of the new designer">
+            </p>
+          </div>
+          <p>
+            <label for="slug">Slug</label>
+            <input type="text" name="slug" id="slug" placeholder="Link to game" value="{game.slug or ''}">
+          </p>
+          <p>
+            <label for="release-date">Release date (yyyy-mm-dd)</label>
+            <input type="text" name="releaseDate" id="release-date" placeholder="Release date"
+                value="{game.releaseDate or ''}" >
+          </p>
+          <p>
+            <button type="submit" class="primary">Submit</button>
+          </p>
+        </form>
+      </div>
+    </article>
+  </main>
+{/main}
+{/include}

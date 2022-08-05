@@ -4,6 +4,10 @@
   <article>
 
     <header>
+      {#if global:username}
+        <a href="/game/{game.id}/edit">&#9998; Edit</a>
+      {/if}
+
       <h1>{game.name or 'Untitled game'}</h1>
 
       <div class="game-details">
