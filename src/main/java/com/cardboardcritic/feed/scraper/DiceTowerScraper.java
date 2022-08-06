@@ -31,13 +31,17 @@ public class DiceTowerScraper extends ArticleScraper {
                 .findFirst();
         final String critic = maybeTitle.map(title -> StringUtil.after(title, divider)).orElse(null);
         final String game = maybeTitle.map(title -> StringUtil.before(title, divider)).orElse(null);
+        final String title = maybeTitle.orElseGet(() -> document.select("head title").first().text());
+        final String content = ScraperUtil.toYouTubeEmbedLink(
+                document.select("#player a.ytp-title-link").first().attr("href"));
 
         return new RawReview()
+                .setTitle(title)
                 .setUrl(articleUrl)
                 .setCritic(critic)
                 .setGame(game)
                 .setScore(ScraperUtil.normalizeScore(score, 10f))
-                .setTitle(maybeTitle.orElse(null))
+                .setContent(content)
                 .setRecommended(recommended);
     }
 }

@@ -17,4 +17,8 @@ public class ScraperUtil {
         final String nonNullInput = raw == null ? "{}" : raw;
         return JSON_MAPPER.readTree(nonNullInput);
     }
+
+    public static String toYouTubeEmbedLink(String youTubeLink) {
+        return youTubeLink.replace("watch?v=", "embed/");
+    }
 }
