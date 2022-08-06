@@ -31,9 +31,11 @@ public class DiceTowerScraper extends ArticleScraper {
                 .findFirst();
         final String critic = maybeTitle.map(title -> StringUtil.after(title, divider)).orElse(null);
         final String game = maybeTitle.map(title -> StringUtil.before(title, divider)).orElse(null);
-        final String title = maybeTitle.orElseGet(() -> document.select("head title").first().text());
-        final String content = ScraperUtil.toYouTubeEmbedLink(
-                document.select("#player a.ytp-title-link").first().attr("href"));
+        final String title = maybeTitle.or(() -> document.select("head title").stream().findFirst().map(Element::text))
+                .orElse(null);
+        final Optional<String> maybeYouTubeLink = document.select("iframe.media-youtube-player")
+                .stream().findFirst().map(element -> element.attr("src"));
+        final String content = maybeYouTubeLink.map(ScraperUtil::toYouTubeEmbedLink).orElse(null);
 
         return new RawReview()
                 .setTitle(title)
