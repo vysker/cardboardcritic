@@ -33,8 +33,10 @@ insert into review (
   (3, 3, 2, 'Now that is some game, I tell you', 70, false, null),
   (4, 3, 2, 'There is dunes, and there is Dune', 92, true, null),
   (4, 1, 1, 'Sand? Yes. Dunes? Yes. Beach? Nah', 60, false, null),
-  (5, 1, 2, 'I still remember waiting for this game', 40, false, null)
-  ;
+  (5, 1, 2, 'I still remember waiting for this game', 40, false, null),
+  (5, 1, 2, 'https://www.youtube.com/embed/dQw4w9WgXcQ', 40, false, null),
+  (5, 1, 2, null, 40, false, null)
+;
 
 insert into raw_review (
   game, critic, outlet, recommended, score, summary, title, content, date, url, processed)

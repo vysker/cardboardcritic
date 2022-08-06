@@ -8,7 +8,7 @@
     <div class="margin-top">
       <b>{#if score == 0}No score{#else}{score}/100{/if}, {recommended ? 'Recommended' : 'Not recommended'}</b>
     </div>
-    {#if review.summary.startsWith('https://www.youtube.com')}
+    {#if review.summary && review.summary.startsWith('https://www.youtube.com')}
       <iframe width="320" height="180" src="{review.summary}" title="View {critic}'s review on YouTube"
           allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen></iframe>
