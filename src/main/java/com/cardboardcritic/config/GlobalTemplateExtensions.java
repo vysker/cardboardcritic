@@ -38,6 +38,12 @@ public class GlobalTemplateExtensions {
         return subject.substring(0, 1).toUpperCase() + subject.substring(1);
     }
 
+    // This is needed for native images, because otherwise it will strip out String.startsWith during compilation
+    @TemplateExtension(namespace = "")
+    public static boolean startsWith(String subject, String prefix) {
+        return subject.startsWith(prefix);
+    }
+
     @TemplateExtension(namespace = "")
     public static int add(int subject, int amount) {
         return subject + amount;
