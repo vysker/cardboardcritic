@@ -104,12 +104,12 @@ public class RawReviewResource {
         outletFilter.filter(StringUtil::isNotEmpty)
                 .ifPresent(name -> rawReviewQuery.filter("RawReview.byOutlet", Parameters.with("name", name)));
         statusFilter.filter(StringUtil::isNotEmpty)
-                .ifPresent(status -> {
+                .ifPresentOrElse(status -> {
                     if ("done".equals(status))
                         rawReviewQuery.filter("RawReview.byProcessed", Parameters.with("value", true));
                     if ("todo".equals(status))
                         rawReviewQuery.filter("RawReview.byProcessed", Parameters.with("value", false));
-                });
+                }, () -> rawReviewQuery.filter("RawReview.byProcessed", Parameters.with("value", false)));
 
         final Map<String, String> filters = Map.of(
                 "game", gameFilter.orElse(""),
