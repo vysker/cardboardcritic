@@ -37,7 +37,7 @@ public class GameResource {
     public static class Templates {
         public static native TemplateInstance game(Game game);
 
-        public static native TemplateInstance edit(GameEditForm game, List<String> designers);
+        public static native TemplateInstance edit(GameEditForm game, List<String> designers, List<String> publishers);
     }
 
     public GameResource(GameRepository gameRepo, GameMapper gameMapper) {
@@ -73,8 +73,14 @@ public class GameResource {
                 .distinct()
                 .sorted(Comparator.comparing(designer -> designer, Comparator.naturalOrder()))
                 .toList();
+        final List<String> publishers = gameRepo.listAll().stream()
+                .map(Game::getPublisher)
+                .filter(Objects::nonNull)
+                .distinct()
+                .sorted(Comparator.comparing(publisher -> publisher, Comparator.naturalOrder()))
+                .toList();
 
-        return Templates.edit(gameMapper.toForm(game), designers);
+        return Templates.edit(gameMapper.toForm(game), designers, publishers);
     }
 
     @POST // Should be PATCH, but HTML forms only support POST
@@ -94,6 +100,8 @@ public class GameResource {
 
         final String designer = StringUtil.isNotEmpty(form.newDesigner) ? form.newDesigner : form.designer;
         game.setDesigner(designer);
+        final String publisher = StringUtil.isNotEmpty(form.newPublisher) ? form.newPublisher : form.publisher;
+        game.setPublisher(publisher);
 
         gameRepo.persist(game);
         return Response.seeOther(getEditLink(id)).build();

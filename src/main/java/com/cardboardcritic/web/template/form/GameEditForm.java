@@ -9,6 +9,8 @@ public class GameEditForm {
     @FormParam public String description;
     @FormParam public String designer;
     @FormParam public String newDesigner;
+    @FormParam public String publisher;
+    @FormParam public String newPublisher;
     @FormParam public String slug;
     @FormParam public String releaseDate;
 }

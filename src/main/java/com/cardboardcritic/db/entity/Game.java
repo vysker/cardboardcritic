@@ -24,6 +24,10 @@ import java.util.List;
         defaultCondition = "designer = :designer",
         parameters = @ParamDef(name = "designer", type = "string"))
 @Filter(name = "Game.byDesigner")
+@FilterDef(name = "Game.byPublisher",
+        defaultCondition = "publisher = :publisher",
+        parameters = @ParamDef(name = "publisher", type = "string"))
+@Filter(name = "Game.byPublisher")
 public class Game extends PanacheEntityBase implements HasName<Game> {
 
     @Id
@@ -38,6 +42,7 @@ public class Game extends PanacheEntityBase implements HasName<Game> {
     private String shortDescription;
     private String description;
     private String designer;
+    private String publisher;
     private String slug;
     private String image;
     private LocalDate releaseDate;
@@ -116,6 +121,14 @@ public class Game extends PanacheEntityBase implements HasName<Game> {
     public Game setDesigner(String designer) {
         this.designer = designer;
         return this;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
     public String getSlug() {

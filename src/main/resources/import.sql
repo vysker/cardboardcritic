@@ -1,11 +1,13 @@
 insert into game (
-	name, short_description, description, designer, release_date, average, median, recommended, slug)
+	name, short_description, description, designer, publisher, release_date, average, median, recommended, slug)
 	values
-	('Anachrony', 'Not long description', 'Elaborate description', 'David Turczi', '2017-01-01', 0, 0, 0, 'anachrony'),
-	('Gloomhaven', 'Very brief', 'Quite long', 'Isaac Childres', '2017-01-01', 0, 0, 0, 'gloomhaven'),
-	('Some Game', 'Walk the talk', 'Longer description', 'Nother Dee Signer', '2022-01-01', 0, 0, 0, 'some-game'),
-	('Dune: Imperium - Rise of Ix', 'Dunes, dunes, dunes', 'Sand, nothing but sand', 'Paul Dennen', '2022-03-24', 0, 0, 0, 'dune-imperium-rise-of-ix'),
-	('The game we have been waiting for since forever now', 'This is the game', 'Epic to the max', 'Nother Dee Signer', '2022-01-01', 0, 0, 0, 'the-game-we-have-been-waiting-for-since-forever-now')
+	('Anachrony', 'Not long description', 'Elaborate description', 'David Turczi', 'Mindclash Games', '2017-01-01', 0, 0, 0, 'anachrony'),
+	('Gloomhaven', 'Very brief', 'Quite long', 'Isaac Childres', 'Cephalofair Games', '2017-01-01', 0, 0, 0, 'gloomhaven'),
+	('Some Game', 'Walk the talk', 'Longer description', 'Nother Dee Signer', 'Big Corp Ltd.', '2022-01-01', 0, 0, 0, 'some-game'),
+	('Dune: Imperium - Rise of Ix', 'Dunes, dunes, dunes', 'Sand, nothing but sand', 'Paul Dennen', 'Dire Wolf Digital', '2022-03-24', 0, 0, 0, 'dune-imperium-rise-of-ix'),
+	('The game we have been waiting for since forever now',
+	 'This description is rather long if I do say so myself, lorem ipum to the dolor sit of amet. And then some, just in case it is not long enough yet',
+	 'Epic to the max', 'Nother Dee Signer', 'Slow Co.', '2022-01-01', 0, 0, 0, 'the-game-we-have-been-waiting-for-since-forever-now')
 	;
 
 insert into critic (

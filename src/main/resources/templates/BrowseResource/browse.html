@@ -4,7 +4,7 @@
   {#title}Browse Games{/title}
   {#content}
     <form action="/browse" method="get">
-      <section class="grid col-4 mob-col-2 mob-row-2 card">
+      <section class="grid col-5 mob-col-2 mob-row-2 card">
         <div>
           <label for="year">Year</label>
           <select name="year" id="year">
@@ -20,6 +20,15 @@
             <option value="">All designers</option>
             {#for designer in designers}
               <option value="{designer}" {#if filters.designer == designer}selected{/if}>{designer}</option>
+            {/for}
+          </select>
+        </div>
+        <div>
+          <label for="publisher">Publisher</label>
+          <select name="publisher" id="publisher">
+            <option value="">All publishers</option>
+            {#for publisher in publishers}
+              <option value="{publisher}" {#if filters.publisher == publisher}selected{/if}>{publisher}</option>
             {/for}
           </select>
         </div>

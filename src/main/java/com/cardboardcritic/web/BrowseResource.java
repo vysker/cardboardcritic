@@ -39,6 +39,7 @@ public class BrowseResource {
         public static native TemplateInstance browse(List<Game> games,
                                                      List<String> years,
                                                      List<String> designers,
+                                                     List<String> publishers,
                                                      List<String> sorts,
                                                      Map<String, String> filters,
                                                      long results,
@@ -54,6 +55,7 @@ public class BrowseResource {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance browse(@QueryParam("year") Optional<String> yearFilter,
                                    @QueryParam("designer") Optional<String> designerFilter,
+                                   @QueryParam("publisher") Optional<String> publisherFilter,
                                    @QueryParam("sort") Optional<String> sortFilter,
                                    @QueryParam("page") Optional<Integer> pageMaybe,
                                    @QueryParam("page-action") Optional<String> pageAction) {
@@ -80,15 +82,23 @@ public class BrowseResource {
                 .filter(Objects::nonNull)
                 .sorted(Comparator.comparing(designer -> designer, Comparator.naturalOrder()))
                 .toList();
+        final List<String> publishers = allGames.stream()
+                .map(Game::getPublisher)
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparing(publisher -> publisher, Comparator.naturalOrder()))
+                .toList();
 
         yearFilter.filter(StringUtil::isNotEmpty)
                 .ifPresent(year -> gameQuery.filter("Game.byYear", Parameters.with("year", Integer.valueOf(year))));
         designerFilter.filter(StringUtil::isNotEmpty)
                 .ifPresent(designer -> gameQuery.filter("Game.byDesigner", Parameters.with("designer", designer)));
+        publisherFilter.filter(StringUtil::isNotEmpty)
+                .ifPresent(publisher -> gameQuery.filter("Game.byPublisher", Parameters.with("publisher", publisher)));
 
         final Map<String, String> filters = Map.of(
                 "year", yearFilter.orElse(""),
                 "designer", designerFilter.orElse(""),
+                "publisher", designerFilter.orElse(""),
                 "sort", sortFilter.orElse(DEFAULT_SORT)
         );
 
@@ -105,7 +115,7 @@ public class BrowseResource {
         final long results = gameQuery.count();
         final int totalPages = gameQuery.pageCount();
 
-        return Templates.browse(games, years, designers, ALLOWED_SORTS, filters, results, page, totalPages);
+        return Templates.browse(games, years, designers, publishers, ALLOWED_SORTS, filters, results, page, totalPages);
     }
 
     @GET
