@@ -10,29 +10,25 @@
 
       <h1>{game.name or 'Untitled game'}</h1>
 
-      <div class="game-details">
-        <div class="detail">
+      <div class="game-details grid row-2 col-3 margin-top-big">
+        <div class="detail release-date">
           <span class="detail-name">Release date</span>
-          <span class="detail-content date">{game.releaseDate ? time:format(game.releaseDate, 'd MMM uuuu') : 'No release date'}</span>
+          <span class="detail-content">{game.releaseDate ? time:format(game.releaseDate, 'd MMM uuuu') : 'No release date'}</span>
         </div>
-        <div class="detail">
+        <div class="detail designer">
           <span class="detail-name">Designer</span>
-          <span class="detail-content designer">{game.designer ?: 'Unknown designer'}</span>
+          <span class="detail-content">{game.designer ?: 'Unknown designer'}</span>
         </div>
-        <div class="detail">
+        <div class="detail short-description col-span3">
           <span class="detail-name">Short description</span>
-          <span class="detail-content short-description">{game.shortDescription ?: 'No description'}</span>
+          <span class="detail-content">{game.shortDescription ?: 'No description'}</span>
         </div>
-        <!--        <div class="detail">-->
-        <!--          <span class="detail-name">Full description</span>-->
-        <!--          <div class="description">{!game.description!}</div>-->
-        <!--        </div>-->
       </div>
 
-      <div class="stats">
+      <div class="stats grid col-3 margin-top-big">
         <div class="stat score-average">
           {#include hex hexContent=game.average /}
-          <details>
+          <details class="margin-top">
             <summary>Average score</summary>
             <p>Average of all critic scores. All scores are normalized to a 100-based point system before averaging.
               Only reviews with scores are taken into account.</p>
@@ -40,7 +36,7 @@
         </div>
         <div class="stat score-median">
           {#include hex hexContent=game.median /}
-          <details>
+          <details class="margin-top">
             <summary>Median score</summary>
             <p>
               Median of all critic scores. Median is the 'middle' or 'typical' score.
@@ -50,7 +46,7 @@
         </div>
         <div class="stat recommended">
           {#include hex hexContent=game.recommended hexContentAfter="%" /}
-          <details>
+          <details class="margin-top">
             <summary>Recommends</summary>
             <p>
               Percentage of critics that recommends the game. If a review does not specify a 'recommended' status, then
@@ -60,7 +56,7 @@
         </div>
       </div>
 
-      <div class="media">
+      <div class="media margin-top-big">
         <h3>Media</h3>
         {#if game.image}
           <img src="{game.image}" alt="Cover image of {game.name}"/>
@@ -78,7 +74,7 @@
     <div class="content">
       <div class="reviews">
         <h3>Critic Reviews</h3>
-        <div class="card-grid">
+        <div class="grid col-2 mob-col-1">
           {#for review in game.reviews}
             {#include review
               outlet=review.outlet.name

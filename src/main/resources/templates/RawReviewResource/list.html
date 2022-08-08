@@ -1,4 +1,4 @@
-<form action="/raw-review" method="get" class="grid col-5 card">
+<form action="/raw-review" method="get" class="grid col-5 mob-col-2 mob-row-2 card">
   <div>
     <label for="game">Game</label>
     <select name="game" id="game">
@@ -34,7 +34,7 @@
       <option value="todo" {#if filters.status == 'todo'}selected{/if}>To do</option>
     </select>
   </div>
-  <div style="display: flex">
+  <div class="mob-col-span2" style="display: flex">
     <button type="submit" style="align-self: end">&#10983; Filter</button>
   </div>
 </form>

@@ -1,12 +1,11 @@
 <div class="review card">
-<!--  <div class="card-before"></div>-->
   <div class="card-header">
     <h2>{outlet ?: 'Unknown outlet'}</h2>
     <span class="card-subtitle">{critic ?: 'Unknown critic'}</span>
   </div>
   <div class="card-content review-content">
     <div class="margin-top">
-      <b>{#if score == 0}No score{#else}{score}/100{/if}, {recommended ? 'Recommended' : 'Not recommended'}</b>
+      <b>{#if score == 0}No score given{#else}{score}/100{/if}, {recommended ? 'Recommended' : 'Not recommended'}</b>
     </div>
     {#if summary && summary.startsWith('https://www.youtube.com/embed')}
       <iframe width="320" height="180" src="{summary}" title="View {critic}'s review on YouTube"

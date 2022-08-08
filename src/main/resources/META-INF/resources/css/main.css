@@ -62,16 +62,11 @@ details summary {
   cursor: pointer;
 }
 
-article {
-  margin-bottom: 3rem;
-}
-
 footer {
   width: 100%;
   height: 240px;
   padding: 2rem 0;
   background-color: var(--kinda-black);
-  border-top: 3px solid var(--divider);
 }
 footer span {
   color: white;
@@ -272,14 +267,6 @@ button.primary {
   text-overflow: ellipsis;
 }
 
-/* Card grid */
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
 /* Card list */
 
 ul.card-list {
@@ -374,47 +361,41 @@ ul.card-list {
 main#game header h1 {
   text-align: center;
 }
-main#game .game-details {
-  display: flex;
-  justify-content: space-between;
-  width: 75%;
-  margin: 2rem auto 2rem auto;
-}
-main#game .game-details .detail {
+
+.game-details .detail {
+  position: relative;
   display: flex;
   flex-direction: column;
   text-align: center;
-  width: 33%;
 }
-main#game .game-details .detail .detail-name {
+.game-details .detail .detail-name {
   font-size: .8rem;
-}
-main#game .game-details .detail .detail-content {
   font-weight: bold;
 }
 
 /* Game page stats */
 
 .stats {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 5rem;
+  position: relative;
+  /*display: flex;*/
+  /*justify-content: space-around;*/
+  /*margin-bottom: 5rem;*/
 }
 .stat {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 33%;
 }
 .stat details summary {
-  margin-top: .5rem;
   text-align: center;
 }
 .stat details p {
-  /* position: absolute;
+  position: absolute;
   z-index: 5;
-  transform: translateX(-25%); */
+  left: 0;
+  right: 0;
+  width: var(--main-width);
+  margin: auto;
   padding: 1rem;
   border-radius: 2px;
   background: lightgrey;
@@ -465,14 +446,6 @@ main#game .review-content details[open] summary::before {
   color: var(--font-color);
 }
 
-/* Home */
-
-section#topical {
-  display: grid;
-  grid-template-areas: "article article";
-  grid-gap: 2rem;
-}
-
 /* Errors */
 
 #errors {
@@ -496,18 +469,18 @@ section#topical {
   display: grid;
   grid-gap: 1rem;
 }
-.grid.col-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-.grid.col-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-.grid.col-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
-.grid.col-5 {
-  grid-template-columns: repeat(5, 1fr);
-}
+.row-1 { grid-template-rows: repeat(1, 1fr); }
+.row-2 { grid-template-rows: repeat(2, 1fr); }
+.row-3 { grid-template-rows: repeat(3, 1fr); }
+.row-4 { grid-template-rows: repeat(4, 1fr); }
+.row-5 { grid-template-rows: repeat(5, 1fr); }
+.col-1 { grid-template-columns: repeat(1, 1fr); }
+.col-2 { grid-template-columns: repeat(2, 1fr); }
+.col-3 { grid-template-columns: repeat(3, 1fr); }
+.col-4 { grid-template-columns: repeat(4, 1fr); }
+.col-5 { grid-template-columns: repeat(5, 1fr); }
+.col-span2 { grid-column: 1 / span 2; }
+.col-span3 { grid-column: 1 / span 3; }
 
 .margin-top {
   margin-top: 1rem;
@@ -546,10 +519,6 @@ section#topical {
   :root {
     --main-width: 100%;
     --main-padding-horizontal: 2rem;
-  }
-
-  main#game .game-details {
-    width: auto;
   }
 
   /* Nav */
@@ -591,10 +560,6 @@ section#topical {
     --main-padding-horizontal: 1rem;
   }
 
-  /* Card */
-  .card-grid {
-    grid-template-columns: repeat(1, 1fr);
-  }
   .card.compact .card-header {
     min-width: 10rem;
   }
@@ -638,4 +603,22 @@ section#topical {
   main#raw-reviews .card-after {
     width: 100%;
   }
+
+  /* Generic */
+  .mob-grid {
+    display: grid;
+    grid-gap: 1rem;
+  }
+  .mob-row-1 { grid-template-rows: repeat(1, 1fr); }
+  .mob-row-2 { grid-template-rows: repeat(2, 1fr); }
+  .mob-row-3 { grid-template-rows: repeat(3, 1fr); }
+  .mob-row-4 { grid-template-rows: repeat(4, 1fr); }
+  .mob-row-5 { grid-template-rows: repeat(5, 1fr); }
+  .mob-col-1 { grid-template-columns: repeat(1, 1fr); }
+  .mob-col-2 { grid-template-columns: repeat(2, 1fr); }
+  .mob-col-3 { grid-template-columns: repeat(3, 1fr); }
+  .mob-col-4 { grid-template-columns: repeat(4, 1fr); }
+  .mob-col-5 { grid-template-columns: repeat(5, 1fr); }
+  .mob-col-span2 { grid-column: 1 / span 2; }
+  .mob-col-span3 { grid-column: 1 / span 3; }
 }
