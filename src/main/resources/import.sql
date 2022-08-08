@@ -7,7 +7,8 @@ insert into game (
 	('Dune: Imperium - Rise of Ix', 'Dunes, dunes, dunes', 'Sand, nothing but sand', 'Paul Dennen', 'Dire Wolf Digital', '2022-03-24', 0, 0, 0, 'dune-imperium-rise-of-ix'),
 	('The game we have been waiting for since forever now',
 	 'This description is rather long if I do say so myself, lorem ipum to the dolor sit of amet. And then some, just in case it is not long enough yet',
-	 'Epic to the max', 'Nother Dee Signer', 'Slow Co.', '2022-01-01', 0, 0, 0, 'the-game-we-have-been-waiting-for-since-forever-now')
+	 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat hendrerit velit, ut tristique libero sagittis sed. Nulla eget sem magna. Nulla convallis lorem lorem, eget ultricies mauris ornare euismod.',
+	 'Nother Dee Signer', 'Slow Co.', '2022-01-01', 0, 0, 0, 'the-game-we-have-been-waiting-for-since-forever-now')
 	;
 
 insert into critic (

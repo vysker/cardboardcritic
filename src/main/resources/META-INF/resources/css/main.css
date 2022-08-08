@@ -176,7 +176,6 @@ main li {
 
 label {
   display: block;
-  /* margin-bottom: .8rem; */
   text-transform: uppercase;
   font-size: .8rem;
   font-weight: bold;
@@ -308,18 +307,10 @@ ul.card-list {
   font-weight: bold;
   color: white;
 }
-.card.compact .card-after.score-flat {
-  border-right: .5rem solid var(--score-flat-color);
-}
-.card.compact .card-after.score-fine {
-  border-right: .5rem solid var(--score-fine-color);
-}
-.card.compact .card-after.score-good {
-  border-right: .5rem solid var(--score-good-color);
-}
-.card.compact .card-after.score-best {
-  border-right: .5rem solid var(--score-best-color);
-}
+.card.compact .card-after.score-flat { border-right: .5rem solid var(--score-flat-color); }
+.card.compact .card-after.score-fine { border-right: .5rem solid var(--score-fine-color); }
+.card.compact .card-after.score-good { border-right: .5rem solid var(--score-good-color); }
+.card.compact .card-after.score-best { border-right: .5rem solid var(--score-best-color); }
 
 /* Hexagon */
 
@@ -349,12 +340,8 @@ ul.card-list {
   border-top: var(--hex-border-invis);
   border-bottom: var(--hex-border-invis);
 }
-.hex-left {
-  border-right: var(--hex-border);
-}
-.hex-right {
-  border-left: var(--hex-border);
-}
+.hex-left { border-right: var(--hex-border); }
+.hex-right { border-left: var(--hex-border); }
 
 /* Game page details */
 
@@ -362,6 +349,10 @@ main#game header h1 {
   text-align: center;
 }
 
+.game-details {
+  width: 80%;
+  margin: 0 auto;
+}
 .game-details .detail {
   position: relative;
   display: flex;
@@ -377,9 +368,6 @@ main#game header h1 {
 
 .stats {
   position: relative;
-  /*display: flex;*/
-  /*justify-content: space-around;*/
-  /*margin-bottom: 5rem;*/
 }
 .stat {
   display: flex;
@@ -479,34 +467,26 @@ main#game .review-content details[open] summary::before {
 .col-3 { grid-template-columns: repeat(3, 1fr); }
 .col-4 { grid-template-columns: repeat(4, 1fr); }
 .col-5 { grid-template-columns: repeat(5, 1fr); }
+.col-start-1 { grid-column-start: 1; }
+.col-start-2 { grid-column-start: 2; }
+.col-start-3 { grid-column-start: 3; }
+.col-start-4 { grid-column-start: 4; }
+.col-end-1 { grid-column-end: 1; }
+.col-end-2 { grid-column-end: 2; }
+.col-end-3 { grid-column-end: 3; }
+.col-end-4 { grid-column-end: 4; }
 .col-span2 { grid-column: 1 / span 2; }
 .col-span3 { grid-column: 1 / span 3; }
 
-.margin-top {
-  margin-top: 1rem;
-}
-.margin-top-big {
-  margin-top: 2rem;
-}
-.margin-left {
-  margin-left: 1rem;
-}
-.margin-left-big {
-  margin-left: 2rem;
-}
+.margin-top { margin-top: 1rem; }
+.margin-top-big { margin-top: 2rem; }
+.margin-left { margin-left: 1rem; }
+.margin-left-big { margin-left: 2rem; }
 
-.bg-none {
-  background: none;
-}
-.bg-dark {
-  background: var(--kinda-black);
-}
-.bg-good {
-  background: var(--color-good);
-}
-.bg-bad {
-  background: var(--color-bad);
-}
+.bg-none { background: none; }
+.bg-dark { background: var(--kinda-black); }
+.bg-good { background: var(--color-good); }
+.bg-bad { background: var(--color-bad); }
 
 /* This is a hack that prevents grid items from overflowing when they contain text with "white-space: nowrap" */
 .min-width-0 {
@@ -564,11 +544,6 @@ main#game .review-content details[open] summary::before {
     min-width: 10rem;
   }
 
-  /* Generic */
-  section#topical {
-    display: inherit;
-  }
-
   footer {
     padding: 2rem;
   }
@@ -585,6 +560,10 @@ main#game .review-content details[open] summary::before {
   }
   main#game .media .no-image:last-child {
     margin-right: 0;
+  }
+
+  .game-details {
+    width: auto;
   }
 
   /* Admin pages */

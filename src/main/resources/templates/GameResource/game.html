@@ -10,7 +10,7 @@
 
       <h1>{game.name or 'Untitled game'}</h1>
 
-      <div class="game-details grid row-2 col-3 margin-top-big">
+      <div class="game-details grid row-1 col-3 margin-top-big">
         <div class="detail release-date">
           <span class="detail-name">Release date</span>
           <span class="detail-content">{game.releaseDate ? time:format(game.releaseDate, 'd MMM uuuu') : 'No release date'}</span>
@@ -25,7 +25,14 @@
         </div>
         <div class="detail short-description col-span3">
           <span class="detail-name">Short description</span>
-          <span class="detail-content">{game.shortDescription ?: 'No description'}</span>
+          <div class="detail-content">{game.shortDescription ?: 'No description'}
+            {#if game.description}
+              <details>
+              <summary>Read full description</summary>
+              <div>{game.description ?: 'No description'}</div>
+              </details>
+            {/if}
+          </div>
         </div>
       </div>
 

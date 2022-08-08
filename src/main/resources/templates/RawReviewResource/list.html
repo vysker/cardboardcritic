@@ -39,12 +39,11 @@
   </div>
 </form>
 
-<div class="margin-top-big">
+<div>
   <ul class="card-list">
     {#for review in reviews}
       <li>
         <div class="review card compact">
-          <!--  <div class="card-before"></div>-->
           <div class="card-header">
             <h4>{review.outlet ?: 'Unknown outlet'}</h4>
             <span class="card-subtitle">{review.critic}</span>
@@ -60,18 +59,18 @@
           </div>
         </div>
 
-        <details>
-          <summary>Preview</summary>
-          <div class="card-grid">
-            {#include review
-              outlet=review.outlet
-              critic=review.critic
-              score=review.score
-              recommended=review.recommended
-              summary=review.summary
-              url=review.url}{/include}
-          </div>
-        </details>
+        {!<details>!}
+          {!<summary>Preview</summary>!}
+          {!<div class="card-grid">!}
+            {!{#include review!}
+              {!outlet=review.outlet!}
+              {!critic=review.critic!}
+              {!score=review.score!}
+              {!recommended=review.recommended!}
+              {!summary=review.summary!}
+              {!url=review.url}{/include}!}
+          {!</div>!}
+        {!</details>!}
       </li>
     {/for}
   </ul>
