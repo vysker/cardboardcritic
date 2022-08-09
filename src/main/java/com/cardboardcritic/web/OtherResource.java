@@ -10,7 +10,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.Collections;
 import java.util.List;
 
 @Path("")
@@ -28,6 +27,8 @@ public class OtherResource {
 
         public static native TemplateInstance about();
 
+        public static native TemplateInstance faq();
+
         public static native TemplateInstance error();
     }
 
@@ -43,7 +44,14 @@ public class OtherResource {
     @Path("about")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance about() {
-        return Templates.about().data(Collections.emptyMap());
+        return Templates.about();
+    }
+
+    @GET
+    @Path("faq")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance faq() {
+        return Templates.faq();
     }
 
     @GET
