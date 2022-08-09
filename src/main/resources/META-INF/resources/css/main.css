@@ -374,10 +374,17 @@ main#game header h1 {
   flex-direction: column;
   align-items: center;
 }
+.stat details {
+  margin-top: -.5rem;
+}
 .stat details summary {
   text-align: center;
+  list-style: none;
 }
-.stat details p {
+.stat details[open] summary::before {
+  content: '\002716';
+}
+.stat details div {
   position: absolute;
   z-index: 5;
   left: 0;
@@ -386,7 +393,6 @@ main#game header h1 {
   margin: auto;
   padding: 1rem;
   border-radius: 2px;
-  background: lightgrey;
 }
 
 /* Game page media */
@@ -482,11 +488,15 @@ main#game .review-content details[open] summary::before {
 .margin-top-big { margin-top: 2rem; }
 .margin-left { margin-left: 1rem; }
 .margin-left-big { margin-left: 2rem; }
+.no-margin { margin: 0; }
 
 .bg-none { background: none; }
 .bg-dark { background: var(--kinda-black); }
 .bg-good { background: var(--color-good); }
 .bg-bad { background: var(--color-bad); }
+
+.text-left { text-align: left; }
+.text-center { text-align: center; }
 
 /* This is a hack that prevents grid items from overflowing when they contain text with "white-space: nowrap" */
 .min-width-0 {
