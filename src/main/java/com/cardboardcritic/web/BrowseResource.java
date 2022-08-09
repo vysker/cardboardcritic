@@ -80,11 +80,13 @@ public class BrowseResource {
         final List<String> designers = allGames.stream()
                 .map(Game::getDesigner)
                 .filter(Objects::nonNull)
+                .distinct()
                 .sorted(Comparator.comparing(designer -> designer, Comparator.naturalOrder()))
                 .toList();
         final List<String> publishers = allGames.stream()
                 .map(Game::getPublisher)
                 .filter(Objects::nonNull)
+                .distinct()
                 .sorted(Comparator.comparing(publisher -> publisher, Comparator.naturalOrder()))
                 .toList();
 
