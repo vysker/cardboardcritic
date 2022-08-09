@@ -7,7 +7,7 @@
   <p>
     <label for="game">Game</label>
     <select name="game" id="game">
-      <option value="no-game-selected">Select a game</option>
+      <option value="">Select a game</option>
       {#for game in games}
         <option value="{game.name}" {#if review.game == game.name}selected{/if}>{game.name}</option>
       {/for}
@@ -22,7 +22,7 @@
   <p>
     <label for="critic">Critic</label>
     <select name="critic" id="critic">
-      <option value="no-critic-selected">Select a critic</option>
+      <option value="">Select a critic</option>
       {#for critic in critics}
         <option value="{critic.name}" {#if review.critic == critic.name}selected{/if}>{critic.name}</option>
       {/for}
@@ -37,7 +37,7 @@
   <p>
     <label for="outlet">Outlet</label>
     <select name="outlet" id="outlet">
-        <option value="no-outlet-selected">Select an outlet</option>
+        <option value="">Select an outlet</option>
       {#for outlet in outlets}
         <option value="{outlet.name}" {#if review.outlet == outlet.name}selected{/if}>{outlet.name}</option>
       {/for}
