@@ -14,7 +14,7 @@
     {#else}
       <details class="p">
         <summary>Read more<br>{summary or 'No summary available'}</summary>
-        <p>{summary or 'No summary available'}</p>
+        <p>{summary ? summary.replaceAll('\n', '</p><p>').raw : 'No summary available'}</p>
       </details>
       <a href="{url}" target="_blank" class="review-link">Read full review</a>
     {/if}

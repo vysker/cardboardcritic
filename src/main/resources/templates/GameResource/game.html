@@ -68,7 +68,7 @@
         {!<div class="margin-top card">!}
         {!<details>!}
           {!<summary>Read full description</summary>!}
-          {!<div class="text-left">{game.description}</div>!}
+          {!<p>{game.description.replaceAll('\n', '</p><p>').raw}</p>!}
         {!</details>!}
         {!</div>!}
       {!{/if}!}
