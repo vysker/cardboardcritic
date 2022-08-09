@@ -26,7 +26,7 @@
             <p>
               <label for="designer">Designer</label>
               <select name="designer" id="designer">
-                <option value="no-designer-selected">Select a designer</option>
+                <option value="">Select a designer</option>
                 {#for designer in designers}
                   <option value="{designer}" {#if game.designer == designer}selected{/if}>{designer}</option>
                 {/for}
@@ -41,15 +41,15 @@
             <p>
               <label for="publisher">Publisher</label>
               <select name="publisher" id="publisher">
-                <option value="no-publisher-selected">Select a publisher</option>
+                <option value="">Select a publisher</option>
                 {#for publisher in publishers}
                   <option value="{publisher}" {#if game.publisher == publisher}selected{/if}>{publisher}</option>
                 {/for}
               </select>
             </p>
             <p>
-              <label for="new-designer">Or create designer</label>
-              <input type="text" name="newDesigner" id="new-designer" placeholder="Name of the new designer">
+              <label for="new-publisher">Or create publisher</label>
+              <input type="text" name="newPublisher" id="new-publisher" placeholder="Name of the new publisher">
             </p>
           </div>
           <p>
