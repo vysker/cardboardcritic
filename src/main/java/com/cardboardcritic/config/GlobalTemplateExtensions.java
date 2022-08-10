@@ -51,6 +51,12 @@ public class GlobalTemplateExtensions {
         return new RawString(subject);
     }
 
+    // This is needed for native images, because it thinks ".replaceAll" is unused, so it strips it out of the build
+    @TemplateExtension(namespace = "")
+    public static String replaceAll(String subject, String regex, String replacement) {
+        return subject.replaceAll(regex, replacement);
+    }
+
     @TemplateExtension(namespace = "")
     public static int add(int subject, int amount) {
         return subject + amount;
