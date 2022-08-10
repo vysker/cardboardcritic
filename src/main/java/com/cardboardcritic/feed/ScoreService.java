@@ -3,6 +3,7 @@ package com.cardboardcritic.feed;
 import com.cardboardcritic.db.entity.Game;
 import com.cardboardcritic.db.entity.Review;
 import com.cardboardcritic.db.repository.GameRepository;
+import io.quarkus.scheduler.Scheduled;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ public class ScoreService {
     }
 
     @Transactional
+    @Scheduled(cron = "{cbc.score.schedule}")
     public void aggregateScores() {
         final List<Game> games = gameRepository.listAll();
 

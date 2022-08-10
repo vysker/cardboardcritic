@@ -5,6 +5,7 @@ import com.cardboardcritic.db.entity.Review;
 import com.cardboardcritic.db.repository.RawReviewRepository;
 import com.cardboardcritic.db.repository.ReviewRepository;
 import com.cardboardcritic.feed.crawler.OutletCrawler;
+import io.quarkus.scheduler.Scheduled;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -34,19 +35,21 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
         this.log = log;
     }
 
-//    @Scheduled(every = "2S") // 1D = every day
+    @Scheduled(cron = "{cbc.feed.schedule}")
     public boolean crawl() {
         log.info("Starting new review feed");
 
-        outletCrawlers.stream()
+        final Stream<RawReview> rawReviewStream = outletCrawlers.stream()
                 .parallel()
                 .flatMap(crawler -> crawl(crawler).stream()
                         .parallel()
                         .map(link -> getReview(crawler, link)))
-                .filter(Objects::nonNull)
-                .forEach(this::persist);
+                .filter(Objects::nonNull);
 
-//        log.infof("Finished feed. Scraped %d new reviews", reviews.size());
+        long count = rawReviewStream.count();
+        rawReviewStream.forEach(this::persist);
+
+        log.infof("Finished new review feed. Scraped %d new reviews", count);
         return true;
     }
 
