@@ -20,6 +20,13 @@ public class AuthResource {
     }
 
     @GET
+    @Produces(MediaType.TEXT_HTML)
+    @PermitAll
+    public Response index() {
+        return Response.seeOther(URI.create("/auth/login")).build();
+    }
+
+    @GET
     @Path("login")
     @Produces(MediaType.TEXT_HTML)
     @PermitAll
