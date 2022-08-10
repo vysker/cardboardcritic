@@ -100,7 +100,7 @@ public class BrowseResource {
         final Map<String, String> filters = Map.of(
                 "year", yearFilter.orElse(""),
                 "designer", designerFilter.orElse(""),
-                "publisher", designerFilter.orElse(""),
+                "publisher", publisherFilter.orElse(""),
                 "sort", sortFilter.orElse(DEFAULT_SORT)
         );
 
