@@ -1,6 +1,7 @@
 package com.cardboardcritic.config;
 
 import io.quarkus.arc.Arc;
+import io.quarkus.qute.RawString;
 import io.quarkus.qute.TemplateExtension;
 import io.quarkus.security.identity.SecurityIdentity;
 import org.jboss.logging.Logger;
@@ -38,10 +39,16 @@ public class GlobalTemplateExtensions {
         return subject.substring(0, 1).toUpperCase() + subject.substring(1);
     }
 
-    // This is needed for native images, because otherwise it will strip out String.startsWith during compilation
+    // This is needed for native images, because it thinks ".startsWith" is unused, so it strips it out of the build
     @TemplateExtension(namespace = "")
     public static boolean startsWith(String subject, String prefix) {
         return subject.startsWith(prefix);
+    }
+
+    // This is needed for native images, because it thinks ".raw" is unused, so it strips it out of the build
+    @TemplateExtension(namespace = "")
+    public static RawString raw(String subject) {
+        return new RawString(subject);
     }
 
     @TemplateExtension(namespace = "")
