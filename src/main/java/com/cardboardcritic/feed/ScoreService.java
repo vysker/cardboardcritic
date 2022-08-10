@@ -17,8 +17,12 @@ public class ScoreService {
         this.gameRepository = gameRepository;
     }
 
-    @Transactional
     @Scheduled(cron = "{cbc.score.schedule}")
+    void aggregateScoresOnSchedule() {
+        aggregateScores();
+    }
+
+    @Transactional
     public void aggregateScores() {
         final List<Game> games = gameRepository.listAll();
 

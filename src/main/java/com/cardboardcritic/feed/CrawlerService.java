@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 /**
@@ -36,20 +37,27 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
     }
 
     @Scheduled(cron = "{cbc.feed.schedule}")
+    void crawlOnSchedule() {
+        crawl();
+    }
+
     public boolean crawl() {
         log.info("Starting new review feed");
 
-        final Stream<RawReview> rawReviewStream = outletCrawlers.stream()
+        final AtomicInteger reviewCount = new AtomicInteger();
+
+        outletCrawlers.stream()
                 .parallel()
                 .flatMap(crawler -> crawl(crawler).stream()
                         .parallel()
                         .map(link -> getReview(crawler, link)))
-                .filter(Objects::nonNull);
+                .filter(Objects::nonNull)
+                .forEach(review -> {
+                    reviewCount.incrementAndGet();
+                    rawReviewRepository.persist(review);
+                });
 
-        long count = rawReviewStream.count();
-        rawReviewStream.forEach(this::persist);
-
-        log.infof("Finished new review feed. Scraped %d new reviews", count);
+        log.infof("Finished new review feed. Scraped %d new reviews", reviewCount.get());
         return true;
     }
 
