@@ -54,7 +54,7 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
                 .filter(Objects::nonNull)
                 .forEach(review -> {
                     reviewCount.incrementAndGet();
-                    rawReviewRepository.persist(review);
+                    persist(review);
                 });
 
         log.infof("Finished new review feed. Scraped %d new reviews", reviewCount.get());
