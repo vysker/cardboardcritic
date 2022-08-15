@@ -2,6 +2,7 @@ package com.cardboardcritic.web;
 
 import com.cardboardcritic.config.GlobalTemplateExtensions;
 import com.cardboardcritic.data.RawReviewMapper;
+import com.cardboardcritic.db.Pageable;
 import com.cardboardcritic.db.entity.Critic;
 import com.cardboardcritic.db.entity.Game;
 import com.cardboardcritic.db.entity.Outlet;
@@ -14,6 +15,7 @@ import com.cardboardcritic.db.repository.RawReviewRepository;
 import com.cardboardcritic.db.repository.ReviewRepository;
 import com.cardboardcritic.feed.CrawlerService;
 import com.cardboardcritic.feed.crawler.OutletCrawler;
+import com.cardboardcritic.util.PagingUtil;
 import com.cardboardcritic.util.StringUtil;
 import com.cardboardcritic.web.template.form.RawReviewEditForm;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
@@ -63,14 +65,16 @@ public class RawReviewResource {
                                                    List<Game> games,
                                                    List<Critic> critics,
                                                    List<Outlet> outlets,
-                                                   Map<String, String> filters);
+                                                   Map<String, String> filters,
+                                                   Pageable pageable);
 
 
         public static native TemplateInstance index(List<RawReview> reviews,
                                                     List<Game> games,
                                                     List<Critic> critics,
                                                     List<Outlet> outlets,
-                                                    Map<String, String> filters);
+                                                    Map<String, String> filters,
+                                                    Pageable pageable);
     }
 
     public RawReviewResource(RawReviewRepository rawReviewRepo,
@@ -94,7 +98,9 @@ public class RawReviewResource {
     public TemplateInstance index(@QueryParam("game") Optional<String> gameFilter,
                                   @QueryParam("outlet") Optional<String> outletFilter,
                                   @QueryParam("critic") Optional<String> criticFilter,
-                                  @QueryParam("status") Optional<String> statusFilter) {
+                                  @QueryParam("status") Optional<String> statusFilter,
+                                  @QueryParam("page") Optional<Integer> page,
+                                  @QueryParam("page-action") Optional<String> pageAction) {
         final PanacheQuery<RawReview> rawReviewQuery = rawReviewRepo.findAll();
 
         gameFilter.filter(StringUtil::isNotEmpty)
@@ -118,11 +124,16 @@ public class RawReviewResource {
                 "status", statusFilter.orElse("todo")
         );
 
-        return Templates.index(rawReviewQuery.list(),
+        final int newPage = PagingUtil.getNewPage(page, pageAction);
+        final List<RawReview> reviews = rawReviewQuery.page(newPage, 20).list();
+        final Pageable pageable = PagingUtil.pageable(rawReviewQuery, newPage);
+
+        return Templates.index(reviews,
                 gameRepo.listAll(Sort.by("name")),
                 criticRepo.listAll(Sort.by("name")),
                 outletRepo.listAll(Sort.by("name")),
-                filters);
+                filters,
+                pageable);
     }
 
     @GET

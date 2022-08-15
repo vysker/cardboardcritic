@@ -1,7 +1,9 @@
 package com.cardboardcritic.web;
 
+import com.cardboardcritic.db.Pageable;
 import com.cardboardcritic.db.entity.Game;
 import com.cardboardcritic.db.repository.GameRepository;
+import com.cardboardcritic.util.PagingUtil;
 import com.cardboardcritic.util.StringUtil;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Parameters;
@@ -42,9 +44,7 @@ public class BrowseResource {
                                                      List<String> publishers,
                                                      List<String> sorts,
                                                      Map<String, String> filters,
-                                                     long results,
-                                                     int page,
-                                                     int totalPages);
+                                                     Pageable pageable);
     }
 
     public BrowseResource(GameRepository gameRepository) {
@@ -57,7 +57,7 @@ public class BrowseResource {
                                    @QueryParam("designer") Optional<String> designerFilter,
                                    @QueryParam("publisher") Optional<String> publisherFilter,
                                    @QueryParam("sort") Optional<String> sortFilter,
-                                   @QueryParam("page") Optional<Integer> pageMaybe,
+                                   @QueryParam("page") Optional<Integer> page,
                                    @QueryParam("page-action") Optional<String> pageAction) {
         final String sort = sortFilter.filter(StringUtil::isNotEmpty)
                 .filter(ALLOWED_SORTS::contains)
@@ -104,20 +104,11 @@ public class BrowseResource {
                 "sort", sortFilter.orElse(DEFAULT_SORT)
         );
 
-        final int currentPage = pageMaybe.orElse(0);
-        final int page;
-        if (pageAction.isPresent() && pageAction.get().equals("Previous"))
-            page = currentPage - 1;
-        else if (pageAction.isPresent() && pageAction.get().equals("Next"))
-            page = currentPage + 1;
-        else
-            page = currentPage;
+        final int newPage = PagingUtil.getNewPage(page, pageAction);
+        final List<Game> games = gameQuery.page(newPage, 20).list();
+        final Pageable pageable = PagingUtil.pageable(gameQuery, newPage);
 
-        final List<Game> games = gameQuery.page(page, 20).list();
-        final long results = gameQuery.count();
-        final int totalPages = gameQuery.pageCount();
-
-        return Templates.browse(games, years, designers, publishers, ALLOWED_SORTS, filters, results, page, totalPages);
+        return Templates.browse(games, years, designers, publishers, ALLOWED_SORTS, filters, pageable);
     }
 
     @GET

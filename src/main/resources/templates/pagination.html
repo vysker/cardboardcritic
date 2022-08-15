@@ -1,0 +1,16 @@
+{#if pageable.pageCount > 1}
+  <div class="pagination margin-top-big" style="text-align: right">
+    {#if pageable.currentPage > 0}
+      <span>
+        <input type="submit" name="page-action" value="Previous" alt="Go to previous page">
+      </span>
+    {/if}
+    Page {pageable.currentPage.add(1)}/{pageable.pageCount}
+    {#if pageable.currentPage.add(1) < pageable.pageCount}
+      <span>
+        <input type="submit" name="page-action" value="Next" alt="Go to next page">
+      </span>
+    {/if}
+  </div>
+  <input type="hidden" name="page" value="{pageable.currentPage}">
+{/if}
