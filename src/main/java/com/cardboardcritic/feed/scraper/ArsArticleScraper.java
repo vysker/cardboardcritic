@@ -11,6 +11,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -18,14 +20,17 @@ public class ArsArticleScraper extends ArticleScraper {
 
     @Override
     public RawReview getReview(String articleUrl, Document document) {
-        // we are only interested in the content on the final page, since that is usually where the summary is
+        // We are only interested in the content on the final page, since that is usually where the summary is
         final String finalPageUrl = getFinalPageUrl(document);
         if (finalPageUrl != null && !finalPageUrl.equals(articleUrl))
             document = fetch(finalPageUrl);
 
         final Element articleBody = document.select("div[itemprop=articleBody]").last();
-        final Elements articleContentRaw = articleBody.getElementsByTag("p");
-        final String articleContent = articleContentRaw.eachText().stream()
+        final String content = Optional.ofNullable(articleBody)
+                .map(body -> body.getElementsByTag("p"))
+                .map(Elements::eachText)
+                .stream()
+                .flatMap(Collection::stream)
                 .filter(StringUtil::isNotEmpty)
                 .collect(Collectors.joining("\n\n"));
 
@@ -38,14 +43,17 @@ public class ArsArticleScraper extends ArticleScraper {
             final String title = meta.get("title").asText();
             String critic = meta.get("author").asText();
 
-            if ("Ars Staff".equalsIgnoreCase(critic))
-                critic = document.select("article header section.post-meta span[itemprop=name]").first().text();
+            if ("Ars Staff".equalsIgnoreCase(critic.trim()))
+                critic = document.select("article header section.post-meta span[itemprop=name]").stream()
+                        .findFirst()
+                        .map(Element::text)
+                        .orElse(null);
 
             return new RawReview()
                     .setTitle(title)
                     .setDate(StringUtil.formatDateTime(date))
                     .setCritic(critic)
-                    .setContent(articleContent)
+                    .setContent(content)
                     .setUrl(articleUrl);
         } catch (JsonProcessingException e) {
             throw ScrapeException.articleError(articleUrl, "Failed to parse page metadata, because: " + e.getMessage());
@@ -58,7 +66,10 @@ public class ArsArticleScraper extends ArticleScraper {
             return null;
 
         // If there is no arrow button saying 'next page', then we are already on the last page
-        final boolean isFinalPage = !pageNumbers.last().text().contains("Next");
+        final boolean isFinalPage = Optional.ofNullable(pageNumbers.last())
+                .map(Element::text)
+                .map(text -> text.contains("Next"))
+                .orElse(false);
         if (isFinalPage)
             return null;
 
