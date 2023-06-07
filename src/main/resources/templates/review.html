@@ -1,22 +1,33 @@
-<div class="review card">
-  <div class="card-header">
-    <h2>{outlet ?: 'Unknown outlet'}</h2>
-    <span class="card-subtitle">{critic ?: 'Unknown critic'}</span>
+<div class="review card flex flex-col">
+  <div class="card-header grid row-1" style="grid-template-columns: auto 2fr;">
+    <div>
+      {#include hex hexContent=score size="3rem" /}
+    </div>
+    <div>
+      <h2>{outlet ?: 'Unknown outlet'}</h2>
+      <span class="card-subtitle">{critic ?: 'Unknown critic'}</span>
+    </div>
   </div>
-  <div class="card-content review-content">
-    <div class="margin-top">
-      <b>{#if score == 0}No score given{#else}{score}/100{/if}, {recommended ? 'Recommended' : 'Not recommended'}</b>
+  <div class="card-content review-content flex-grow margin-top">
+    <div>
+      {#if recommended}
+        <span>&check; Recommended</span>
+      {#else}
+        <span>&#10005; Not recommended</span>
+      {/if}
     </div>
     {#if summary && summary.startsWith('https://www.youtube.com/embed')}
       <iframe width="320" height="180" src="{summary}" title="View {critic}'s review on YouTube"
-          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
+      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
     {#else}
       <details class="p">
         <summary>Read more<br>{summary or 'No summary available'}</summary>
         <p>{summary ? summary.replaceAll('\n', '</p><p>').raw : 'No summary available'}</p>
       </details>
-      <a href="{url}" target="_blank" class="review-link">Read full review</a>
     {/if}
+  </div>
+  <div class="card-after">
+    <a href="{url}" target="_blank" class="review-link">Read full review</a>
   </div>
 </div>

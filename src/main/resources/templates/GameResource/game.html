@@ -8,60 +8,57 @@
         <a href="/game/{game.id}/edit">&#9998; Edit</a>
       {/if}
 
-      <h1>{game.name or 'Untitled game'}</h1>
-
-      {#if game.shortDescription}
-      <p class="short-description text-center">{game.shortDescription}</p>
-      {/if}
-
-      <div class="game-details grid row-1 col-3 margin-top-big">
-        <div class="detail release-date">
-          <span class="detail-name">Release date</span>
-          <span class="detail-content">{game.releaseDate ? time:format(game.releaseDate, 'd MMM uuuu') : 'No release date'}</span>
-        </div>
-        <div class="detail designer">
-          <span class="detail-name">Designer</span>
-          <span class="detail-content">{game.designer ?: 'Unknown designer'}</span>
-        </div>
-        <div class="detail publisher">
-          <span class="detail-name">Publisher</span>
-          <span class="detail-content">{game.publisher ?: 'Unknown publisher'}</span>
-        </div>
-      </div>
-
-      <div class="stats grid col-3 margin-top-big">
-        <div class="stat score-average">
-          {#include hex hexContent=game.average /}
-          <span class="margin-top">Average score</span>
-          <details>
-            <summary>&#9432;</summary>
-            <div class="card"><p class="no-margin">
-                Average of all critic scores. All scores are normalized to a 100-based point system before averaging.
-                Only reviews with scores are taken into account.</p></div>
-          </details>
-        </div>
-        <div class="stat score-median">
-          {#include hex hexContent=game.median /}
-          <span class="margin-top">Median score</span>
-          <details>
-            <summary>&#9432;</summary>
-            <div class="card"><p class="no-margin">
-              Median of all critic scores. Median is the 'middle' or 'typical' score.
-              All scores are normalized to a 100-based point system beforehand. Only reviews with scores are taken into
-              account.</p></div>
+      <div class="grid grid-gap-2" style="grid-template-columns: 1fr 2fr;">
+        {!Stats!}
+        <div class="stats grid col-2 margin-top-big">
+          <div class="stat score-median">
+              {#include hex hexContent=game.median bgColor=score:color(game.median) /}
+            <span class="margin-top">Score</span>
+            <details>
+              <summary>&#9432;</summary>
+              <div class="card"><p class="no-margin">
+                  Median of all critic scores. Median is the 'middle' or 'typical' score.
+                  All scores are normalized to a 100-based point system beforehand. Only reviews with scores are taken into
+                  account.</p></div>
             </details>
-        </div>
-        <div class="stat recommended">
-          {#include hex hexContent=game.recommended hexContentAfter="%" /}
-          <span class="margin-top">Recommends</span>
-          <details>
-            <summary>&#9432;</summary>
-            <div class="card"><p class="no-margin">
-              Percentage of critics that recommends the game. If a review does not specify a 'recommended' status, then
-              the outlet's median score (at that moment in time) is used to determine whether the game is recommended or
-              not.</p></div>
+          </div>
+          <div class="stat recommended">
+              {#include hex hexContent=str:format("%s%s", game.recommended, "%") bgColor=score:color(game.recommended) /}
+            <span class="margin-top">Recommends</span>
+            <details>
+              <summary>&#9432;</summary>
+              <div class="card"><p class="no-margin">
+                  Percentage of critics that recommends the game. If a review does not specify a 'recommended' status, then
+                  the outlet's median score (at that moment in time) is used to determine whether the game is recommended or
+                  not.</p></div>
             </details>
+          </div>
         </div>
+
+        {!Title, description, details!}
+        <div>
+          <h1>{game.name or 'Untitled game'}</h1>
+
+          {#if game.shortDescription}
+            <p class="short-description">{game.shortDescription}</p>
+          {/if}
+
+          <div class="game-details grid row-1 col-3">
+            <div class="detail release-date">
+              <span class="detail-name">Release date</span>
+              <span class="detail-content">{game.releaseDate ? time:format(game.releaseDate, 'd MMM uuuu') : 'No release date'}</span>
+            </div>
+            <div class="detail designer">
+              <span class="detail-name">Designer</span>
+              <span class="detail-content">{game.designer ?: 'Unknown designer'}</span>
+            </div>
+            <div class="detail publisher">
+              <span class="detail-name">Publisher</span>
+              <span class="detail-content">{game.publisher ?: 'Unknown publisher'}</span>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       {!{#if game.description}!}
@@ -73,7 +70,7 @@
         {!</div>!}
       {!{/if}!}
 
-      <div class="media margin-top-big">
+      <div class="media margin-top-xl">
         <h3>Media</h3>
         {#if game.image}
           <img src="{game.image}" alt="Cover image of {game.name}" class="margin-top" />

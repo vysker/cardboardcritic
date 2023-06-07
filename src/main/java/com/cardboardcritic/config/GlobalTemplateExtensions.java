@@ -39,6 +39,19 @@ public class GlobalTemplateExtensions {
         return subject.substring(0, 1).toUpperCase() + subject.substring(1);
     }
 
+    @TemplateExtension(namespace = "score")
+    public static String name(int score) {
+        if (score < 30) return "flat";
+        if (score < 60) return "fine";
+        if (score < 90) return "good";
+        return "best";
+    }
+
+    @TemplateExtension(namespace = "score")
+    public static String color(int score) {
+        return "var(--score-%s-color)".formatted(name(score));
+    }
+
     // This is needed for native images, because it thinks ".startsWith" is unused, so it strips it out of the build
     @TemplateExtension(namespace = "")
     public static boolean startsWith(String subject, String prefix) {

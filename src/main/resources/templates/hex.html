@@ -1,7 +1,11 @@
-<div class="hex">
+<div class="hex {inline ? 'hex-inline' : ''}"
+     style="--hex-background: {bgColor or 'lightgrey'};
+         --hex-height: {size or '5rem'};
+         --hex-border: calc(var(--hex-height)/4) solid var(--hex-background);
+         --hex-border-invis: calc(var(--hex-height)/2) solid transparent;">
   <div class="hex-side hex-left"></div>
   <div class="hex-center">
-    <span class="average-score-points">{hexContent or '?'}{hexContentAfter or ''}</span>
+    <span>{hexContent or '?'}</span>
   </div>
   <div class="hex-side hex-right"></div>
 </div>
