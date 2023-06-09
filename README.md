@@ -19,6 +19,8 @@ Note: use `mvnw.cmd` on Windows.
 
 **Push native image** with `docker push ghcr.io/vysker/cardboardcritic:latest-native` and `docker push ghcr.io/vysker/cardboardcritic:{version}-native`
 
+**Build arm64 image** install `./mvnw quarkus:add-extension -Dextensions='container-image-docker'`, then `./mvnw quarkus:build -Parm64`
+
 ## Inner workings
 
 ### Domain objects
@@ -32,14 +34,14 @@ Note: use `mvnw.cmd` on Windows.
 * **Crawler** - Finds article links for a specific outlet
 * **Scraper** - Extracts raw reviews from article links for a specific outlet
 * **Feed** - Orchestrates the review discovery process by:
-  * iterating crawlers to ask for article links; 
+  * iterating crawlers to ask for article links;
   * filtering out links that have already been crawled;
   * calling the appropriate scrapers
   * storing the resulting reviews
 
 ## Hosting
 
-* Host a machine with docker & docker-compose installed
+* Host a machine with these packages installed: `git, docker, docker-compose, nginx`
 * Run the following steps from that machine
 * Git clone this repository
 * Authenticate with the github package registry (ghcr.io), see [guide](

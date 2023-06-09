@@ -6,7 +6,7 @@
 
     <groupId>com.cardboardcritic</groupId>
     <artifactId>cardboardcritic</artifactId>
-    <version>1.7.0</version>
+    <version>1.7.1</version>
 
     <properties>
         <quarkus.platform.version>2.11.2.Final</quarkus.platform.version>
@@ -181,6 +181,17 @@
                 <quarkus.container-image.group>vysker</quarkus.container-image.group>
                 <quarkus.container-image.tag>${project.version}-native</quarkus.container-image.tag>
                 <quarkus.container-image.additional-tags>latest-native</quarkus.container-image.additional-tags>
+            </properties>
+        </profile>
+        <profile>
+            <id>arm64</id>
+            <properties>
+                <quarkus.container-image.additional-tags>latest-arm64</quarkus.container-image.additional-tags>
+                <quarkus.container-image.group>vysker</quarkus.container-image.group>
+                <quarkus.container-image.registry>ghcr.io</quarkus.container-image.registry>
+                <quarkus.container-image.build>true</quarkus.container-image.build>
+                <quarkus.container-image.tag>${project.version}-arm64</quarkus.container-image.tag>
+                <quarkus.docker.buildx.platform>linux/arm64</quarkus.docker.buildx.platform>
             </properties>
         </profile>
     </profiles>
