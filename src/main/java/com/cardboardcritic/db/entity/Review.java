@@ -40,6 +40,8 @@ public class Review extends PanacheEntityBase {
 
     private boolean recommended;
 
+    private boolean published;
+
     public Integer getId() {
         return id;
     }
@@ -110,5 +112,13 @@ public class Review extends PanacheEntityBase {
     public Review setRecommended(boolean recommended) {
         this.recommended = recommended;
         return this;
+    }
+
+    public boolean isPublished() {
+        return published;
+    }
+
+    public void setPublished(boolean published) {
+        this.published = published;
     }
 }
