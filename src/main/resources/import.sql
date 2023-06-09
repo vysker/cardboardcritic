@@ -27,18 +27,19 @@ insert into outlet (
   ;
 
 insert into review (
-  game_id, critic_id, outlet_id, summary, score, recommended, url)
+  game_id, critic_id, outlet_id, summary, score, recommended, published, url)
   values
-  (1, 1, 1, 'Anachrony is way ahead of its time', 95, true, null),
-  (1, 2, 1, 'Born before its time, is what Anachrony is', 90, true, null),
-  (1, 3, 2, 'Time and time again, I disliked Anachrony', 50, false, null),
-  (2, 2, 1, 'Although gloomy, it is a haven for fun times', 90, true, 'https://arstechnica.com/gaming/2017/04/gloomhaven-review-2017s-biggest-board-game-is-astoundingly-good'),
-  (3, 3, 2, 'Now that is some game, I tell you', 70, false, null),
-  (4, 3, 2, 'There is dunes, and there is Dune', 92, true, null),
-  (4, 1, 1, 'Sand? Yes. Dunes? Yes. Beach? Nah', 60, false, null),
-  (5, 1, 2, 'I still remember waiting for this game', 40, false, null),
-  (5, 1, 2, 'https://www.youtube.com/embed/dQw4w9WgXcQ', 40, false, null),
-  (5, 1, 2, null, 40, false, null)
+  (1, 1, 1, 'Anachrony is way ahead of its time', 95, true, true, null),
+  (1, 2, 1, 'Born before its time, is what Anachrony is', 90, true, true, null),
+  (1, 3, 2, 'Time and time again, I disliked Anachrony', 50, false, true, null),
+  (2, 2, 1, 'Although gloomy, it is a haven for fun times', 90, true, true, 'https://arstechnica.com/gaming/2017/04/gloomhaven-review-2017s-biggest-board-game-is-astoundingly-good'),
+  (3, 3, 2, 'Now that is some game, I tell you', 70, false, true, null),
+  (4, 3, 2, 'There is dunes, and there is Dune', 92, true, true, null),
+  (4, 1, 1, 'Sand? Yes. Dunes? Yes. Beach? Nah', 60, false, true, null),
+  (4, 1, 2, 'I do not want to see this review published', 80, false, false, null),
+  (5, 1, 2, 'I still remember waiting for this game', 40, false, true, null),
+  (5, 2, 2, 'https://www.youtube.com/embed/dQw4w9WgXcQ', 40, false, true, null),
+  (5, 3, 2, null, 40, false, true, null)
 ;
 
 insert into raw_review (
