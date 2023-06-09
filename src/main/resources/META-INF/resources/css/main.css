@@ -327,6 +327,7 @@ ul.card-list {
   background: var(--hex-background);
 }
 .hex-center span {
+  margin-bottom: -5px; /* To account for the accentColor (border-bottom) */
   font-size: calc(var(--hex-height) / 3);
   font-family: var(--sans-font);
 }
@@ -360,9 +361,6 @@ ul.card-list {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.stat details {
-  margin-top: -.5rem;
 }
 .stat details summary {
   text-align: center;
@@ -460,6 +458,7 @@ main#game .review-content details[open] summary::before {
 .col-3 { grid-template-columns: repeat(3, 1fr); }
 .col-4 { grid-template-columns: repeat(4, 1fr); }
 .col-5 { grid-template-columns: repeat(5, 1fr); }
+.col-auto-2fr { grid-template-columns: auto 2fr; }
 .col-start-1 { grid-column-start: 1; }
 .col-start-2 { grid-column-start: 2; }
 .col-start-3 { grid-column-start: 3; }
@@ -559,12 +558,9 @@ main#game .review-content details[open] summary::before {
     padding: 2rem;
   }
 
-  /* Game reviews page */
-  main#game .stats {
-    margin-bottom: 2rem;
-  }
-  main#game .stat details {
-    margin-top: 0;
+  main#game .details-and-stats {
+    grid-template-columns: auto;
+    text-align: center;
   }
   main#game .media .no-images {
     overflow-x: scroll;
@@ -574,10 +570,6 @@ main#game .review-content details[open] summary::before {
   }
   main#game .media .no-image:last-child {
     margin-right: 0;
-  }
-
-  .game-details {
-    width: auto;
   }
 
   /* Admin pages */
