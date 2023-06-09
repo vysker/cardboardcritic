@@ -50,11 +50,12 @@ public class GameResource {
     @Produces(MediaType.TEXT_HTML)
     @PermitAll
     public TemplateInstance game(@PathParam("slug") String slug) {
-        // FIXME: http://hibernate.org/reactive/documentation/1.0/reference/html_single/#_fetching_lazy_associations
         final Game game = gameRepo.findBySlug(slug);
 
-        final List<Review> reviews = game.getReviews();
-        reviews.sort(Comparator.comparing(Review::getScore).reversed()); // Desc
+        final List<Review> reviews = game.getReviews().stream()
+                .filter(Review::isPublished)
+                .sorted(Comparator.comparing(Review::getScore).reversed()) // Desc
+                .toList();
         game.setReviews(reviews);
 
         return Templates.game(game);

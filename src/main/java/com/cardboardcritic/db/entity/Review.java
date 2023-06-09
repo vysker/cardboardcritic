@@ -40,6 +40,8 @@ public class Review extends PanacheEntityBase {
 
     private boolean recommended;
 
+    private boolean published;
+
     public Integer getId() {
         return id;
     }
