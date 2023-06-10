@@ -9,9 +9,9 @@ import com.cardboardcritic.feed.crawler.SusdCrawler;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.ext.web.client.WebClient;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
-import javax.ws.rs.Produces;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
+import jakarta.ws.rs.Produces;
 import java.util.List;
 
 @ApplicationScoped

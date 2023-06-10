@@ -2,7 +2,7 @@ package com.cardboardcritic.feed.crawler;
 
 import com.cardboardcritic.feed.scraper.ArsArticleScraper;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class ArsCrawler extends RssOutletCrawler {

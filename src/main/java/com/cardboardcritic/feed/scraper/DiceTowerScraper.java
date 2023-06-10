@@ -7,7 +7,7 @@ import com.cardboardcritic.util.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.Optional;
 
 @ApplicationScoped

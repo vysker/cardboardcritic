@@ -9,7 +9,7 @@ import org.jboss.logging.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * A scraper fetches the contents of an article (review), then parses and converts that content to a "raw review".

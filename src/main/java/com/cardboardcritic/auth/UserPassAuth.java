@@ -2,7 +2,6 @@ package com.cardboardcritic.auth;
 
 import com.cardboardcritic.db.entity.User;
 import com.cardboardcritic.db.repository.UserRepository;
-import io.quarkus.arc.Priority;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.security.UnauthorizedException;
 import io.quarkus.security.identity.AuthenticationRequestContext;
@@ -10,12 +9,12 @@ import io.quarkus.security.identity.IdentityProvider;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.quarkus.security.identity.request.UsernamePasswordAuthenticationRequest;
 import io.smallrye.mutiny.Uni;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.control.ActivateRequestContext;
-import javax.enterprise.inject.Alternative;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.control.ActivateRequestContext;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 @Alternative

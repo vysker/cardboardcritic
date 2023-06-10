@@ -2,7 +2,7 @@ package com.cardboardcritic.feed.crawler;
 
 import com.cardboardcritic.feed.scraper.DiceTowerScraper;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class DiceTowerCrawler extends RssOutletCrawler {

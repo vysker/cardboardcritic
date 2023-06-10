@@ -6,27 +6,27 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @FilterDef(name = "Game.byYear",
         defaultCondition = "date_part('year', release_date) = :year",
-        parameters = @ParamDef(name = "year", type = "int"))
+        parameters = @ParamDef(name = "year", type = Integer.class))
 @Filter(name = "Game.byYear")
 @FilterDef(name = "Game.byDesigner",
         defaultCondition = "designer = :designer",
-        parameters = @ParamDef(name = "designer", type = "string"))
+        parameters = @ParamDef(name = "designer", type = String.class))
 @Filter(name = "Game.byDesigner")
 @FilterDef(name = "Game.byPublisher",
         defaultCondition = "publisher = :publisher",
-        parameters = @ParamDef(name = "publisher", type = "string"))
+        parameters = @ParamDef(name = "publisher", type = String.class))
 @Filter(name = "Game.byPublisher")
 public class Game extends PanacheEntityBase implements HasName<Game> {
 

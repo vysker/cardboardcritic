@@ -4,7 +4,7 @@ import com.cardboardcritic.db.entity.Critic;
 import com.cardboardcritic.util.StringUtil;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class CriticRepository implements PanacheRepositoryBase<Critic, Integer> {

@@ -2,8 +2,8 @@ package com.cardboardcritic.web.template;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 //@ConfigProperties(prefix = 'cbc.globals') FIXME: @ConfigProperties causes the app to freeze during startup
 @ApplicationScoped

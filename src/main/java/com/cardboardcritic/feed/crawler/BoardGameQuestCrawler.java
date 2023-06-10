@@ -8,8 +8,8 @@ import io.vertx.mutiny.ext.web.codec.BodyCodec;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import java.util.List;
 
 @Singleton

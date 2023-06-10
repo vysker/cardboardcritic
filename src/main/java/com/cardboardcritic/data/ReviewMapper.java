@@ -6,7 +6,7 @@ import com.cardboardcritic.web.template.form.ReviewEditForm;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "cdi")
+@Mapper(componentModel = "jakarta-cdi")
 public interface ReviewMapper {
     @Mapping(source = "game.name", target = "game")
     @Mapping(source = "critic.name", target = "critic")

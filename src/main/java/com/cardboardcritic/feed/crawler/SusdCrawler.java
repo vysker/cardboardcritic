@@ -2,7 +2,7 @@ package com.cardboardcritic.feed.crawler;
 
 import com.cardboardcritic.feed.scraper.SusdScraper;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Shut Up & Sit Down

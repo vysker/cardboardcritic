@@ -5,12 +5,12 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.util.Objects;
 
 /**
@@ -19,13 +19,13 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "raw_review")
-@FilterDef(name = "RawReview.byGame", defaultCondition = "game = :name", parameters = @ParamDef(name = "name", type = "string"))
+@FilterDef(name = "RawReview.byGame", defaultCondition = "game = :name", parameters = @ParamDef(name = "name", type = String.class))
 @Filter(name = "RawReview.byGame")
-@FilterDef(name = "RawReview.byCritic", defaultCondition = "critic = :name", parameters = @ParamDef(name = "name", type = "string"))
+@FilterDef(name = "RawReview.byCritic", defaultCondition = "critic = :name", parameters = @ParamDef(name = "name", type = String.class))
 @Filter(name = "RawReview.byCritic")
-@FilterDef(name = "RawReview.byOutlet", defaultCondition = "outlet = :name", parameters = @ParamDef(name = "name", type = "string"))
+@FilterDef(name = "RawReview.byOutlet", defaultCondition = "outlet = :name", parameters = @ParamDef(name = "name", type = String.class))
 @Filter(name = "RawReview.byOutlet")
-@FilterDef(name = "RawReview.byProcessed", defaultCondition = "processed = :value", parameters = @ParamDef(name = "value", type = "boolean"))
+@FilterDef(name = "RawReview.byProcessed", defaultCondition = "processed = :value", parameters = @ParamDef(name = "value", type = Boolean.class))
 @Filter(name = "RawReview.byProcessed")
 public class RawReview extends PanacheEntityBase {
 
