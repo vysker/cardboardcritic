@@ -19,7 +19,7 @@ Note: use `mvnw.cmd` on Windows.
 
 **Push native image** with `docker push ghcr.io/vysker/cardboardcritic:latest-native` and `docker push ghcr.io/vysker/cardboardcritic:{version}-native`
 
-**Build arm64 image** install `./mvnw quarkus:add-extension -Dextensions='container-image-docker'`, then `./mvnw quarkus:build -Parm64`
+**Build arm64 image** install `./mvnw quarkus:add-extension -Dextensions='container-image-docker'`, then `./mvnw package -Parm64`
 
 ## Inner workings
 

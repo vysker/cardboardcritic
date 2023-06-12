@@ -21,6 +21,11 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.parameters>true</maven.compiler.parameters>
+
+        <!-- Docker registry -->
+        <container-image.group>vysker</container-image.group>
+        <container-image.registry>ghcr.io</container-image.registry>
+        <container-image.builder>docker</container-image.builder>
     </properties>
 
     <dependencyManagement>
@@ -84,12 +89,12 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.15.2</version>
+            <version>1.15.4</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.3.6</version>
+            <version>42.5.4</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -172,26 +177,38 @@
 
     <profiles>
         <profile>
-            <id>native</id>
+            <id>amd64</id>
             <properties>
-                <quarkus.package.type>native</quarkus.package.type>
-                <quarkus.native.container-build>true</quarkus.native.container-build>
+                <quarkus.container-image.tag>${project.version}</quarkus.container-image.tag>
+                <quarkus.container-image.additional-tags>latest</quarkus.container-image.additional-tags>
+                <quarkus.container-image.group>${container-image.group}</quarkus.container-image.group>
+                <quarkus.container-image.registry>${container-image.registry}</quarkus.container-image.registry>
+                <quarkus.container-image.builder>${container-image.builder}</quarkus.container-image.builder>
                 <quarkus.container-image.build>true</quarkus.container-image.build>
-                <quarkus.container-image.registry>ghcr.io</quarkus.container-image.registry>
-                <quarkus.container-image.group>vysker</quarkus.container-image.group>
-                <quarkus.container-image.tag>${project.version}-native</quarkus.container-image.tag>
-                <quarkus.container-image.additional-tags>latest-native</quarkus.container-image.additional-tags>
             </properties>
         </profile>
         <profile>
             <id>arm64</id>
             <properties>
-                <quarkus.container-image.additional-tags>latest-arm64</quarkus.container-image.additional-tags>
-                <quarkus.container-image.group>vysker</quarkus.container-image.group>
-                <quarkus.container-image.registry>ghcr.io</quarkus.container-image.registry>
-                <quarkus.container-image.build>true</quarkus.container-image.build>
                 <quarkus.container-image.tag>${project.version}-arm64</quarkus.container-image.tag>
+                <quarkus.container-image.additional-tags>latest-arm64</quarkus.container-image.additional-tags>
+                <quarkus.container-image.group>${container-image.group}</quarkus.container-image.group>
+                <quarkus.container-image.registry>${container-image.registry}</quarkus.container-image.registry>
+                <quarkus.container-image.builder>${container-image.builder}</quarkus.container-image.builder>
+                <quarkus.container-image.build>true</quarkus.container-image.build>
                 <quarkus.docker.buildx.platform>linux/arm64</quarkus.docker.buildx.platform>
+            </properties>
+        </profile>
+        <profile>
+            <id>native</id>
+            <properties>
+                <quarkus.container-image.tag>${project.version}-native</quarkus.container-image.tag>
+                <quarkus.container-image.additional-tags>latest-native</quarkus.container-image.additional-tags>
+                <quarkus.container-image.group>${container-image.group}</quarkus.container-image.group>
+                <quarkus.container-image.registry>${container-image.registry}</quarkus.container-image.registry>
+                <quarkus.container-image.build>true</quarkus.container-image.build>
+                <quarkus.package.type>native</quarkus.package.type>
+                <quarkus.native.container-build>true</quarkus.native.container-build>
             </properties>
         </profile>
     </profiles>
