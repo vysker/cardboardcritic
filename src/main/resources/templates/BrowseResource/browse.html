@@ -1,6 +1,6 @@
 {#include base}
 {#main}
-{#include single}
+{#include single pageId="browse"}
   {#title}Browse Games{/title}
   {#content}
     <form action="/browse" method="get">
@@ -46,9 +46,9 @@
       </section>
 
       {#include pagination pageable=pageable /}
+      {#include GameResource/list}{/include}
+      {#include pagination pageable=pageable /}
     </form>
-
-    {#include GameResource/list}{/include}
   {/content}
 {/include}
 {/main}
