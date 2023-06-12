@@ -1,7 +1,7 @@
 {#include base}
 {#main}
-<main>
-  <section class="grid col-2 mob-col-1">
+<main id="home">
+  <section id="recent-releases" class="grid col-2 mob-col-1">
     <article class="min-width-0">
       <header>
         <h1>Recent Releases</h1>
@@ -9,7 +9,7 @@
       <div class="content">{#include GameResource/list games=recent}{/include}</div>
     </article>
     {#if topOfYear}
-    <article class="min-width-0">
+    <article id="top-of-year" class="min-width-0">
       <header>
         <h1>This Year's Best</h1>
       </header>

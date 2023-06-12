@@ -1,26 +1,22 @@
 {#include base}
 {#main}
-<main>
-  <article>
-    <header>
-      <h1>Raw Reviews</h1>
-    </header>
-    <div class="content">
-      <form action="/j_security_check" method="post">
-        <p>
-          <label for="username">Username</label>
-          <input type="text" name="j_username" id="username" placeholder="Username" autofocus>
-        </p>
-        <p>
-          <label for="password">Password</label>
-          <input type="password" name="j_password" id="password" placeholder="Password">
-        </p>
-        <p>
-          <button type="submit" class="primary">Log in</button>
-        </p>
-      </form>
-    </div>
-  </article>
-</main>
+{#include single pageId="login"}
+  {#title}Log In{/title}
+  {#content}
+    <form action="/j_security_check" method="post">
+      <p>
+        <label for="username">Username</label>
+        <input type="text" name="j_username" id="username" placeholder="Username" autofocus>
+      </p>
+      <p>
+        <label for="password">Password</label>
+        <input type="password" name="j_password" id="password" placeholder="Password">
+      </p>
+      <p>
+        <button type="submit" class="primary">Log in</button>
+      </p>
+    </form>
+  {/content}
+{/include}
 {/main}
 {/include}

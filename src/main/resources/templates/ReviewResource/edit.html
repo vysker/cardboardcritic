@@ -1,19 +1,15 @@
 {#include base}
 {#main}
-<main>
-  <article>
-    <header>
-      <h1>Review Edit</h1>
-    </header>
-    <div class="content">
-      <form action="/review/{review.id}/edit" method="post">
-        {#include ReviewResource/formFields games=games critics=critics outlets=outlets}{/include}
-        <p>
-          <button type="submit" class="primary">Submit</button>
-        </p>
-      </form>
-    </div>
-  </article>
-</main>
+{#include single pageId="review-edit"}
+  {#title}Edit Review{/title}
+  {#content}
+    <form action="/review/{review.id}/edit" method="post">
+      {#include ReviewResource/formFields games=games critics=critics outlets=outlets}{/include}
+      <p>
+        <button type="submit" class="primary">Submit</button>
+      </p>
+    </form>
+  {/content}
+{/include}
 {/main}
 {/include}
