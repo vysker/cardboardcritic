@@ -6,6 +6,51 @@
       <h1>Raw Reviews</h1>
     </header>
     <div class="content">
+      <form action="/raw-review" method="get">
+        <section class="grid col-5 mob-col-2 mob-row-2 card">
+          <div>
+            <label for="game">Game</label>
+            <select name="game" id="game">
+              <option value="">Filter by game</option>
+              {#for game in games}
+                <option value="{game.name}" {#if filters.game == game.name}selected{/if}>{game.name}</option>
+              {/for}
+            </select>
+          </div>
+          <div>
+            <label for="critic">Critic</label>
+            <select name="critic" id="critic">
+              <option value="">Filter by critic</option>
+              {#for critic in critics}
+                <option value="{critic.name}" {#if filters.critic == critic.name}selected{/if}>{critic.name}</option>
+              {/for}
+            </select>
+          </div>
+          <div>
+            <label for="outlet">Outlet</label>
+            <select name="outlet" id="outlet">
+              <option value="">Filter by outlet</option>
+              {#for outlet in outlets}
+                <option value="{outlet.name}" {#if filters.outlet == outlet.name}selected{/if}>{outlet.name}</option>
+              {/for}
+            </select>
+          </div>
+          <div>
+            <label for="status">Status</label>
+            <select name="status" id="status">
+              <option value="both" {#if filters.status == 'both'}selected{/if}>Both</option>
+              <option value="done" {#if filters.status == 'done'}selected{/if}>Done</option>
+              <option value="todo" {#if filters.status == 'todo'}selected{/if}>To do</option>
+            </select>
+          </div>
+          <div class="mob-col-span2" style="display: flex">
+            <button type="submit" style="align-self: end">&#10983; Filter</button>
+          </div>
+        </section>
+
+        {#include pagination pageable=pageable /}
+      </form>
+
       {#include RawReviewResource/list}{/include}
     </div>
   </article>
