@@ -13,19 +13,19 @@ import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 
 @Entity
-@Filter(name = "Review.byGameId")
-@Filter(name = "Review.byCriticId")
-@Filter(name = "Review.byOutletId")
+@Filter(name = "Review.byGameName")
+@Filter(name = "Review.byCriticName")
+@Filter(name = "Review.byOutletName")
 @Filter(name = "Review.byPublished")
-@FilterDef(name = "Review.byGameId",
-        defaultCondition = "game_id = :id",
-        parameters = @ParamDef(name = "id", type = Integer.class))
-@FilterDef(name = "Review.byCriticId",
-        defaultCondition = "critic_id = :id",
-        parameters = @ParamDef(name = "id", type = Integer.class))
-@FilterDef(name = "Review.byOutletId",
-        defaultCondition = "outlet_id = :id",
-        parameters = @ParamDef(name = "id", type = Integer.class))
+@FilterDef(name = "Review.byGameName",
+        defaultCondition = "game_id = (select g.id from game g where g.name = :name limit 1)",
+        parameters = @ParamDef(name = "name", type = String.class))
+@FilterDef(name = "Review.byCriticName",
+        defaultCondition = "critic_id = (select c.id from critic c where c.name = :name limit 1)",
+        parameters = @ParamDef(name = "name", type = String.class))
+@FilterDef(name = "Review.byOutletName",
+        defaultCondition = "outlet_id = (select o.id from outlet o where o.name = :name limit 1)",
+        parameters = @ParamDef(name = "name", type = String.class))
 @FilterDef(name = "Review.byPublished",
         defaultCondition = "published = :value",
         parameters = @ParamDef(name = "value", type = Boolean.class))

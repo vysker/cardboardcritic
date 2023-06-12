@@ -43,6 +43,8 @@ import java.util.stream.Stream;
 @Path("review")
 @RolesAllowed("admin")
 public class ReviewResource {
+    private static final String PUBLISHED_FILTER_DEFAULT_VALUE = "true";
+
     private final ReviewRepository reviewRepo;
     private final GameRepository gameRepo;
     private final CriticRepository criticRepo;
@@ -99,30 +101,26 @@ public class ReviewResource {
         final PanacheQuery<Review> reviewQuery = reviewRepo.findAll();
 
         gameFilter.filter(StringUtil::isNotEmpty)
-                .flatMap(name -> gameRepo.find("name", name).firstResultOptional())
-                .map(game -> (Game) game)
-                .ifPresent(game -> reviewQuery.filter("Review.byGameId", Parameters.with("id", game.getId())));
+                .ifPresent(game -> reviewQuery.filter("Review.byGameName", Parameters.with("name", game)));
         criticFilter.filter(StringUtil::isNotEmpty)
-                .flatMap(name -> criticRepo.find("name", name).firstResultOptional())
-                .map(critic -> (Critic) critic)
-                .ifPresent(critic -> reviewQuery.filter("Review.byCriticId", Parameters.with("id", critic.getId())));
+                .ifPresent(critic -> reviewQuery.filter("Review.byCriticName", Parameters.with("name", critic)));
         outletFilter.filter(StringUtil::isNotEmpty)
-                .flatMap(name -> outletRepo.find("name", name).firstResultOptional())
-                .map(outlet -> (Outlet) outlet)
-                .ifPresent(outlet -> reviewQuery.filter("Review.byOutletId", Parameters.with("id", outlet.getId())));
+                .ifPresent(outlet -> reviewQuery.filter("Review.byOutletName", Parameters.with("name", outlet)));
         publishedFilter.filter(StringUtil::isNotEmpty)
-                .ifPresentOrElse(status -> {
-                    if ("true".equals(status))
-                        reviewQuery.filter("Review.byPublished", Parameters.with("value", true));
-                    if ("false".equals(status))
-                        reviewQuery.filter("Review.byPublished", Parameters.with("value", false));
-                }, () -> reviewQuery.filter("Review.byPublished", Parameters.with("value", true)));
+                .or(() -> Optional.of(PUBLISHED_FILTER_DEFAULT_VALUE))
+                .ifPresent(status -> {
+                    switch (status) {
+                        case "true" -> reviewQuery.filter("Review.byPublished", Parameters.with("value", true));
+                        case "false" -> reviewQuery.filter("Review.byPublished", Parameters.with("value", false));
+                        default -> {} // Do nothing if we want to "filter" both published and unpublished reviews
+                    }
+                });
 
         final Map<String, String> filters = Map.of(
                 "game", gameFilter.orElse(""),
                 "critic", criticFilter.orElse(""),
                 "outlet", outletFilter.orElse(""),
-                "published", publishedFilter.orElse("true")
+                "published", publishedFilter.orElse(PUBLISHED_FILTER_DEFAULT_VALUE)
         );
 
         final int newPage = PagingUtil.getNewPageNumber(page, pageActionString);

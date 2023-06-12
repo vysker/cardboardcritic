@@ -46,6 +46,8 @@ import java.util.stream.Stream;
 @Path("raw-review")
 @RolesAllowed("admin")
 public class RawReviewResource {
+    private static final String STATUS_FILTER_DEFAULT_VALUE = "todo";
+
     private final RawReviewRepository rawReviewRepo;
     private final ReviewRepository reviewRepo;
     private final GameRepository gameRepo;
@@ -110,18 +112,20 @@ public class RawReviewResource {
         outletFilter.filter(StringUtil::isNotEmpty)
                 .ifPresent(name -> rawReviewQuery.filter("RawReview.byOutlet", Parameters.with("name", name)));
         statusFilter.filter(StringUtil::isNotEmpty)
-                .ifPresentOrElse(status -> {
-                    if ("done".equals(status))
-                        rawReviewQuery.filter("RawReview.byProcessed", Parameters.with("value", true));
-                    if ("todo".equals(status))
-                        rawReviewQuery.filter("RawReview.byProcessed", Parameters.with("value", false));
-                }, () -> rawReviewQuery.filter("RawReview.byProcessed", Parameters.with("value", false)));
+                .or(() -> Optional.of(STATUS_FILTER_DEFAULT_VALUE))
+                .ifPresent(status -> {
+                    switch (status) {
+                        case "done" -> rawReviewQuery.filter("RawReview.byProcessed", Parameters.with("value", true));
+                        case "todo" -> rawReviewQuery.filter("RawReview.byProcessed", Parameters.with("value", false));
+                        default -> {} // Do nothing if we want to "filter" both processed and unprocessed reviews
+                    }
+                });
 
         final Map<String, String> filters = Map.of(
                 "game", gameFilter.orElse(""),
                 "critic", criticFilter.orElse(""),
                 "outlet", outletFilter.orElse(""),
-                "status", statusFilter.orElse("todo")
+                "status", statusFilter.orElse(STATUS_FILTER_DEFAULT_VALUE)
         );
 
         final int newPage = PagingUtil.getNewPageNumber(page, pageActionString);
@@ -129,6 +133,7 @@ public class RawReviewResource {
         final Pageable pageable = PagingUtil.pageable(rawReviewQuery, newPage);
 
         return Templates.index(reviews,
+                // TODO: Refactor this so we don't fetch all the contents from our database on every page load
                 gameRepo.listAll(Sort.by("name")),
                 criticRepo.listAll(Sort.by("name")),
                 outletRepo.listAll(Sort.by("name")),

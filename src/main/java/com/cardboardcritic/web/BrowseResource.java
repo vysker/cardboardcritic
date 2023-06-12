@@ -67,6 +67,7 @@ public class BrowseResource {
                 : Sort.Direction.Descending;
 
         final PanacheQuery<Game> gameQuery = gameRepository.findAll(Sort.by(sort, sortDirection));
+        // TODO: Refactor this so we don't fetch the entirety of our game table every time someone browses
         final List<Game> allGames = gameRepository.findAll().list();
 
         final List<String> years = allGames.stream()
