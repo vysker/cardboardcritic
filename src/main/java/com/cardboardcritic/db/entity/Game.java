@@ -16,18 +16,18 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Filter(name = "Game.byYear")
+@Filter(name = "Game.byDesigner")
+@Filter(name = "Game.byPublisher")
 @FilterDef(name = "Game.byYear",
         defaultCondition = "date_part('year', release_date) = :year",
         parameters = @ParamDef(name = "year", type = Integer.class))
-@Filter(name = "Game.byYear")
 @FilterDef(name = "Game.byDesigner",
         defaultCondition = "designer = :designer",
         parameters = @ParamDef(name = "designer", type = String.class))
-@Filter(name = "Game.byDesigner")
 @FilterDef(name = "Game.byPublisher",
         defaultCondition = "publisher = :publisher",
         parameters = @ParamDef(name = "publisher", type = String.class))
-@Filter(name = "Game.byPublisher")
 public class Game extends PanacheEntityBase implements HasName<Game> {
 
     @Id

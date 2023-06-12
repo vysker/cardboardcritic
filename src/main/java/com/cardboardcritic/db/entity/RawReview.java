@@ -19,14 +19,14 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "raw_review")
-@FilterDef(name = "RawReview.byGame", defaultCondition = "game = :name", parameters = @ParamDef(name = "name", type = String.class))
 @Filter(name = "RawReview.byGame")
-@FilterDef(name = "RawReview.byCritic", defaultCondition = "critic = :name", parameters = @ParamDef(name = "name", type = String.class))
 @Filter(name = "RawReview.byCritic")
-@FilterDef(name = "RawReview.byOutlet", defaultCondition = "outlet = :name", parameters = @ParamDef(name = "name", type = String.class))
 @Filter(name = "RawReview.byOutlet")
-@FilterDef(name = "RawReview.byProcessed", defaultCondition = "processed = :value", parameters = @ParamDef(name = "value", type = Boolean.class))
 @Filter(name = "RawReview.byProcessed")
+@FilterDef(name = "RawReview.byGame", defaultCondition = "game = :name", parameters = @ParamDef(name = "name", type = String.class))
+@FilterDef(name = "RawReview.byCritic", defaultCondition = "critic = :name", parameters = @ParamDef(name = "name", type = String.class))
+@FilterDef(name = "RawReview.byOutlet", defaultCondition = "outlet = :name", parameters = @ParamDef(name = "name", type = String.class))
+@FilterDef(name = "RawReview.byProcessed", defaultCondition = "processed = :value", parameters = @ParamDef(name = "value", type = Boolean.class))
 public class RawReview extends PanacheEntityBase {
 
     @Id
