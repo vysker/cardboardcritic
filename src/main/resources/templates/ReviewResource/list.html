@@ -1,0 +1,36 @@
+<div>
+  <ul class="card-list">
+    {#for review in reviews}
+      <li>
+        <div class="review card compact">
+          <div class="card-header">
+            <h4>{review.outlet ? review.outlet.name : 'No outlet'}</h4>
+            <span class="card-subtitle">{review.critic ? review.critic.name : 'No critic'}</span>
+          </div>
+          <div class="card-content">
+            <p>{review.game ? review.game.name : 'No game'}</p>
+          </div>
+          <div class="card-after bg-none">
+            <a href="/review/{review.id}/edit">&#9998; Edit</a>
+          </div>
+          <div class="card-after bg-{review.published ? 'good' : 'bad'}">
+            <span>{review.published ? 'Public' : 'Hidden'}</span>
+          </div>
+        </div>
+
+        {!<details>!}
+          {!<summary>Preview</summary>!}
+          {!<div class="card-grid">!}
+            {!{#include review!}
+              {!outlet=review.outlet!}
+              {!critic=review.critic!}
+              {!score=review.score!}
+              {!recommended=review.recommended!}
+              {!summary=review.summary!}
+              {!url=review.url}{/include}!}
+          {!</div>!}
+        {!</details>!}
+      </li>
+    {/for}
+  </ul>
+</div>

@@ -10,13 +10,13 @@ import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
-
 import jakarta.annotation.security.PermitAll;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
+
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -58,7 +58,7 @@ public class BrowseResource {
                                    @QueryParam("publisher") Optional<String> publisherFilter,
                                    @QueryParam("sort") Optional<String> sortFilter,
                                    @QueryParam("page") Optional<Integer> page,
-                                   @QueryParam("page-action") Optional<String> pageAction) {
+                                   @QueryParam("page-action") Optional<String> pageActionString) {
         final String sort = sortFilter.filter(StringUtil::isNotEmpty)
                 .filter(ALLOWED_SORTS::contains)
                 .orElse(DEFAULT_SORT);
@@ -104,7 +104,7 @@ public class BrowseResource {
                 "sort", sortFilter.orElse(DEFAULT_SORT)
         );
 
-        final int newPage = PagingUtil.getNewPage(page, pageAction);
+        final int newPage = PagingUtil.getNewPageNumber(page, pageActionString);
         final List<Game> games = gameQuery.page(newPage, 20).list();
         final Pageable pageable = PagingUtil.pageable(gameQuery, newPage);
 

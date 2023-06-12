@@ -23,8 +23,6 @@ import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
-import org.jboss.resteasy.annotations.jaxrs.PathParam;
-
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BeanParam;
@@ -36,6 +34,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.annotations.jaxrs.PathParam;
+
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +100,7 @@ public class RawReviewResource {
                                   @QueryParam("critic") Optional<String> criticFilter,
                                   @QueryParam("status") Optional<String> statusFilter,
                                   @QueryParam("page") Optional<Integer> page,
-                                  @QueryParam("page-action") Optional<String> pageAction) {
+                                  @QueryParam("page-action") Optional<String> pageActionString) {
         final PanacheQuery<RawReview> rawReviewQuery = rawReviewRepo.findAll();
 
         gameFilter.filter(StringUtil::isNotEmpty)
@@ -124,7 +124,7 @@ public class RawReviewResource {
                 "status", statusFilter.orElse("todo")
         );
 
-        final int newPage = PagingUtil.getNewPage(page, pageAction);
+        final int newPage = PagingUtil.getNewPageNumber(page, pageActionString);
         final List<RawReview> reviews = rawReviewQuery.page(newPage, 20).list();
         final Pageable pageable = PagingUtil.pageable(rawReviewQuery, newPage);
 

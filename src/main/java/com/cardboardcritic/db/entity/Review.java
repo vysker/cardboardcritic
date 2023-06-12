@@ -1,7 +1,6 @@
 package com.cardboardcritic.db.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,8 +8,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 
 @Entity
+@Filter(name = "Review.byGameId")
+@Filter(name = "Review.byCriticId")
+@Filter(name = "Review.byOutletId")
+@Filter(name = "Review.byPublished")
+@FilterDef(name = "Review.byGameId",
+        defaultCondition = "game_id = :id",
+        parameters = @ParamDef(name = "id", type = Integer.class))
+@FilterDef(name = "Review.byCriticId",
+        defaultCondition = "critic_id = :id",
+        parameters = @ParamDef(name = "id", type = Integer.class))
+@FilterDef(name = "Review.byOutletId",
+        defaultCondition = "outlet_id = :id",
+        parameters = @ParamDef(name = "id", type = Integer.class))
+@FilterDef(name = "Review.byPublished",
+        defaultCondition = "published = :value",
+        parameters = @ParamDef(name = "value", type = Boolean.class))
 public class Review extends PanacheEntityBase {
 
     @Id

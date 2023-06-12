@@ -2,6 +2,7 @@ package com.cardboardcritic.web;
 
 import com.cardboardcritic.config.GlobalTemplateExtensions;
 import com.cardboardcritic.data.ReviewMapper;
+import com.cardboardcritic.db.Pageable;
 import com.cardboardcritic.db.entity.Critic;
 import com.cardboardcritic.db.entity.Game;
 import com.cardboardcritic.db.entity.Outlet;
@@ -10,7 +11,12 @@ import com.cardboardcritic.db.repository.CriticRepository;
 import com.cardboardcritic.db.repository.GameRepository;
 import com.cardboardcritic.db.repository.OutletRepository;
 import com.cardboardcritic.db.repository.ReviewRepository;
+import com.cardboardcritic.util.PagingUtil;
+import com.cardboardcritic.util.StringUtil;
 import com.cardboardcritic.web.template.form.ReviewEditForm;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Parameters;
+import io.quarkus.panache.common.Sort;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
@@ -26,9 +32,12 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Path("review")
@@ -51,6 +60,20 @@ public class ReviewResource {
                                                          List<Game> games,
                                                          List<Critic> critics,
                                                          List<Outlet> outlets);
+
+        public static native TemplateInstance list(List<Review> reviews,
+                                                   List<Game> games,
+                                                   List<Critic> critics,
+                                                   List<Outlet> outlets,
+                                                   Map<String, String> filters,
+                                                   Pageable pageable);
+
+        public static native TemplateInstance index(List<Review> reviews,
+                                                    List<Game> games,
+                                                    List<Critic> critics,
+                                                    List<Outlet> outlets,
+                                                    Map<String, String> filters,
+                                                    Pageable pageable);
     }
 
     public ReviewResource(ReviewRepository reviewRepo,
@@ -63,6 +86,55 @@ public class ReviewResource {
         this.criticRepo = criticRepo;
         this.outletRepo = outletRepo;
         this.reviewMapper = reviewMapper;
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance index(@QueryParam("game") Optional<String> gameFilter,
+                                  @QueryParam("outlet") Optional<String> outletFilter,
+                                  @QueryParam("critic") Optional<String> criticFilter,
+                                  @QueryParam("published") Optional<String> publishedFilter,
+                                  @QueryParam("page") Optional<Integer> page,
+                                  @QueryParam("page-action") Optional<String> pageActionString) {
+        final PanacheQuery<Review> reviewQuery = reviewRepo.findAll();
+
+        gameFilter.filter(StringUtil::isNotEmpty)
+                .flatMap(name -> gameRepo.find("name", name).firstResultOptional())
+                .map(game -> (Game) game)
+                .ifPresent(game -> reviewQuery.filter("Review.byGameId", Parameters.with("id", game.getId())));
+        criticFilter.filter(StringUtil::isNotEmpty)
+                .flatMap(name -> criticRepo.find("name", name).firstResultOptional())
+                .map(critic -> (Critic) critic)
+                .ifPresent(critic -> reviewQuery.filter("Review.byCriticId", Parameters.with("id", critic.getId())));
+        outletFilter.filter(StringUtil::isNotEmpty)
+                .flatMap(name -> outletRepo.find("name", name).firstResultOptional())
+                .map(outlet -> (Outlet) outlet)
+                .ifPresent(outlet -> reviewQuery.filter("Review.byOutletId", Parameters.with("id", outlet.getId())));
+        publishedFilter.filter(StringUtil::isNotEmpty)
+                .ifPresentOrElse(status -> {
+                    if ("true".equals(status))
+                        reviewQuery.filter("Review.byPublished", Parameters.with("value", true));
+                    if ("false".equals(status))
+                        reviewQuery.filter("Review.byPublished", Parameters.with("value", false));
+                }, () -> reviewQuery.filter("Review.byPublished", Parameters.with("value", true)));
+
+        final Map<String, String> filters = Map.of(
+                "game", gameFilter.orElse(""),
+                "critic", criticFilter.orElse(""),
+                "outlet", outletFilter.orElse(""),
+                "published", publishedFilter.orElse("true")
+        );
+
+        final int newPage = PagingUtil.getNewPageNumber(page, pageActionString);
+        final List<Review> reviews = reviewQuery.page(newPage, 20).list();
+        final Pageable pageable = PagingUtil.pageable(reviewQuery, newPage);
+
+        return Templates.index(reviews,
+                gameRepo.listAll(Sort.by("name")),
+                criticRepo.listAll(Sort.by("name")),
+                outletRepo.listAll(Sort.by("name")),
+                filters,
+                pageable);
     }
 
     @GET
