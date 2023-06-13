@@ -23,7 +23,7 @@
             </details>
           </div>
           <div class="stat recommended">
-              {#include hex hexContent=str:format("%s%s", game.recommended, "%") accentColor=score:color(game.recommended) /}
+              {#include hex hexContent=str:format("%s%s", score:emptyOr(game.recommended), "%") accentColor=score:color(game.recommended) /}
             <span class="margin-top">Recommends</span>
             <details>
               <summary>&#9432;</summary>
