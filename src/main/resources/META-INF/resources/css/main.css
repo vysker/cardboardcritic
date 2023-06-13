@@ -34,9 +34,9 @@ html, body, h1, h2, h3, h4, h5, h6, p {
   color: var(--font-color);
 }
 
-h1 { font-size: 2rem; }
-h2 { font-size: 1.6rem; }
-h3 { font-size: 1.2rem; }
+h1, .h1 { font-size: 2rem; }
+h2, .h2 { font-size: 1.6rem; }
+h3, .h3 { font-size: 1.2rem; }
 
 .p,
 p {
@@ -67,9 +67,6 @@ footer .about {
   display: flex;
   flex-direction: column;
   width: 240px;
-}
-footer .about img {
-  height: 40px;
 }
 footer .about span {
   margin-top: 2rem;
@@ -112,16 +109,8 @@ main li {
 }
 
 .top-nav a.site-title {
-  height: 50px;
-  margin-top: 8px;
-  /*  font-family: Georgia, serif;*/
-  /*  font-size: 2rem;*/
-  /*  font-weight: bold;*/
-  /*  text-decoration: none;*/
-  /*  color: var(--nav-font-color);*/
-}
-.top-nav a.site-title img {
-  height: 50px;
+  display: flex;
+  align-items: center;
 }
 
 /* Nav menu */
@@ -471,15 +460,11 @@ main#game .review-content details[open] summary::before {
 .col-span3 { grid-column: 1 / span 3; }
 .grid-gap-2 { grid-gap: 2rem; }
 
-.flex {
-  display: flex;
-}
-.flex-col {
-  flex-direction: column;
-}
-.flex-grow {
-  flex-grow: 1;
-}
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-grow { flex-grow: 1; }
+
+.align-self-end { align-self: end; }
 
 .margin-top { margin-top: 1rem; }
 .margin-top-big { margin-top: 2rem; }
@@ -495,7 +480,7 @@ main#game .review-content details[open] summary::before {
 
 .text-left { text-align: left; }
 .text-center { text-align: center; }
-
+.text-right { text-align: right; }
 .italic { font-style: italic; }
 
 /* This is a hack that prevents grid items from overflowing when they contain text with "white-space: nowrap" */

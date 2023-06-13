@@ -71,9 +71,9 @@
       {!{/if}!}
 
       <div class="media margin-top-xl">
-        <h3>Media</h3>
+        <h2 class="h3">Media</h2>
         {#if game.image}
-          <img src="{game.image}" alt="Cover image of {game.name}" class="margin-top" />
+          <img src="{game.image}" alt="Cover image of {game.name}" class="margin-top" height="40" />
         {#else}
           <div class="no-images margin-top">
             <div class="no-image cover-image">No cover image</div>
@@ -87,7 +87,7 @@
 
     <div class="content">
       <div class="reviews">
-        <h3>Critic Reviews</h3>
+        <h2 class="h3">Critic Reviews</h2>
         <div class="grid col-2 mob-col-1">
           {#for review in game.reviews}
             {#include review
