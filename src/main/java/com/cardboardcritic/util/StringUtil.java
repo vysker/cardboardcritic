@@ -2,6 +2,9 @@ package com.cardboardcritic.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtil {
 
@@ -45,5 +48,11 @@ public class StringUtil {
         return isEmpty(date)
                 ? null
                 : LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME).toLocalDate().toString();
+    }
+
+    public static Optional<String> getRegexGroup(String regex, String input) {
+        final Pattern pattern = Pattern.compile(regex);
+        final Matcher matcher = pattern.matcher(input);
+        return matcher.find() ? Optional.of(matcher.group(1)) : Optional.empty();
     }
 }
