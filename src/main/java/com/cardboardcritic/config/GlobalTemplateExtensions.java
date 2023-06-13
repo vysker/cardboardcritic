@@ -1,5 +1,6 @@
 package com.cardboardcritic.config;
 
+import com.cardboardcritic.feed.ScoreService;
 import io.quarkus.arc.Arc;
 import io.quarkus.qute.RawString;
 import io.quarkus.qute.TemplateExtension;
@@ -40,7 +41,13 @@ public class GlobalTemplateExtensions {
     }
 
     @TemplateExtension(namespace = "score")
+    public static String emptyOr(int score) {
+        return score == ScoreService.UNSCORED ? "?" : "" + score;
+    }
+
+    @TemplateExtension(namespace = "score")
     public static String name(int score) {
+        if (score == ScoreService.UNSCORED) return "none";
         if (score < 30) return "flat";
         if (score < 60) return "fine";
         if (score < 90) return "good";

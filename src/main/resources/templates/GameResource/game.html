@@ -12,7 +12,7 @@
         {!Stats!}
         <div class="stats grid col-2 margin-top-big">
           <div class="stat score-median">
-              {#include hex hexContent=game.median accentColor=score:color(game.median) /}
+              {#include hex hexContent=score:emptyOr(game.median) accentColor=score:color(game.median) /}
             <span class="margin-top">Score</span>
             <details>
               <summary>&#9432;</summary>

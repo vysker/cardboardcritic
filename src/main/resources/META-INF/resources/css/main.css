@@ -11,6 +11,7 @@
   --card-bg: white;
   --font-color: var(--kinda-black);
   --kinda-black: #191919;
+  --score-none-color: grey;
   --score-flat-color: mediumpurple;
   --score-fine-color: lightblue;
   --score-good-color: lightgreen;
@@ -288,6 +289,7 @@ ul.card-list {
   font-weight: bold;
   color: white;
 }
+.card.compact .card-after.score-none { border-right: .5rem solid var(--score-none-color); }
 .card.compact .card-after.score-flat { border-right: .5rem solid var(--score-flat-color); }
 .card.compact .card-after.score-fine { border-right: .5rem solid var(--score-fine-color); }
 .card.compact .card-after.score-good { border-right: .5rem solid var(--score-good-color); }

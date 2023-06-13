@@ -11,6 +11,8 @@ import java.util.List;
 
 @ApplicationScoped
 public class ScoreService {
+    public static final int UNSCORED = 0;
+
     private final GameRepository gameRepository;
 
     public ScoreService(GameRepository gameRepository) {
@@ -32,7 +34,7 @@ public class ScoreService {
 
             final List<Integer> scores = game.getReviews().stream()
                     .map(Review::getScore)
-                    .filter(score -> score > 0) // Score==0 means unscored
+                    .filter(score -> score > UNSCORED)
                     .sorted()
                     .toList();
             if (scores.isEmpty())
