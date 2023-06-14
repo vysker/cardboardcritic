@@ -5,22 +5,20 @@ import com.cardboardcritic.feed.scraper.BoardGameQuestScraper;
 import io.vertx.mutiny.ext.web.client.HttpResponse;
 import io.vertx.mutiny.ext.web.client.WebClient;
 import io.vertx.mutiny.ext.web.codec.BodyCodec;
+import jakarta.inject.Singleton;
 import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import java.util.List;
 
 @Singleton
 public class BoardGameQuestCrawler extends OutletCrawler {
     private final String url = "https://www.boardgamequest.com/reviews-alphabetically";
+    private final WebClient webClient;
 
-    @Inject
-    WebClient webClient;
-
-    public BoardGameQuestCrawler(BoardGameQuestScraper scraper) {
+    public BoardGameQuestCrawler(WebClient webClient, BoardGameQuestScraper scraper) {
         super("Board Game Quest", scraper);
+        this.webClient = webClient;
     }
 
     @Override

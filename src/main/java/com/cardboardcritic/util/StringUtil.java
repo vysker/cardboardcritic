@@ -22,16 +22,19 @@ public class StringUtil {
         return !isEmpty(s);
     }
 
-    public static String before(String s, String pattern) {
+    // TODO: Return optional instead
+    public static Optional<String> takeBefore(String s, String pattern) {
+        if (s == null) return Optional.empty();
         final int index = s.indexOf(pattern);
-        if (index < 0) return s;
-        return s.substring(0, index);
+        if (index < 0) return Optional.empty();
+        return Optional.of(s.substring(0, index));
     }
 
-    public static String after(String s, String pattern) {
+    public static Optional<String> takeAfter(String s, String pattern) {
+        if (s == null) return Optional.empty();
         final int index = s.indexOf(pattern);
-        if (index < 0) return s;
-        return s.substring(index + pattern.length());
+        if (index < 0) return Optional.empty();
+        return Optional.of(s.substring(index + pattern.length()));
     }
 
     public static String dropRight(String s, int length) {
