@@ -12,7 +12,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.util.Optional;
 
 @ApplicationScoped
-public class BoardGameQuestScraper extends ArticleScraper {
+public class BoardGameQuestScraper implements ArticleScraper {
 
     @Override
     public RawReview getReview(String articleUrl, Document document) throws ScrapeException {

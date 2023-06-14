@@ -9,7 +9,7 @@ import org.jsoup.nodes.Document;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class DicebreakerScraper extends ArticleScraper {
+public class DicebreakerScraper implements ArticleScraper {
 
     @Override
     public RawReview getReview(String articleUrl, Document document) {

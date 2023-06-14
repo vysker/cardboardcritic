@@ -10,7 +10,7 @@ import org.jsoup.nodes.Document;
 import java.util.Comparator;
 
 @ApplicationScoped
-public class DiceTowerScraper extends ArticleScraper {
+public class DiceTowerScraper implements ArticleScraper {
 
     @Override
     public RawReview getReview(String articleUrl, Document document) throws ScrapeException {

@@ -71,7 +71,7 @@ public record CrawlerService(List<OutletCrawler> outletCrawlers,
     public List<String> crawl(OutletCrawler crawler) {
         log.infof("Crawling article links for '%s'", crawler.getOutlet());
 
-        final List<String> linksFound = crawler.getArticleLinks();
+        final List<String> linksFound = crawler.getArticleLinks().stream().distinct().toList();
         final List<String> visitedRawReviews = rawReviewRepository.visited(linksFound).stream()
                 .map(RawReview::getUrl).toList();
         final List<String> visitedReviews = reviewRepository.visited(linksFound).stream()

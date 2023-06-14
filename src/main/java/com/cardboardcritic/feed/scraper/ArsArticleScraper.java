@@ -1,6 +1,7 @@
 package com.cardboardcritic.feed.scraper;
 
 import com.cardboardcritic.db.entity.RawReview;
+import com.cardboardcritic.feed.DocumentFetcher;
 import com.cardboardcritic.feed.ScrapeException;
 import com.cardboardcritic.util.ScraperUtil;
 import com.cardboardcritic.util.StringUtil;
@@ -17,7 +18,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class ArsArticleScraper extends ArticleScraper {
+public class ArsArticleScraper implements ArticleScraper {
+    private final DocumentFetcher documentFetcher;
+
+    public ArsArticleScraper(DocumentFetcher documentFetcher) {
+        this.documentFetcher = documentFetcher;
+    }
 
     @Override
     public RawReview getReview(String articleUrl, final Document firstPage) {
@@ -27,7 +33,7 @@ public class ArsArticleScraper extends ArticleScraper {
         // content/document of that final page.
         final Document document = getFinalPageUrl(firstPage)
                 .filter(Predicate.not(articleUrl::equals))
-                .map(this::fetch)
+                .map(documentFetcher::fetch)
                 .orElse(firstPage);
 
         final Element articleBody = document.select("div[itemprop=articleBody]").last();
