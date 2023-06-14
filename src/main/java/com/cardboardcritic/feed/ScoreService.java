@@ -39,12 +39,12 @@ public class ScoreService {
 
             final List<Integer> scores = game.getReviews().stream()
                     .map(Review::getScore)
-                    .filter(score -> score > UNSCORED)
+                    .filter(score -> score > UNSCORED) // I.e. only calculate average/median with actual scores
                     .sorted()
                     .toList();
 
-            final int average = scores.isEmpty() ? 0 : getAverage(scores);
-            final int median = scores.isEmpty() ? 0 : getMedian(scores);
+            final int average = scores.isEmpty() ? UNSCORED : getAverage(scores);
+            final int median = scores.isEmpty() ? UNSCORED : getMedian(scores);
             final int recommended = getRecommendedPercentage(game);
 
             gameRepository.update("average = ?1, median = ?2, recommended = ?3 where id = ?4",
