@@ -21,6 +21,10 @@ public class ScraperUtil {
         return selectFirst(document, selector).map(Element::text);
     }
 
+    public static Optional<String> selectAttr(Document document, String selector, String attribute) {
+        return selectFirst(document, selector).map(element -> element.attr(attribute));
+    }
+
     public static Optional<Element> selectFirst(Document document, String selector) {
         final Element element = document.selectFirst(selector);
         return Optional.ofNullable(element);
