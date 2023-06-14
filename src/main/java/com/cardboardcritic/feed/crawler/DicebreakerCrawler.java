@@ -27,17 +27,4 @@ public class DicebreakerCrawler extends OutletCrawler {
                     .formatted(getOutlet(), URL, e));
         }
     }
-
-//    @Override
-//    public List<String> getArticleLinks() {
-//        return List.of(
-//                "http://localhost:9090/a",
-//                "http://localhost:9090/b",
-//                "http://localhost:9090/c",
-//                "http://localhost:9090/d",
-//                "http://localhost:9090/e",
-//                "http://localhost:9090/f",
-//                "http://localhost:9090/g"
-//        );
-//    }
 }
