@@ -9,21 +9,28 @@ import org.jsoup.nodes.Element;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
+import java.util.Optional;
+
 @ApplicationScoped
-public class BoardGameQuestScraper extends ArticleScraper {
+public class BoardGameQuestScraper implements ArticleScraper {
 
     @Override
     public RawReview getReview(String articleUrl, Document document) throws ScrapeException {
         final Element body = document.select("div[itemprop=reviewBody]").first();
-        final String title = document.select("meta[property=og:title]").attr("content"); // Alternatively use "header h1.entry-title"
-        final String date = document.select("header time").attr("datetime");
+        final String title = ScraperUtil.selectFirst(document, "meta[property=og:title]")
+                .map(element -> element.attr("content"))
+                .or(() -> ScraperUtil.selectText(document, "header h1.entry-title"))
+                .orElse(null);
+        final String date = ScraperUtil.selectFirst(document, "header time")
+                .map(element -> element.attr("datetime"))
+                .orElse(null);
         final String critic = document.select("div.meta-info div.td-post-author-name a").text();
-        final String game = StringUtil.before(title, " Review");
+        final String game = StringUtil.takeBefore(title, " Review").orElse(title);
 
         // There is an image on the page to indicate the score. That image has an alt text containing the score
         final float score = document.select("img").eachAttr("alt").stream()
                 .filter(alt -> alt.contains("Stars")).findFirst()
-                .map(alt -> StringUtil.before(alt, " Stars"))
+                .flatMap(alt -> StringUtil.takeBefore(alt, " Stars"))
                 .map(Float::parseFloat)
                 .orElse(0f);
 
@@ -44,15 +51,12 @@ public class BoardGameQuestScraper extends ArticleScraper {
         // There is a header at the end of the article summarizing the author's thoughts. It is not always immediately
         // followed by a paragraph (usually a figure, instead), so find that header, then search for the first paragraph
         // after that
-        Element finalThoughts = body.select("h3").last();
-        if (finalThoughts != null && "final thoughts:".equalsIgnoreCase(finalThoughts.text().trim())) {
-            return finalThoughts.nextElementSiblings().stream()
+        return Optional.ofNullable(body.select("h3").last())
+                .filter(heading -> "final thoughts:".equalsIgnoreCase(heading.text().trim()))
+                .flatMap(heading -> heading.nextElementSiblings().stream()
                     .filter(element -> element.is("p"))
                     .findFirst()
-                    .map(Element::text)
-                    .orElse(null);
-        }
-
-        return body.wholeText();
+                    .map(Element::text))
+                .orElse(body.wholeText());
     }
 }
